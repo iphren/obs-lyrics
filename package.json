@@ -1,0 +1,14 @@
+{
+  "name": "obs-lyrics",
+  "version": "1.0.0",
+  "description": "OBS Lyrics Manager",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Renjie Yun",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^8.1.1"
+  }
+}
