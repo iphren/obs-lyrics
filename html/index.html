@@ -7,20 +7,22 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
   </head>
   <body>
-      <div id="main">
-          <div id="left">
-            <label id="forinput" for="input">
-                <h2>Input</h2>
-            </label>
-            <textarea id="input"></textarea>
-          </div>
-          <div id="right">
-              <label id="foroutput" for="output">
-                  <h2>Output</h2>
-              </label>
-          </div>
+    <input type="checkbox" id="showleft" checked>
+    <label for="showleft" id="forshowleft">Show Input</label>
+    <div id="main">
+      <div id="left">
+        <label id="forinput" for="input">
+          <h2>Input</h2>
+        </label>
+        <textarea id="input"></textarea>
       </div>
-      <input type="text" id="path" readonly>
-      <script src="ipc.js"></script>
+      <div id="right">
+        <label id="foroutput" for="output">
+          <h2>Output</h2>
+        </label>
+      </div>
+    </div>
+    <input type="text" id="path" readonly>
+    <script src="ipc.js"></script>
   </body>
 </html>

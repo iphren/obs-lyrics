@@ -27,21 +27,23 @@ function updated(e) {
 };
 
 function update() {
+    let comment = 'comment';
     var output = document.getElementById('output');
     if (output) output.remove();
     var lines = input.value
-        .replace(/^\s*\n*\s*/,'')
-        .replace(/\s*\n*\s*$/,'')
-        .replace(/^\s*\n/gm,'\n')
+        .replace(/^[\s\n]+|[\s\n]+$/g,'')
+        .replace(/^\n+/gm,'\n')
         .split('\n');
     let html = '<select id="output" multiple>';
-    html += '<option value="-1"></option>';
+    html += `<option class="${comment}" value="-1"></option>`;
     for (let l = 0; l < lines.length; l++) {
-        html += '<option value="' + l.toString() + '">'
-        html += lines[l];
+        html += '<option ';
+        if (lines[l][0] == '#') html += `class="${comment}" `;
+        html += 'value="' + l + '">' + lines[l].replace(/^#/,'');
         html += '</option>';
     };
-    html += '<option value="' + lines.length.toString() + '">...</option>';
+    html += `<option class="${comment}" value="`;
+    html += lines.length.toString() + '">. . .</option>';
     html += '</select>'
     foroutput.insertAdjacentHTML('afterend',html)
     var output = document.getElementById('output');
@@ -49,7 +51,8 @@ function update() {
         let opts = output.selectedOptions;
         let text = '';
         for (let o of opts) {
-            if (o.value == '-1' || o.value == lines.length.toString()) continue;
+            console.log();
+            if (o.className == comment) continue;
             if (/^\s*$/.test(o.innerHTML)) continue; 
             text += o.innerHTML + '\n';
         };

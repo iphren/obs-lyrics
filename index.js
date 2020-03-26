@@ -2,7 +2,7 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-const appData = path.join(app.getPath('appData'), process.env.npm_package_name)
+const appData = path.join(app.getPath('appData'), 'obs-lyrics')
 app.lyrics = path.join(appData, 'lyrics.txt')
 app.line = path.join(appData, 'line.txt')
 fs.mkdirSync(appData, { recursive: true })
