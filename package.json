@@ -6,7 +6,8 @@
   "description": "OBS Lyrics Manager",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "node node_modules/electron-packager/bin/electron-packager.js . --overwrite" 
   },
   "author": "Renjie Yun",
   "license": "MIT",
