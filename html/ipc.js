@@ -2,8 +2,8 @@ const remote = require('electron').remote;
 const fs = require('fs');
 const app = remote.app;
 const input = document.getElementById('input');
-const foroutput = document.getElementById('foroutput');
 const path = document.getElementById('path');
+const comment = 'comment';
 
 fs.writeFileSync(app.line, '');
 path.value = app.line;
@@ -27,14 +27,13 @@ function updated(e) {
 };
 
 function update() {
-    let comment = 'comment';
-    var output = document.getElementById('output');
+    let output = document.getElementById('output');
     if (output) output.remove();
-    var lines = input.value
+    let lines = input.value
         .replace(/^[\s\n]+|[\s\n]+$/g,'')
         .replace(/^\n+/gm,'\n')
         .split('\n');
-    let html = '<select id="output" multiple>';
+    let html = '<select id="output" onchange="change()" multiple>';
     html += `<option class="${comment}" value="-1"></option>`;
     for (let l = 0; l < lines.length; l++) {
         html += '<option ';
@@ -44,18 +43,18 @@ function update() {
     };
     html += `<option class="${comment}" value="`;
     html += lines.length.toString() + '">. . .</option>';
-    html += '</select>'
-    foroutput.insertAdjacentHTML('afterend',html)
-    var output = document.getElementById('output');
-    output.addEventListener('click', function() {
-        let opts = output.selectedOptions;
-        let text = '';
-        for (let o of opts) {
-            console.log();
-            if (o.className == comment) continue;
-            if (/^\s*$/.test(o.innerHTML)) continue; 
-            text += o.innerHTML + '\n';
-        };
-        fs.writeFileSync(app.line, text);
-    });
+    html += '</select>';
+    document.getElementById('foroutput')
+        .insertAdjacentHTML('afterend',html);
+};
+
+function change() {
+    let opts = document.getElementById('output').selectedOptions;
+    let text = '';
+    for (let o of opts) {
+        if (o.className == comment) continue;
+        if (/^\s*$/.test(o.innerHTML)) continue; 
+        text += o.innerHTML + '\n';
+    };
+    fs.writeFileSync(app.line, text);
 };
