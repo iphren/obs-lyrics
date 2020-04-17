@@ -1,5 +1,10 @@
+@font-face {
+    font-family: SourceHanSansCN;
+    src: url(SourceHanSansCN-Regular.otf);
+}
+
 body {
-    font-family: "微软雅黑";
+    font-family: SourceHanSansCN;
     height: 100vh;
     width: 100vw;
     box-sizing: border-box;
@@ -43,12 +48,18 @@ option.comment {
     z-index: 10;
     display: none;
 }
-#left {display: none;}
-#foroutput {display: none;}
+#left {display: none; width: 49.999%;}
+#right {width: 100%;}
+#forinput, #foroutput {display: none;}
 #path {display: none;}
+#forshowleft .show {display: inline;}
+#forshowleft .hide {display: none;}
 #showleft:checked ~ #forshowleft {background-color: lightgreen;}
+#showleft:checked ~ #forshowleft .show {display: none;}
+#showleft:checked ~ #forshowleft .hide {display: inline;}
 #showleft:checked ~  #main > #left {display: flex;}
-#showleft:checked ~  #main #foroutput {display: block;}
+#showleft:checked ~  #main > #right {width: 49.999%;}
+
 #showleft:checked ~ #path {display: inline;}
 
 #main {
@@ -59,14 +70,13 @@ option.comment {
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    justify-content: space-around;
 }
 
 #right {display: flex;}
 #left, #right {
     flex-direction: column;
     height: 100%;
-    flex-grow: 1;
     align-items: center;
 }
 
