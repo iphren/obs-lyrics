@@ -20,6 +20,7 @@ label {
 option {
     text-align: center;
     user-select: none;
+    position: relative;
 }
 
 option.comment {
@@ -73,7 +74,10 @@ option.comment {
     justify-content: space-around;
 }
 
-#right {display: flex;}
+#right {
+    display: flex;
+    position: relative;
+}
 #left, #right {
     flex-direction: column;
     height: 100%;
@@ -106,4 +110,111 @@ option.comment {
 #path, #path:focus {
     border: none;
     outline: none;
+}
+
+#west, #east {
+    position: absolute;
+    height: 100%;
+    background-color: lightgray;
+    opacity: 0.5;
+    width: calc(50% - 180px);
+}
+
+#west {
+    left: 10px;
+    border-right: 1px gray dashed;
+}
+
+#east {
+    right: 28px;
+    border-left: 1px gray dashed;
+}
+
+option:before {
+    color: #2196F3;
+    position: absolute;
+    left: 5px;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 150%;
+    z-index: 20;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.Q:before {
+    content: 'Q';
+}
+
+.W:before {
+    content: 'W';
+}
+
+.E:before {
+    content: 'E';
+}
+
+.R:before {
+    content: 'R';
+}
+
+.T:before {
+    content: 'T';
+}
+
+.Y:before {
+    content: 'Y';
+}
+
+.U:before {
+    content: 'U';
+}
+
+.I:before {
+    content: 'I';
+}
+
+.O:before {
+    content: 'O';
+}
+
+.A:before {
+    content: 'A';
+}
+
+.S:before {
+    content: 'S';
+}
+
+.D:before {
+    content: 'D';
+}
+
+.F:before {
+    content: 'F';
+}
+
+.G:before {
+    content: 'G';
+}
+
+.H:before {
+    content: 'H';
+}
+
+.J:before {
+    content: 'J';
+}
+
+.K:before {
+    content: 'K';
+}
+
+.L:before {
+    content: 'L';
+}
+
+.SPACE:before {
+    font-size: 80%;
+    content: 'SPACE';
 }
