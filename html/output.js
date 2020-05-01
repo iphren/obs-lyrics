@@ -8,9 +8,9 @@ const sequence = ['QWERTYUIO','ASDFGHJKL'];
 
 var group = {};
 var pause = [];
+var xhr;
 
-fs.writeFileSync(app.line, '');
-path.value = app.line;
+path.value = 'file:///' + app.html.replace(/\\/g,'/');
 path.addEventListener('focus', function() {
     path.setSelectionRange(0, path.value.length);
 });
@@ -56,18 +56,18 @@ function change() {
     let opts = otpt.options;
     let indx = otpt.selectedIndex;
     let sels = otpt.selectedOptions;
-    let text = '';
+    let text = [];
     let line = 0;
     let last = indx;
     for (let o of sels) {
         if (o.className == comment) continue;
         if (/^\s*$/.test(o.innerHTML)) continue; 
         line++;
-        text += o.innerHTML.replace(/^\s+|\s+$/,'') + '\n';
+        text.push(o.innerHTML.replace(/^\s+|\s+$/,''));
         o.className = '';
         last = o.index;
     };
-    fs.writeFileSync(app.line, text);
+    upload({"line":text});
     if (line == 0) line = sels.length;
     if (line == 0) return;
     group = {};
@@ -130,7 +130,7 @@ function response(e) {
                     o.className = 'SPACE';
                 };
                 otpt.selectedIndex = -1;
-                fs.writeFileSync(app.line, '');
+                upload({"line":[]});
             } else {
                 pause.forEach(o => {o.className = '';o.selected = true});
                 pause = [];
@@ -147,8 +147,16 @@ function response(e) {
         otpt.selectedIndex = -1;
         for (let o of group[key]) {
             o.selected = true;
-            o.scrollIntoView(top);
         };
         change();
     }
+};
+
+function upload(data) {
+    xhr = new XMLHttpRequest();
+    let url = 'https://elimfgcc.org/lyrics/line';
+    let method = 'POST';
+    xhr.open(method, url, true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify({"client": app.line, "data": data}));
 };

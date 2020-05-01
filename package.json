@@ -7,12 +7,17 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "pack": "node node_modules/electron-packager/bin/electron-packager.js . --overwrite" 
+    "pack": "node node_modules/electron-packager/bin/electron-packager.js . --overwrite"
   },
   "author": "Renjie Yun",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iphren/obs-lyrics.git"
+  },
   "dependencies": {
     "electron": "^8.1.1",
-    "electron-packager": "^14.2.1"
+    "electron-packager": "^14.2.1",
+    "uuid": "^8.0.0"
   }
 }
