@@ -6,9 +6,10 @@ const { v4: uuidv4 } = require('uuid')
 
 const appData = path.join(app.getPath('appData'), 'obs-lyrics')
 app.lyrics = path.join(appData, 'lyrics.txt')
-app.html = path.join(appData, 'line.html')
 app.settings = path.join(appData, 'settings.json')
 fs.mkdirSync(appData, { recursive: true })
+
+app.html = path.join(app.getAppPath(), 'html', 'line.html')
 
 try {
   app.set = JSON.parse(fs.readFileSync(app.settings))
@@ -16,67 +17,6 @@ try {
 } catch (e) {
   app.set = {rec: {width: 800, height: 600}, showleft: true}
 }
-
-if (typeof app.set.client == 'string') {
-  app.line = app.set.client
-} else {
-  app.line = uuidv4()
-  app.set.client = app.line
-  save(app.set, app.settings)
-}
-
-
-fs.writeFileSync(app.html,`
-<html>
-  <head>
-    <meta charset="utf-8">
-    <style>
-      #lyrics {
-        position: fixed;
-        bottom: 3.5vw;
-        font-size: 3.5vw;
-        font-family: "Source Han Sans CN", sans-serif;
-        width: 100vw;
-        text-align: center;
-        color: white;
-        text-shadow: 0px 0px 8px black, 0px 0px 8px black;
-        font-weight: 700;
-        transition: all 0.2s ease-in-out; 
-      }
-    </style>
-  </head>
-  <body>
-    <div id='lyrics'></div>
-    <script>
-      const url = 'https://elimfgcc.org/lyrics/line?client=${app.line}';
-      const method = 'GET';
-      var xhr;
-      var line = '';
-
-      setInterval(getLyrics, 100);
-
-      function getLyrics() {
-        xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        xhr.responseType = 'json';
-        xhr.onreadystatechange = function () {
-          if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            let data = xhr.response.line.join('<br>');
-            if (data == line) return;
-            line = data;
-            document.getElementById('lyrics').style.opacity = 0;
-            setTimeout(()=>{
-              document.getElementById('lyrics').innerHTML = line;
-              document.getElementById('lyrics').style.opacity = 1;
-            },200);
-          };
-        };
-        xhr.send();
-      };
-    </script>
-  </body>
-</html>
-`);
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -90,7 +30,7 @@ function createWindow () {
   app.set.rec = win.getBounds()
   win.loadFile('html/index.html')
   win.setMenu(null)
-  //win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   win.on('resize', () => {
     app.set.rec = win.getBounds()
@@ -143,3 +83,27 @@ function save(data, file)  {
   stream.end(content)
   return true
 }
+
+const http = require('http');
+const port = 56733;
+var line = JSON.stringify({line:[]});
+const requestListener = function (req, res) {
+  res.setHeader('Access-Control-Allow-Origin','*');
+  if (req.method == 'POST') {
+    var body = '';
+    req.on('data', function(data) {
+      body += data;
+    });
+    req.on('end', function() {
+      line = body;
+      res.end();
+    });
+  } else if (req.method == 'GET') {
+    res.setHeader("Content-Type", "application/json;charset=UTF-8");
+    res.end(line);
+  } else {
+    res.end();
+  };
+};
+const server = http.createServer(requestListener);
+server.listen(port,'localhost');

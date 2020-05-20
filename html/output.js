@@ -47,7 +47,7 @@ function update() {
     };
     html += `<option class="${comment}" value="`;
     html += lines.length.toString() + '">. . .</option>';
-    html += '</select><div id="west"></div><div id="east"></div>';
+    html += '</select>';
     document.getElementById('right').innerHTML = html;
 };
 
@@ -154,9 +154,9 @@ function response(e) {
 
 function upload(data) {
     xhr = new XMLHttpRequest();
-    let url = 'https://elimfgcc.org/lyrics/line';
+    let url = 'http://localhost:56733/';
     let method = 'POST';
     xhr.open(method, url, true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify({"client": app.line, "data": data}));
+    xhr.send(JSON.stringify(data));
 };

@@ -1,10 +1,10 @@
 @font-face {
-    font-family: SourceHanSansCN;
-    src: url(SourceHanSansCN-Regular.otf);
+    font-family: SourceHanSans;
+    src: url(SourceHanSans-Regular.ttc);
 }
 
 body {
-    font-family: SourceHanSansCN;
+    font-family: SourceHanSans;
     height: 100vh;
     width: 100vw;
     box-sizing: border-box;
@@ -94,7 +94,6 @@ option.comment {
     resize: none;
     width: calc(100% - 20px);
     flex-grow: 1;
-    font-family: "微软雅黑";
 }
 
 #path {
@@ -110,24 +109,6 @@ option.comment {
 #path, #path:focus {
     border: none;
     outline: none;
-}
-
-#west, #east {
-    position: absolute;
-    height: 100%;
-    background-color: lightgray;
-    opacity: 0.5;
-    width: calc(50% - 180px);
-}
-
-#west {
-    left: 10px;
-    border-right: 1px gray dashed;
-}
-
-#east {
-    right: 28px;
-    border-left: 1px gray dashed;
 }
 
 option:before {

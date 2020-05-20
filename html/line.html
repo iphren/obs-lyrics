@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+        @font-face {
+            font-family: SourceHanSans;
+            src: url(SourceHanSans-Regular.ttc);
+        }
+        .lyrics {
+            position: fixed;
+            bottom: 3.5vw;
+            font-size: 3.2vw;
+            font-family: SourceHanSans;
+            width: 100vw;
+            text-align: center;
+            color: white;
+            text-shadow: 0px 0px 8px black, 0px 0px 8px black;
+            font-weight: 700;
+            transition: all 0.5s ease-in-out; 
+            opacity: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <script>
+      const url = 'http://localhost:56733/';
+      const method = 'GET';
+      var xhr;
+      var line = '';
+      
+      setInterval(getLyrics, 100);
+
+      function getLyrics() {
+        xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.responseType = 'json';
+        xhr.onreadystatechange = function () {
+          if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            let data = xhr.response.line.join('<br>');
+            if (data == line) return;
+            line = data;
+
+            let old = [];
+            for (let x of document.getElementsByClassName('lyrics')) old.push(x);
+            let div = document.createElement("div");
+            div.className = "lyrics";
+            div.innerHTML = line;
+            document.body.appendChild(div);
+            
+            setTimeout(()=>{
+              for (let x of old) x.remove();
+            },550);
+            setTimeout(()=>{
+              div.style.opacity = 1;
+              for (let x of old) x.style.opacity = 0;
+            },50);
+          };
+        };
+        xhr.send();
+      };
+    </script>
+  </body>
+</html>
