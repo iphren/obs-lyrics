@@ -18,6 +18,8 @@
   "dependencies": {
     "electron": "^8.1.1",
     "electron-packager": "^14.2.1",
+    "pinyin": "^2.9.1",
+    "sortablejs": "^1.10.2",
     "uuid": "^8.0.0"
   }
 }

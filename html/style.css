@@ -1,0 +1,149 @@
+@font-face {
+    font-family: SourceHanSans;
+    src: url(SourceHanSans-Regular.ttc);
+}
+
+body {
+    font-family: SourceHanSans;
+    font-style: normal;
+    font-weight: 400;
+    height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+body {padding: 0.5rem 0;}
+#main > * {padding: 0.5rem;}
+#control {width: 20rem; padding-right: 0;}
+.container:first-child {margin-bottom: 0.5rem;}
+#view {flex-grow: 1;}
+#path, #search {margin: 0 0.5rem;}
+#search {width: 19.5rem;}
+
+.control {
+    border: none;
+    outline: 0.05rem solid #999;
+    box-sizing: border-box;
+}
+
+input.control {
+    padding: 0.3rem;
+}
+
+input.control {
+    outline-offset: 0;
+}
+
+.container {
+    height: 49.999%;
+    width: 100%;
+    position: relative;
+}
+
+.container > * {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.selected {
+    background-color: #607d8b;
+    color: white;
+}
+
+.song {
+    user-select: none;
+    width: 100%;
+    padding: 0.3rem 0.6rem;
+}
+
+.song .title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.song .lyrics {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    color: #777;
+    font-size: 80%;
+    border-right:0.6rem solid transparent;
+    box-sizing: border-box;
+}
+
+.selected .lyrics {
+    color: white;
+}
+
+#main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+#control, #view {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+} 
+
+#songlist, #playlist {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#playlist .filter {
+    padding: 0;
+}
+
+#delete {
+    top: unset;
+    left: 8.5rem;
+    width: 3rem;
+    height: 3rem;
+    bottom: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    background-image: url('delete.svg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    transition: all 0.5s ease-in-out;
+}
+
+#bin {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#pTitle {
+    height: 3rem;
+    font-weight: 700;
+    font-size: 120%;
+    padding: 0 1rem;
+}
+
+#pLyrics {
+    position: absolute;
+    top: 2rem;
+    left: 0;
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    height: calc(100% - 2rem);
+    box-sizing: border-box;
+    padding: 0 1rem;
+}

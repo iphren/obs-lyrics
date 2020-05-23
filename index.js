@@ -5,23 +5,31 @@ const fs = require('fs')
 const { v4: uuidv4 } = require('uuid')
 
 const appData = path.join(app.getPath('appData'), 'obs-lyrics')
-app.lyrics = path.join(appData, 'lyrics.txt')
 app.settings = path.join(appData, 'settings.json')
+app.playlist = path.join(appData, 'playlist.json')
+app.songs = path.join(appData, 'songs.json')
 fs.mkdirSync(appData, { recursive: true })
 
 app.html = path.join(app.getAppPath(), 'html', 'line.html')
 
 try {
   app.set = JSON.parse(fs.readFileSync(app.settings))
-  if (app.set.maximize) throw 'maximized'
+  if (app.set.maximize) {
+    delete app.set.maximize
+    app.set.rec = {width: 800, height: 600}
+  }
 } catch (e) {
-  app.set = {rec: {width: 800, height: 600}, showleft: true}
+  app.set = {rec: {width: 800, height: 600}}
 }
+
+
 
 function createWindow () {
   const win = new BrowserWindow({
     width: app.set.rec.width,
     height: app.set.rec.height,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       nodeIntegration: true
     }
@@ -46,15 +54,6 @@ function createWindow () {
   })
   win.on('unmaximize', () => {
     app.set.maximize = false
-    save(app.set, app.settings)
-  })
-
-  ipcMain.on('resize', (e, size) => {
-    app.set.rec.width += size
-    app.set.rec.x -= size
-    app.set.showleft = size > 0
-    try {win.setBounds(app.set.rec)} catch (e) {}
-    app.set.rec = win.getBounds()
     save(app.set, app.settings)
   })
 }

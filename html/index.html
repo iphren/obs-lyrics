@@ -3,26 +3,40 @@
   <head>
     <meta charset="UTF-8">
     <title>OBS Lyrics Manager</title>
-    <link rel='stylesheet' href="main.css">
+    <link rel="stylesheet" href="style.css">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <script src="../node_modules/sortablejs/Sortable.min.js"></script>
   </head>
   <body>
-    <input type="checkbox" id="showleft" checked>
-    <label for="showleft" id="forshowleft">
-      <span class="hide">Hide</span>
-      <span class="show">Show</span> Input
-    </label>
+    <input type="text" id="search" class="control" placeholder="Search">
     <div id="main">
-      <div id="left">
-        <label id="forinput" for="input">
-          <h2>Input</h2>
-        </label>
-        <textarea id="input"></textarea>
+      <div id="control">
+        <div class="container">
+          <div id="songlist" class="control select"></div>
+        </div>
+        <div class="container">
+          <div id="playlist" class="control select"></div>
+          <div id="delete">
+            <div id="bin"></div>
+          </div>
+        </div>
       </div>
-      <div id="right"></div>
+      <div id="view">
+        <div class="container">
+          <div id="preview">
+            <div id="pTitle"></div>
+            <div id="pLyrics"></div>
+          </div>
+        </div>
+        <div class="container">
+          <div id="live" class="control select"></div>
+        </div>
+      </div>
     </div>
-    <input type="text" id="path" readonly>
-    <script src="output.js"></script>
-    <script src="resize.js"></script>
+    <input type="text" id="path" class="control" readonly>
+    <script src="auth.js"></script>
+    <script src="nodes.js"></script>
+    <script src="select.js"></script>
+    <script src="control.js"></script>
   </body>
 </html>
