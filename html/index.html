@@ -8,7 +8,10 @@
     <script src="../node_modules/sortablejs/Sortable.min.js"></script>
   </head>
   <body>
-    <input type="text" id="search" class="control" placeholder="Search">
+    <div id="menu">
+      <span id="reload">&#x27F2;</span>
+      <input type="text" id="search" class="control" placeholder="Search">
+    </div>
     <div id="main">
       <div id="control">
         <div class="container">
@@ -34,8 +37,12 @@
       </div>
     </div>
     <input type="text" id="path" class="control" readonly>
-    <script src="auth.js"></script>
+    <div id="login">
+      <input type="password" id="password">
+    </div>
+    <script src="modules.js"></script>
     <script src="nodes.js"></script>
+    <script src="auth.js"></script>
     <script src="select.js"></script>
     <script src="control.js"></script>
   </body>

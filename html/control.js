@@ -1,9 +1,4 @@
-const remote = require('electron').remote;
-const fs = require('fs');
-const pinyin = require('pinyin');
-const app = remote.app;
-
-reload();
+document.getElementById('reload').onclick = reload;
 
 search.oninput = function(e) {
     let term = '';
@@ -32,6 +27,7 @@ fs.readFile(app.playlist, function(err, data) {
                 addSong(JSON.parse(i), playlist);
         }
     }
+    reload();
 });
 
 new Sortable(songlist, {
@@ -66,13 +62,13 @@ new Sortable(bin, {
 });
 
 function showBin(e) {
-    bin.parentNode.style.visibility = 'visible';
+    bin.parentNode.style.zIndex = 100;
     bin.parentNode.style.opacity = 0.5;
 }
 
 function hideBin(e) {
     bin.parentNode.style.opacity = 0;
-    bin.parentNode.style.visibility = 'hidden';
+    bin.parentNode.style.zIndex = -100;
 }
 
 function savePlaylist() {
@@ -85,15 +81,26 @@ function savePlaylist() {
 async function reload() {
     let songs = await getLyrics()
     .then(x => {
-        fs.writeFile(app.songs, JSON.stringify(x),()=>{});
+        login.style.display = 'none';
+        fs.writeFile(app.token, token, ()=>{});
         return x;
     })
     .catch(() => {
-        return JSON.parse(fs.readFileSync(app.songs,{encoding:'utf-8'}));
+        login.style.display = 'flex';
+        password.focus();
+        return [];
     });
     songlist.innerHTML = '';
-    for (let song of songs)
-        addSong(song, songlist);
+    for (let song of songs) {
+        let item = addSong(song, songlist);
+        for (let i of playlist.childNodes) {
+            if (i.getAttribute('songId') == song.id)
+                playlist.replaceChild(item, i);
+        }
+    }
+    pTitle.innerHTML = '';
+    pLyrics.innerHTML = '';
+    live.innerHTML = '';
 }
 
 function addSong(song, list) {
@@ -102,7 +109,7 @@ function addSong(song, list) {
     let lyrics = document.createElement('div');
 
     if (song.id == '_filter')
-        item.className = 'filter song option preview';
+        item.className = 'filter song preview';
     else
         item.className = 'song option preview';
     item.setAttribute('keywords', song.keywords);
@@ -117,6 +124,7 @@ function addSong(song, list) {
     item.appendChild(title);
     item.appendChild(lyrics);
     list.appendChild(item);
+    return item.cloneNode(true);
 }
 
 function getLyrics() {

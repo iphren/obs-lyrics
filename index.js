@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid')
 const appData = path.join(app.getPath('appData'), 'obs-lyrics')
 app.settings = path.join(appData, 'settings.json')
 app.playlist = path.join(appData, 'playlist.json')
-app.songs = path.join(appData, 'songs.json')
+app.token = path.join(appData, 'token.txt')
 fs.mkdirSync(appData, { recursive: true })
 
 app.html = path.join(app.getAppPath(), 'html', 'line.html')
@@ -38,7 +38,7 @@ function createWindow () {
   app.set.rec = win.getBounds()
   win.loadFile('html/index.html')
   win.setMenu(null)
-  win.webContents.openDevTools()
+  //win.webContents.openDevTools()
 
   win.on('resize', () => {
     app.set.rec = win.getBounds()
