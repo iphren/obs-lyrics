@@ -35,11 +35,18 @@
         xhr.open(method, url, true);
         xhr.responseType = 'json';
         xhr.onreadystatechange = function () {
-          if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            let data = xhr.response.line.join('<br>');
+          if(xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200)
+              showLyrics(xhr.response.line.join('<br>'));
+            else
+              showLyrics('');
+          }
+        }
+        xhr.send();
+      }
+      function showLyrics(data) {
             if (data == line) return;
             line = data;
-
             let old = [];
             for (let x of document.getElementsByClassName('lyrics')) old.push(x);
             let div = document.createElement("div");
@@ -54,10 +61,7 @@
               div.style.opacity = 1;
               for (let x of old) x.style.opacity = 0;
             },50);
-          };
-        };
-        xhr.send();
-      };
+      }
     </script>
   </body>
 </html>
