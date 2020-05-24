@@ -3,7 +3,7 @@ for (let list of document.getElementsByClassName('select')) {
     list.onclick = selected;
 }
 
-
+var currentLyrics = '';
 function play(e) {
     let list = e.target, item = undefined;
     while (list && !list.classList.contains('select')) {
@@ -40,6 +40,8 @@ function play(e) {
 function addLyrics(lyricsList) {
     let item = document.createElement('div');
     item.className = 'option';
+    if (currentLyrics == JSON.stringify(lyricsList))
+        item.classList.add('selected');
     item.setAttribute('value', JSON.stringify(lyricsList));
     item.innerHTML = lyricsList.join('<br>');
     live.appendChild(item);
@@ -75,12 +77,14 @@ function selected(e) {
                 for (let o of live.childNodes)
                     o.classList.remove('selected');
                 item.classList.add('selected');
-                let lyricsList = JSON.parse(item.getAttribute('value'));
+                currentLyrics = item.getAttribute('value');
+                let lyricsList = JSON.parse(currentLyrics);
                 update(lyricsList);
             } else {
                 for (let o of live.childNodes)
                     o.classList.remove('selected');
                 if (item) item.classList.remove('selected');
+                currentLyrics = '';
                 update([]);
             }
             break;

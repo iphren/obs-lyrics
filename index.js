@@ -1,8 +1,6 @@
-const { app, BrowserWindow } = require('electron')
-const { ipcMain } = require('electron')
+const { app, BrowserWindow, dialog } = require('electron')
 const path = require('path')
 const fs = require('fs')
-const { v4: uuidv4 } = require('uuid')
 
 const appData = path.join(app.getPath('appData'), 'obs-lyrics')
 app.settings = path.join(appData, 'settings.json')
@@ -83,26 +81,39 @@ function save(data, file)  {
   return true
 }
 
-const http = require('http');
+const http = require('http')
 const port = 56733;
-var line = JSON.stringify({line:[]});
+var line = JSON.stringify({line:[]})
 const requestListener = function (req, res) {
-  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Origin','*')
   if (req.method == 'POST') {
-    var body = '';
+    var body = ''
     req.on('data', function(data) {
-      body += data;
-    });
+      body += data
+    })
     req.on('end', function() {
-      line = body;
-      res.end();
+      line = body
+      res.end()
     });
   } else if (req.method == 'GET') {
-    res.setHeader("Content-Type", "application/json;charset=UTF-8");
-    res.end(line);
+    res.setHeader("Content-Type", "application/json;charset=UTF-8")
+    res.end(line)
   } else {
-    res.end();
-  };
-};
-const server = http.createServer(requestListener);
-server.listen(port,'localhost');
+    res.end()
+  }
+}
+const server = http.createServer(requestListener)
+server.on('error', error => {
+  if (error.syscall !== 'listen') {
+    throw error
+  }
+  switch (error.code) {
+    case 'EADDRINUSE':
+      dialog.showErrorBox('Error','OBS Lyrics Manager is already running.')
+      process.exit(1)
+      break
+    default:
+      throw error
+  }
+})
+server.listen(port,'localhost')
