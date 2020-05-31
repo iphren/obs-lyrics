@@ -95,7 +95,7 @@ async function reload() {
         let item = addSong(song, songlist);
         for (let i of playlist.childNodes) {
             if (i.getAttribute('songId') == song.id)
-                playlist.replaceChild(item, i);
+                playlist.replaceChild(item.cloneNode(true), i);
         }
     }
     pTitle.innerHTML = '';
@@ -125,7 +125,7 @@ function addSong(song, list) {
     item.appendChild(title);
     item.appendChild(lyrics);
     list.appendChild(item);
-    return item.cloneNode(true);
+    return item;
 }
 
 function getLyrics() {
