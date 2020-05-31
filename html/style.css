@@ -16,28 +16,27 @@ body {
     align-items: stretch;
 }
 
-body {padding: 0.5rem 0;}
-#reload {width: 1rem; margin: 0 0.5rem;}
-#search {width: 17.8rem;}
-#main > * {padding: 0.5rem;}
-#control {width: 20rem; padding-right: 0;}
-.container:first-child {margin-bottom: 0.5rem;}
+body {padding: 8px 0;}
+#reload {width: 16px; margin: 0 8px;}
+#search {width: 285px;}
+input.control {padding: 5px;}
+#main > * {padding: 8px;}
+#control {width: 320px; padding-right: 0;}
+.container:first-child {margin-bottom: 8px;}
 #view {flex-grow: 1;}
-#path {margin: 0 0.5rem;}
+#path {margin: 0 8px;}
 
 .control {
     border: none;
-    outline: 0.1rem solid #999;
+    outline: 1px solid #999;
     box-sizing: border-box;
     background-color: white;
 }
 
-input.control {
-    padding: 0.3rem;
-}
 
 input.control {
     outline-offset: 0;
+    height: 32px;
 }
 
 .container {
@@ -62,7 +61,7 @@ input.control {
 .option {
     user-select: none;
     width: 100%;
-    padding: 0.3rem 0.6rem;
+    padding: 5px 10px;
     box-sizing: border-box;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -127,10 +126,10 @@ input.control {
 
 #delete {
     top: unset;
-    left: 8.5rem;
-    width: 3rem;
-    height: 3rem;
-    bottom: 0.5rem;
+    left: 135px;
+    width: 50px;
+    height: 50px;
+    bottom: 8px;
     opacity: 0;
     z-index: -100;
     background-image: url('delete.svg');
@@ -138,7 +137,7 @@ input.control {
     background-repeat: no-repeat;
     transition: all 0.5s ease-in-out;
     background-color: rgba(0,0,0,0.1);
-    border-radius: 0.5rem;
+    border-radius: 8px;
 }
 
 #bin {
@@ -149,10 +148,10 @@ input.control {
 }
 
 #pTitle {
-    height: 3rem;
+    height: 32px;
     font-weight: 700;
     font-size: 120%;
-    padding: 0 1rem;
+    padding: 0 16px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -160,14 +159,14 @@ input.control {
 
 #pLyrics {
     position: absolute;
-    top: 2rem;
+    top: 32px;
     left: 0;
     width: 100%;
     overflow: auto;
     white-space: nowrap;
-    height: calc(100% - 2rem);
+    height: calc(100% - 32px);
     box-sizing: border-box;
-    padding: 0 1rem;
+    padding: 0 16px;
 }
 
 #live {
@@ -178,8 +177,8 @@ input.control {
 #live:hover {
     cursor: alias;
     outline-color: #4CAF50;
-    outline-offset: -0.15rem;
-    outline-width: 0.2rem;
+    outline-offset: -1px;
+    outline-width: 2px;
 }
 
 #live .selected {
@@ -203,6 +202,6 @@ input.control {
     outline: none;
     text-align: center;
     font-size: 200%;
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
+    padding: 8px 16px;
+    border-radius: 32px;
 }
