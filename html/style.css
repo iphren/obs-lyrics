@@ -27,7 +27,7 @@ body {padding: 0.5rem 0;}
 
 .control {
     border: none;
-    outline: 0.05rem solid #999;
+    outline: 0.1rem solid #999;
     box-sizing: border-box;
     background-color: white;
 }
@@ -173,7 +173,13 @@ input.control {
 #live {
     text-align: center;
     font-weight: 700;
+}
+
+#live:hover {
     cursor: alias;
+    outline-color: #4CAF50;
+    outline-offset: -0.15rem;
+    outline-width: 0.2rem;
 }
 
 #live .selected {
