@@ -173,6 +173,7 @@ input.control {
 #live {
     text-align: center;
     font-weight: 700;
+    cursor: alias;
 }
 
 #live .selected {
