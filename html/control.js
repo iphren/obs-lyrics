@@ -101,6 +101,7 @@ async function reload() {
     pTitle.innerHTML = '';
     pLyrics.innerHTML = '';
     live.innerHTML = '';
+    search.value = '';
 }
 
 function addSong(song, list) {
