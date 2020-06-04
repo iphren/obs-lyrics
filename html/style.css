@@ -96,6 +96,19 @@ input.control {
     color: white;
 }
 
+.cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+
+#menu {
+    position: relative;
+}
+
 #reload {
     display: inline-block;
     font-size: 150%;
@@ -112,6 +125,13 @@ input.control {
 #search:focus {
     box-shadow: 0 0 8px 2px rgba(120,120,120,0.5);
     outline: none;
+}
+
+#clock {
+    user-select: none;
+    position: absolute;
+    right: 8px;
+    font-size: xx-large;
 }
 
 #main {
@@ -184,10 +204,10 @@ input.control {
 }
 
 #pTitle {
-    height: 32px;
+    height: 40px;
     font-weight: 700;
     font-size: 120%;
-    padding: 0 16px;
+    padding: 5px 16px 10px 16px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -200,7 +220,7 @@ input.control {
     width: 100%;
     overflow: auto;
     white-space: nowrap;
-    height: calc(100% - 32px);
+    height: calc(100% - 40px);
     box-sizing: border-box;
     padding: 0 16px;
 }
@@ -208,13 +228,6 @@ input.control {
 #live {
     text-align: center;
     font-weight: 700;
-}
-
-#live:hover {
-    cursor: alias;
-    outline-color: #4CAF50;
-    outline-offset: -1px;
-    outline-width: 2px;
 }
 
 #live .selected {
@@ -234,12 +247,26 @@ input.control {
     z-index: 100;
     padding: .1em .5em .2em .5em;
     border-radius: .5em;
-    background-color: lightgray;
+    background-color: black;
     color: white;
+    opacity: .3;
 }
 
 #liveLyrics {
     height: 16vw;
+    position: relative;
+    user-select: none;
+}
+
+#liveLyrics iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    border: none;
+    outline: none;
 }
 
 #hide {
@@ -259,20 +286,38 @@ input.control {
     width: 100vw;
     height: 100vh;
     background-color: rgba(200,200,200,0.8);
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     display: none;
     flex-direction: column;
+    box-sizing: border-box;
+    padding: 0 20%;
 }
 
-#address {
-    margin-bottom: 16px;
-}
-
-#address, #password {
+#login > * {
     border: none;
     outline: none;
     text-align: center;
     padding: 8px 16px;
-    border-radius: 16px;
+    border-radius: 20px;
+    margin: 8px;
+    font-size: 16px;
+    background-color: #eee;
+    color: #999;
+    height: 40px;
+    box-sizing: border-box;
+    font-weight: 400;
+    font-family: SourceHanSans;
+}
+
+#login > input {
+    color: #333;
+    background-color: white;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#login > input:read-only {
+    background-color: #eee;
+    color: #999;
 }

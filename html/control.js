@@ -1,5 +1,5 @@
 document.getElementById('reload').onclick = reload;
-document.getElementById('liveLyrics').src = app.html;
+document.getElementById('liveFrame').src = app.html;
 
 search.oninput = function(e) {
     let term = '';
@@ -137,6 +137,7 @@ function addSong(song, list) {
 }
 
 function getLyrics() {
+    status.value = 'Loading...';
     let xhr = new XMLHttpRequest();
     let method = 'POST';
     let u = `https://${url}/lyrics`;
@@ -147,8 +148,10 @@ function getLyrics() {
         xhr.onreadystatechange = function () {
             if(xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
+                    status.value = `Server Connected`;
                     resolve(xhr.response);
                 } else {
+                    status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
                     reject();
                 }
             }

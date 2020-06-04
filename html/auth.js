@@ -5,17 +5,26 @@ fs.readFile(app.token, {encoding: 'utf-8'}, (err, data) => {
         let json = JSON.parse(data);
         url = json.url;
         token = json.token;
+        address.value = url;
+        password.value = token;
         reload();
     } else {
         login.style.display = 'flex';
     }
 });
 
-address.oninput = function(e) {
-    url = e.target.value;
+address.onkeydown = function(e) {
+    e.stopPropagation();
+    if (e.key === 'Enter')
+        password.focus();
 }
 
-password.oninput = function(e) {
-    token = e.target.value;
-    reload();
+password.onkeydown = function(e) {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+        url = address.value;
+        token = password.value;
+        reload();
+        password.focus();
+    }
 }

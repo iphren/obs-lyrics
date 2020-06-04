@@ -144,6 +144,12 @@ function changeLyrics(item = null) {
 
 search.addEventListener('keydown', function(e) {
     e.stopPropagation();
+    switch (e.key) {
+        case 'Enter':
+        case 'Escape':
+            search.blur();
+            break;
+    }
 });
 
 window.addEventListener('keydown', keyControl);
@@ -151,6 +157,10 @@ window.addEventListener('keydown', keyControl);
 function keyControl(e) {
     hide.focus();
     switch (e.key) {
+        case '/':
+            e.preventDefault();
+            search.focus();
+            break;
         case 'Delete':
             for (let o of playlist.childNodes) {
                 if (o.classList.contains('selected')) {
@@ -198,6 +208,7 @@ function keyControl(e) {
                     changeLyrics(currentPlayingLyrics);
             }
             break;
+        case 'ArrowRight':
         case 'PageDown':
             if (currentPlaying) {
                 if (currentPlaying.nextSibling && !(currentPlaying.nextSibling.classList.contains('filter')))
@@ -213,6 +224,7 @@ function keyControl(e) {
                     showLyrics(playlist.firstChild.nextSibling)
             }
             break;
+        case 'ArrowLeft':
         case 'PageUp':
             if (currentPlaying) {
                 if (currentPlaying.previousSibling && !(currentPlaying.previousSibling.classList.contains('filter')))

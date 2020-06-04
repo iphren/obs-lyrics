@@ -11,6 +11,7 @@
     <div id="menu">
       <span id="reload">&#x27F2;</span>
       <input type="text" id="search" class="control" placeholder="Search">
+      <span id="clock"></span>
     </div>
     <div id="main">
       <div id="control">
@@ -26,7 +27,7 @@
       </div>
       <div id="view">
         <div class="container hide">
-          <div id="preview">
+          <div id="preview" class="control">
             <div id="pTitle"></div>
             <div id="pLyrics"></div>
           </div>
@@ -37,16 +38,21 @@
       </div>
     </div>
     <input type="text" id="path" class="control" readonly>
-    <iframe id="liveLyrics" class="control"></iframe>
+    <div id="liveLyrics" class="control">
+      <iframe id="liveFrame"></iframe>
+      <div class="cover"></div>
+    </div>
     <input type="text" id="hide" readonly>
     <div id="login">
       <input type="url" id="address" placeholder="server">
-      <input type="password" id="password" placeholder="token">
+      <input type="text" id="password" placeholder="token">
+      <input type="text" id="status" readonly>
     </div>
     <script src="modules.js"></script>
     <script src="nodes.js"></script>
     <script src="auth.js"></script>
     <script src="select.js"></script>
     <script src="control.js"></script>
+    <script src="clock.js"></script>
   </body>
 </html>
