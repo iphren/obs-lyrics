@@ -5,7 +5,7 @@ const fs = require('fs')
 const appData = path.join(app.getPath('appData'), 'obs-lyrics')
 app.settings = path.join(appData, 'settings.json')
 app.playlist = path.join(appData, 'playlist.json')
-app.token = path.join(appData, 'token.txt')
+app.token = path.join(appData, 'token.json')
 fs.mkdirSync(appData, { recursive: true })
 
 app.html = path.join(app.getAppPath(), 'html', 'line.html')
@@ -37,6 +37,7 @@ function createWindow () {
   win.loadFile('html/index.html')
   win.setMenu(null)
   //win.webContents.openDevTools()
+  win.webContents.focus()
 
   win.on('resize', () => {
     app.set.rec = win.getBounds()
@@ -82,7 +83,7 @@ function save(data, file)  {
 }
 
 const http = require('http')
-const port = 56733;
+const port = 56733
 var line = JSON.stringify({line:[]})
 const requestListener = function (req, res) {
   res.setHeader('Access-Control-Allow-Origin','*')
@@ -94,7 +95,7 @@ const requestListener = function (req, res) {
     req.on('end', function() {
       line = body
       res.end()
-    });
+    })
   } else if (req.method == 'GET') {
     res.setHeader("Content-Type", "application/json;charset=UTF-8")
     res.end(line)

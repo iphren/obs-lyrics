@@ -10,4 +10,7 @@ const live = document.getElementById('live');
 
 const path = document.getElementById('path');
 const login = document.getElementById('login');
+const address = document.getElementById('address');
 const password = document.getElementById('password');
+
+const hide = document.getElementById('hide');

@@ -18,13 +18,13 @@ body {
 
 body {padding: 8px 0;}
 #reload {width: 16px; margin: 0 8px;}
-#search {width: 285px;}
+#search {width: 284px;}
 input.control {padding: 5px;}
 #main > * {padding: 8px;}
 #control {width: 320px; padding-right: 0;}
 .container:first-child {margin-bottom: 8px;}
 #view {flex-grow: 1;}
-#path {margin: 0 8px;}
+#liveLyrics, #path {margin: 0 8px;}
 
 .control {
     border: none;
@@ -43,6 +43,14 @@ input.control {
     height: 49.999%;
     width: 100%;
     position: relative;
+}
+
+.container.hide {
+    display: none;
+}
+
+.container.hide + .container {
+    height: 100%;
 }
 
 .container > * {
@@ -101,6 +109,11 @@ input.control {
     opacity: 1;
 }
 
+#search:focus {
+    box-shadow: 0 0 8px 2px rgba(120,120,120,0.5);
+    outline: none;
+}
+
 #main {
     flex-grow: 1;
     display: flex;
@@ -138,6 +151,29 @@ input.control {
     transition: all 0.5s ease-in-out;
     background-color: rgba(0,0,0,0.1);
     border-radius: 8px;
+}
+
+#playlist .playing {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#playlist .playing.selected {
+    background-color: #56966E;
+}
+
+#playlist .playing .lyrics {
+    color: white;
+}
+
+#playlist .showing .title::after {
+    padding-left: .3rem;
+    content: '\25B6';
+    color: #4CAF50;
+}
+
+#playlist .showing.playing .title::after {
+    color: white;
 }
 
 #bin {
@@ -185,6 +221,37 @@ input.control {
     background-color: #4CAF50;
 }
 
+#live .option {
+    position: relative;
+}
+
+#live .key {
+    font-size: small;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    padding: .1em .5em .2em .5em;
+    border-radius: .5em;
+    background-color: lightgray;
+    color: white;
+}
+
+#liveLyrics {
+    height: 16vw;
+}
+
+#hide {
+    position: fixed;
+    z-index: -999;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    height: 0;
+    width: 0;
+}
+
 #login {
     position: fixed;
     top: 0;
@@ -195,13 +262,17 @@ input.control {
     align-items: center;
     justify-content: center;
     display: none;
+    flex-direction: column;
 }
 
-#password {
+#address {
+    margin-bottom: 16px;
+}
+
+#address, #password {
     border: none;
     outline: none;
     text-align: center;
-    font-size: 200%;
     padding: 8px 16px;
-    border-radius: 32px;
+    border-radius: 16px;
 }

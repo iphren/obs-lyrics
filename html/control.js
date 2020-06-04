@@ -1,4 +1,5 @@
 document.getElementById('reload').onclick = reload;
+document.getElementById('liveLyrics').src = app.html;
 
 search.oninput = function(e) {
     let term = '';
@@ -27,7 +28,6 @@ fs.readFile(app.playlist, function(err, data) {
                 addSong(JSON.parse(i), playlist);
         }
     }
-    reload();
 });
 
 new Sortable(songlist, {
@@ -58,7 +58,7 @@ new Sortable(bin, {
     group: 'shared',
     draggable: '.option',
     onChange: e => bin.parentNode.style.opacity = 1,
-    onAdd: e => e.item.remove()
+    onAdd: e => {if (e.item.classList.contains('playing')) currentPlaying = null;e.item.remove()}
 });
 
 function showBin(e) {
@@ -82,25 +82,33 @@ async function reload() {
     let songs = await getLyrics()
     .then(x => {
         login.style.display = 'none';
-        fs.writeFile(app.token, token, ()=>{});
+        fs.writeFile(app.token, JSON.stringify({url: url, token: token}), ()=>{});
         return x;
     })
     .catch(() => {
         login.style.display = 'flex';
-        password.focus();
         return [];
     });
     songlist.innerHTML = '';
     for (let song of songs) {
         let item = addSong(song, songlist);
         for (let i of playlist.childNodes) {
-            if (i.getAttribute('songId') == song.id)
-                playlist.replaceChild(item.cloneNode(true), i);
+            if (i.getAttribute('songId') == song.id) {
+                let node = item.cloneNode(true);
+                node.className = i.className;
+                playlist.replaceChild(node, i);
+            }
         }
     }
-    pTitle.innerHTML = '';
-    pLyrics.innerHTML = '';
-    live.innerHTML = '';
+    let selected = null, playing = null;
+    for (let i of playlist.childNodes) {
+        if (i.classList.contains('selected'))
+            selected = i;
+        if (i.classList.contains('playing'))
+            playing = i;
+    }
+    selectSong(selected)
+    showLyrics(playing);
     search.value = '';
 }
 
@@ -130,11 +138,11 @@ function addSong(song, list) {
 
 function getLyrics() {
     let xhr = new XMLHttpRequest();
-    let url = 'https://elimfgcc.org/lyrics/';
-    let method = 'GET';
-    xhr.open(method, url, true);
-    xhr.setRequestHeader('Auth', token);
+    let method = 'POST';
+    let u = `https://${url}/lyrics`;
+    xhr.open(method, u, true);
     xhr.responseType = 'json';
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     return new Promise((resolve, reject) => {
         xhr.onreadystatechange = function () {
             if(xhr.readyState === XMLHttpRequest.DONE) {
@@ -145,7 +153,7 @@ function getLyrics() {
                 }
             }
         }
-        xhr.send();
+        xhr.send(JSON.stringify({token: token}));
     });
 }
 
