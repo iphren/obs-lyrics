@@ -3,7 +3,7 @@ document.getElementById('liveFrame').src = app.html;
 
 search.oninput = function(e) {
     let term = '';
-    let py = pinyin(e.target.value, {style: pinyin.STYLE_NORMAL});
+    let py = pinyin(e.target.value.replace(/行/g,'形'), {style: pinyin.STYLE_NORMAL});
     for (let p of py) {
         term += p[0].toLowerCase().replace(/[^a-z0-9]/g, '');
     }
