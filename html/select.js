@@ -162,7 +162,7 @@ search.addEventListener('keydown', function(e) {
 window.addEventListener('keydown', keyControl);
 
 function keyControl(e) {
-    if (e.ctrlKey) return;
+    if (e.ctrlKey || e.key === 'Meta') return;
     hide.focus();
     switch (e.key) {
         case '/':
