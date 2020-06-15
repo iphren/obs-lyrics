@@ -1,7 +1,54 @@
 document.getElementById('reload').onclick = reload;
 document.getElementById('liveFrame').src = app.html;
+//var plURL = '';
+
+plURL.value = app.set.plURL;
+plURL.oninput = function() {
+    app.save('plURL',plURL.value);
+}
+
+document.body.onmousedown = function () {
+    plURL.style.display = 'none';
+}
+if (app.set.send) send.style.display = 'block';
+send.onmousedown = function(e) {
+    e.stopPropagation();
+}
+sendBtn.onclick = function() {
+    if (!app.set.plURL) {
+        plURL.style.display = 'block';
+        return;
+    }
+    let pl = [];
+    for (let o of playlist.childNodes) {
+        let v = o.getAttribute('value');
+        if (v) {
+            v = JSON.parse(v);
+            if (v.title && !(pl.includes(v.title))) pl.push(v.title);
+        }
+    }
+    let xhr = new XMLHttpRequest();
+    let method = 'POST';
+    xhr.open(method, app.set.plURL, true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                plURL.style.display = 'none';
+            } else {
+                plURL.style.display = 'block';
+            }
+        }
+    }
+    xhr.send(JSON.stringify({playlist: pl, token: token}));
+}
 
 search.oninput = function(e) {
+    if (e.target.value === 'whosyourdaddy') app.thisWin.webContents.openDevTools();
+    else if (e.target.value === 'thereisnospoon') {
+        send.style.display = 'block';
+        app.save('send',true);
+    }
     let term = '';
     let py = pinyin(e.target.value.replace(/行/g,'形'), {style: pinyin.STYLE_NORMAL});
     for (let p of py) {
@@ -15,7 +62,7 @@ search.oninput = function(e) {
     }
 }
 
-path.value = 'file:///' + app.html.replace(/\\/g,'/');
+path.value = app.html.replace(/\\/g,'/');
 path.onfocus = () => path.setSelectionRange(0, path.value.length);
 
 addSong({id: '_filter',title: '',lyrics: ''}, playlist);

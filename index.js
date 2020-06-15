@@ -8,7 +8,7 @@ app.playlist = path.join(appData, 'playlist.json')
 app.token = path.join(appData, 'token.json')
 fs.mkdirSync(appData, { recursive: true })
 
-app.html = path.join(app.getAppPath(), 'html', 'line.html')
+app.html = 'http://127.0.0.1:56733'
 
 try {
   app.set = JSON.parse(fs.readFileSync(app.settings))
@@ -34,26 +34,23 @@ function createWindow () {
   })
   try {win.setBounds(app.set.rec)} catch (e) {}
   app.set.rec = win.getBounds()
+  app.thisWin = win;
   win.loadFile('html/index.html')
   win.setMenu(null)
   //win.webContents.openDevTools()
   win.webContents.focus()
 
   win.on('resize', () => {
-    app.set.rec = win.getBounds()
-    save(app.set, app.settings)
+    save('rec', win.getBounds())
   })
   win.on('move', () => {
-    app.set.rec = win.getBounds()
-    save(app.set, app.settings)
+    save('rec', win.getBounds())
   })
   win.on('maximize', () => {
-    app.set.maximize = true
-    save(app.set, app.settings)
+    save('maximize', true)
   })
   win.on('unmaximize', () => {
-    app.set.maximize = false
-    save(app.set, app.settings)
+    save('maximize', false)
   })
 }
 
@@ -71,40 +68,37 @@ app.on('activate', () => {
   }
 })
 
-function save(data, file)  {
+function save(key, value)  {
+  app.set[key] = value
   try {
-    var content = JSON.stringify(data)
+    var content = JSON.stringify(app.set)
   } catch (e) {
     return false
   }
-  var stream = fs.createWriteStream(file)
+  var stream = fs.createWriteStream(app.settings)
   stream.end(content)
   return true
 }
+app.save = save;
 
-const http = require('http')
-const port = 56733
-var line = JSON.stringify({line:[]})
-const requestListener = function (req, res) {
-  res.setHeader('Access-Control-Allow-Origin','*')
-  if (req.method == 'POST') {
-    var body = ''
-    req.on('data', function(data) {
-      body += data
-    })
-    req.on('end', function() {
-      line = body
-      res.end()
-    })
-  } else if (req.method == 'GET') {
-    res.setHeader("Content-Type", "application/json;charset=UTF-8")
-    res.end(line)
-  } else {
-    res.end()
-  }
-}
-const server = http.createServer(requestListener)
-server.on('error', error => {
+const express = require('express')
+const exp = express()
+const http = require('http').createServer(exp)
+const io = require('socket.io')(http)
+
+app.io = io;
+
+exp.use(express.static(path.join(app.getAppPath(), 'node_modules/jquery/dist')))
+
+exp.get('/',(req, res) => {
+  res.sendFile(path.join(app.getAppPath(), 'html', 'line.html'))
+})
+
+exp.get('/font.ttc',(req, res) => {
+  res.sendFile(path.join(app.getAppPath(), 'html', 'SourceHanSans-Regular.ttc'))
+})
+
+http.on('error', error => {
   if (error.syscall !== 'listen') {
     throw error
   }
@@ -117,4 +111,4 @@ server.on('error', error => {
       throw error
   }
 })
-server.listen(port,'localhost')
+http.listen(56733,'localhost')

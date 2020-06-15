@@ -142,6 +142,13 @@ function changeLyrics(item = null) {
     }
 }
 
+plURL.addEventListener('keydown', function(e) {
+    e.stopPropagation();
+    switch (e.key) {
+        case 'Enter':
+            sendBtn.click();
+    }
+});
 search.addEventListener('keydown', function(e) {
     e.stopPropagation();
     switch (e.key) {
@@ -155,6 +162,7 @@ search.addEventListener('keydown', function(e) {
 window.addEventListener('keydown', keyControl);
 
 function keyControl(e) {
+    if (e.ctrlKey) return;
     hide.focus();
     switch (e.key) {
         case '/':
@@ -249,10 +257,5 @@ function keyControl(e) {
 }
 
 function update(lyricsList) {
-    let xhr = new XMLHttpRequest();
-    let u = 'http://localhost:56733/';
-    let method = 'POST';
-    xhr.open(method, u, true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify({line: lyricsList}));
+    app.io.emit('lyrics',lyricsList.join('<br>'))
 };

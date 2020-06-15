@@ -1,4 +1,6 @@
 const search = document.getElementById('search');
+const sendBtn = document.getElementById('sendBtn');
+const plURL = document.getElementById('plURL');
 const clock = document.getElementById('clock');
 const songlist = document.getElementById('songlist');
 const playlist = document.getElementById('playlist');
