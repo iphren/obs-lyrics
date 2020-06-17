@@ -14,39 +14,45 @@ body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    padding: 8px 0;
+    background-color: #eee;
 }
 
-body {padding: 8px 0;}
-#reload {width: 16px; margin: 0 8px;}
-#search {width: 284px;}
-input.control {padding: 5px;}
-#main > * {padding: 8px;}
-#control {width: 320px; padding-right: 0;}
-.container:first-child {margin-bottom: 8px;}
-#view {flex-grow: 1;}
-#liveLyrics, #path {margin: 0 8px;}
+::-webkit-scrollbar {
+    display: none;
+}
 
 .control {
     border: none;
     outline: 1px solid #999;
+    outline-color: rgba(0,0,0,0);
     box-sizing: border-box;
     background-color: white;
+    border-radius: 10px;
 }
-
 
 input.control {
     outline-offset: 0;
     height: 32px;
+    padding: 5px 10px;
 }
 
 .container {
-    height: 49.999%;
+    height: calc(49.999% - 4px);
     width: 100%;
     position: relative;
+    transition: height ease-in-out 0.3s, margin-bottom ease-in-out 0.3s;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.container:first-child {
+    margin-bottom: 8px;
 }
 
 .container.hide {
-    display: none;
+    height: 0;
+    margin-bottom: 0;
 }
 
 .container.hide + .container {
@@ -62,8 +68,17 @@ input.control {
 }
 
 .selected {
-    background-color: #607d8b;
+    background-color: #bbb;
     color: white;
+}
+
+.focused .selected {
+    background-color: #607d8b;
+}
+
+.focused {
+    box-shadow: 0 0 8px 2px rgba(120,120,120,0.5);
+    outline: none;
 }
 
 .option {
@@ -74,6 +89,12 @@ input.control {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-weight: 300;
+    display: none;
+}
+
+.option.result {
+    display: block;
 }
 
 .song .title {
@@ -105,65 +126,68 @@ input.control {
     z-index: 2;
 }
 
-#menu {
-    position: relative;
-}
-
-#reload {
-    position: absolute;
-    bottom: 2px;
-    left: 0;
-    display: inline-block;
-    font-size: 150%;
+.button {
     user-select: none;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    opacity: 0.5;
-}
-
-#reload:hover {
-    opacity: 1;
-}
-
-#search {
-    position: relative;
-    left: 36px;
-}
-
-#search:focus {
-    box-shadow: 0 0 8px 2px rgba(120,120,120,0.5);
-    outline: none;
-}
-
-#send {
-    position: absolute;
-    bottom: 0;
-    left: 328px;
-    height: 32px;
-    display: none;
-}
-
-#sendBtn {
-    user-select: none;
-    border-radius: 12px;
+    transition: opacity 0.3s ease-in-out, background-color 0.1s ease-in-out;
+    border-radius: 16.5px;
     padding: 5px 15px;
-    cursor: pointer;
-    height: 100%;
-    background-color: #5d717a;
+    height: 33px;
+    background-color: #999;
     color: white;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     text-align: center;
+    opacity: 0.5;
 }
 
-#sendBtn:hover {
-    background-color: #607d8b;
+.button:hover {
+    opacity: 1;
 }
 
-#sendBtn:active {
-    background-color: #8ca7b4;
+.button:active {
+    background-color: #777;
+}
+
+#menu {
+    position: relative;
+    padding: 0 8px;
+    white-space: nowrap;
+}
+
+#menu > * {
+    position: relative;
+    top: 2px;
+}
+
+#search {
+    top: 0;
+    width: 312px;
+}
+
+#clear {
+    position: absolute;
+    left: 286px;
+    width: 33px;
+    transform: scale(.5);
+}
+
+#search:placeholder-shown + #clear {
+    visibility: hidden;
+}
+
+#reload {
+    margin-left: 2px;
+}
+
+#hideUp.active {
+    background-color: tomato;
+}
+
+#send {
+    display: none;
 }
 
 #plURL {
@@ -176,11 +200,13 @@ input.control {
 }
 
 #clock {
+    top: unset;
     user-select: none;
     position: absolute;
-    right: 8px;
+    right: 18px;
     font-size: xx-large;
-    bottom: -.25em;
+    top: -7px;
+    color: #777;
 }
 
 #main {
@@ -190,12 +216,41 @@ input.control {
     align-items: stretch;
 }
 
+#main > * {
+    padding: 8px;
+}
+
+#control {
+    width: 320px;
+    padding-right: 0;
+}
+
 #control, #view {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     box-sizing: border-box;
 } 
+
+#loading, #notFound {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #eee;
+    font-size: xx-large;
+    font-weight: 700;
+    user-select: none;
+    text-align: center;
+}
+
+#notFound {
+    visibility: hidden;
+}
+
+#songlist {
+    opacity: 0;
+    transition: opacity ease-in-out 0.3s;
+}
 
 #songlist, #playlist, #live {
     overflow-y: auto;
@@ -222,27 +277,18 @@ input.control {
     border-radius: 8px;
 }
 
-#playlist .playing {
-    background-color: #4CAF50;
-    color: white;
+#playlist .option * {
+    opacity: 0.3;
 }
 
-#playlist .playing.selected {
-    background-color: #56966E;
-}
-
-#playlist .playing .lyrics {
-    color: white;
+#playlist .playing * {
+    opacity: 1;
 }
 
 #playlist .showing .title::after {
     padding-left: .3rem;
     content: '\25B6';
     color: #4CAF50;
-}
-
-#playlist .showing.playing .title::after {
-    color: white;
 }
 
 #bin {
@@ -252,39 +298,39 @@ input.control {
     overflow: hidden;
 }
 
-#pTitle {
-    height: 40px;
-    font-weight: 700;
-    font-size: 120%;
-    padding: 5px 16px 10px 16px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+#view {
+    flex-grow: 1;
 }
 
-#pLyrics {
+#view > div:first-child {
+    flex-grow: 1;
+}
+
+#preview {
     position: absolute;
-    top: 32px;
+    top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
     overflow: auto;
-    white-space: nowrap;
-    height: calc(100% - 40px);
     box-sizing: border-box;
-    padding: 0 16px;
+    padding: 2em;
 }
 
-#live {
-    text-align: center;
+#pTitle {
     font-weight: 700;
+    font-size: large;
+    margin-bottom: 1em;
 }
 
-#live .selected {
+.focused #live .selected {
     background-color: #4CAF50;
 }
 
 #live .option {
     position: relative;
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 #live .key {
@@ -299,11 +345,47 @@ input.control {
     background-color: black;
     color: white;
     opacity: .3;
+    -webkit-text-stroke: 1px white;
+}
+
+#live .alt .key {
+    background-color: #ddd;
+    color: black;
+    -webkit-text-stroke-color: black;
+}
+
+#path {
+    border-radius: 10px 10px 0 0;
+    background-color: #999;
+    color: white;
+    margin-top: 8px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#path:hover, #path:focus {
+    opacity: 1;
+}
+
+#path:active {
+    background-color: #777;
 }
 
 #liveLyrics {
-    height: 16vw;
+    padding-top: calc(16% + 1em);
     position: relative;
+    user-select: none;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+}
+
+#liveMark {
+    position: absolute;
+    top: 3.5px;
+    left: 10px;
+    color: #4CAF50;
+    font-weight: 900;
+    z-index: 100;
     user-select: none;
 }
 
@@ -316,6 +398,8 @@ input.control {
     z-index: 1;
     border: none;
     outline: none;
+    background-color: #000;
+    opacity: 0.75;
 }
 
 #hide {

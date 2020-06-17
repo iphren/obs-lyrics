@@ -9,10 +9,12 @@
   </head>
   <body>
     <div id="menu">
-      <span id="reload">&#x27F2;</span>
       <input type="text" id="search" class="control" placeholder="Search">
+      <span id="clear" class="button"><div>&times;</div></span>
+      <span id="reload" class="button"><div>Reload</div></span>
+      <span id="hideUp" class="button"><div>Hide</div></span>
       <span id='send'>
-        <div id='sendBtn'>
+        <div id='sendBtn' class="button">
           <div>Send</div>
         </div>
         <input id="plURL" class="control" type="text">
@@ -21,10 +23,12 @@
     </div>
     <div id="main">
       <div id="control">
-        <div class="container">
+        <div id="forSonglist" class="container">
+          <div id="loading" class="control"><div>Loading songs......</div></div>
           <div id="songlist" class="control select"></div>
+          <div id="notFound" class="control"><div>No results found</div></div>
         </div>
-        <div class="container">
+        <div id="forPlaylist" class="container">
           <div id="playlist" class="control select"></div>
           <div id="delete">
             <div id="bin"></div>
@@ -32,22 +36,26 @@
         </div>
       </div>
       <div id="view">
-        <div class="container hide">
-          <div id="preview" class="control">
-            <div id="pTitle"></div>
-            <div id="pLyrics"></div>
+        <div>
+          <div class="container">
+            <div id="preview" class="control">
+              <div id="pTitle"></div>
+              <div id="pLyrics"></div>
+            </div>
+          </div>
+          <div id="forLive" class="container">
+            <div id="live" class="control select"></div>
           </div>
         </div>
-        <div class="container">
-          <div id="live" class="control select"></div>
+        <input type="text" id="path" class="control" readonly>
+        <div id="liveLyrics" class="control">
+          <div id="liveMark">&#8226; Live preview</div>
+          <iframe id="liveFrame"></iframe>
+          <div class="cover"></div>
         </div>
       </div>
     </div>
-    <input type="text" id="path" class="control" readonly>
-    <div id="liveLyrics" class="control">
-      <iframe id="liveFrame"></iframe>
-      <div class="cover"></div>
-    </div>
+
     <input type="text" id="hide" readonly>
     <div id="login">
       <input type="url" id="address" placeholder="server">

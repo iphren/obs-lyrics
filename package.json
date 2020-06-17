@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "pack": "node node_modules/electron-packager/bin/electron-packager.js . --overwrite"
+    "pack": ""
   },
   "author": "Renjie Yun",
   "license": "MIT",
@@ -17,11 +17,13 @@
   },
   "dependencies": {
     "electron": "^8.1.1",
-    "electron-packager": "^14.2.1",
     "express": "^4.17.1",
     "jquery": "^3.5.1",
     "pinyin": "^2.9.1",
     "socket.io": "^2.3.0",
     "sortablejs": "^1.10.2"
+  },
+  "devDependencies": {
+    "electron-builder": "^22.7.0"
   }
 }

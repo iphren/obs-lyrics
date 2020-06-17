@@ -1,8 +1,32 @@
 document.getElementById('reload').onclick = reload;
-document.getElementById('liveFrame').src = app.html;
-//var plURL = '';
+liveFrame.src = app.html;
+clear.onclick = function() {
+    search.value = '';
+    for (let song of songlist.childNodes) {
+        song.classList.add('result');
+    }
+    notFound.style.visibility = 'hidden';
+    search.focus();
+}
+hideUp.onclick = function() {
+    let act = hideUp.classList.contains('active');
+    if (act)
+        hideUp.classList.remove('active');
+    else
+        hideUp.classList.add('active');
+    for (let c of document.getElementsByClassName('container')) {
+        if (c.nextElementSibling) {
+            if (act)
+                c.classList.remove('hide');
+            else {
+                c.classList.add('hide');
+                c.classList.remove('focused');
+            }
+        }
+    }
+}
 
-plURL.value = app.set.plURL;
+plURL.value = app.configs.plURL;
 plURL.oninput = function() {
     app.save('plURL',plURL.value);
 }
@@ -10,12 +34,12 @@ plURL.oninput = function() {
 document.body.onmousedown = function () {
     plURL.style.display = 'none';
 }
-if (app.set.send) send.style.display = 'block';
+if (app.configs.send) send.style.display = 'inline-block';
 send.onmousedown = function(e) {
     e.stopPropagation();
 }
 sendBtn.onclick = function() {
-    if (!app.set.plURL) {
+    if (!app.configs.plURL) {
         plURL.style.display = 'block';
         return;
     }
@@ -29,7 +53,7 @@ sendBtn.onclick = function() {
     }
     let xhr = new XMLHttpRequest();
     let method = 'POST';
-    xhr.open(method, app.set.plURL, true);
+    xhr.open(method, app.configs.plURL, true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.onreadystatechange = function () {
         if(xhr.readyState === XMLHttpRequest.DONE) {
@@ -46,7 +70,7 @@ sendBtn.onclick = function() {
 search.oninput = function(e) {
     if (e.target.value === 'whosyourdaddy') app.thisWin.webContents.openDevTools();
     else if (e.target.value === 'thereisnospoon') {
-        send.style.display = 'block';
+        send.style.display = 'inline-block';
         app.save('send',true);
     }
     let term = '';
@@ -54,12 +78,17 @@ search.oninput = function(e) {
     for (let p of py) {
         term += p[0].toLowerCase().replace(/[^a-z0-9]/g, '');
     }
+    let found = false;
     for (let song of songlist.childNodes) {
-        if (song.getAttribute('keywords').indexOf(term) > -1)
-            song.style.display = 'block';
-        else
-            song.style.display = 'none';
+        if (song.getAttribute('keywords').indexOf(term) > -1) {
+            song.classList.add('result');
+            found = true;
+        } else {
+            song.classList.remove('result');
+        }       
     }
+    notFound.style.visibility = found ? 'hidden' : 'visible';
+    if (hideUp.classList.contains('active')) hideUp.click();
 }
 
 path.value = app.html.replace(/\\/g,'/');
@@ -87,7 +116,9 @@ new Sortable(songlist, {
     draggable: '.option',
     onChoose: showBin,
     onUnchoose: hideBin,
-    onClone: e => e.clone.classList.remove('selected'),
+    onClone: e => {
+        if (e.item.isSameNode(selected)) selectSong(e.clone, songlist);
+    },
     onChange: e => bin.parentNode.style.opacity = 0.5,
     animation: 150
 });
@@ -97,7 +128,10 @@ new Sortable(playlist, {
     filter: '.filter',
     onChoose: showBin,
     onUnchoose: hideBin,
-    onSort: savePlaylist,
+    onSort: e => {
+        savePlaylist();
+        changeFocus(playlist.parentNode);
+    },
     onChange: e => bin.parentNode.style.opacity = 0.5,
     animation: 150
 });
@@ -105,7 +139,11 @@ new Sortable(bin, {
     group: 'shared',
     draggable: '.option',
     onChange: e => bin.parentNode.style.opacity = 1,
-    onAdd: e => {if (e.item.classList.contains('playing')) currentPlaying = null;e.item.remove()}
+    onAdd: e => {
+        if (e.item.isSameNode(currentPlaying)) showLyrics();
+        if (e.item.isSameNode(selected)) selectSong();
+        e.item.remove();
+    }
 });
 
 function showBin(e) {
@@ -125,6 +163,7 @@ function savePlaylist() {
     fs.writeFile(app.playlist,JSON.stringify(list),()=>{});
 }
 
+var showSongs;
 async function reload() {
     let songs = await getLyrics()
     .then(x => {
@@ -136,6 +175,7 @@ async function reload() {
         login.style.display = 'flex';
         return [];
     });
+    songlist.style.opacity = 0;
     songlist.innerHTML = '';
     for (let song of songs) {
         let item = addSong(song, songlist);
@@ -147,15 +187,19 @@ async function reload() {
             }
         }
     }
-    let selected = null, playing = null;
+    clearTimeout(showSongs);
+    showSongs = setTimeout(function(){
+        songlist.style.opacity = 1;
+    },1000);
+    let sel = null, pla = null;
     for (let i of playlist.childNodes) {
         if (i.classList.contains('selected'))
-            selected = i;
+            sel = i;
         if (i.classList.contains('playing'))
-            playing = i;
+            pla = i;
     }
-    selectSong(selected)
-    showLyrics(playing);
+    selectSong(sel, playlist);
+    showLyrics(pla);
     search.value = '';
 }
 
@@ -167,7 +211,7 @@ function addSong(song, list) {
     if (song.id == '_filter')
         item.className = 'filter song preview';
     else
-        item.className = 'song option preview';
+        item.className = 'song option preview result';
     item.setAttribute('keywords', song.keywords);
     item.setAttribute('songId', song.id);
     item.setAttribute('value', JSON.stringify(song));

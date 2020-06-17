@@ -1,8 +1,11 @@
 const search = document.getElementById('search');
+const clear = document.getElementById('clear');
+const hideUp = document.getElementById('hideUp');
 const sendBtn = document.getElementById('sendBtn');
 const plURL = document.getElementById('plURL');
 const clock = document.getElementById('clock');
 const songlist = document.getElementById('songlist');
+const notFound = document.getElementById('notFound');
 const playlist = document.getElementById('playlist');
 const bin = document.getElementById('bin');
 
@@ -10,6 +13,7 @@ const pTitle = document.getElementById('pTitle');
 const pLyrics = document.getElementById('pLyrics');
 
 const live = document.getElementById('live');
+const liveFrame = document.getElementById('liveFrame');
 
 const path = document.getElementById('path');
 const login = document.getElementById('login');

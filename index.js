@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog } = require('electron')
+const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
@@ -11,29 +11,29 @@ fs.mkdirSync(appData, { recursive: true })
 app.html = 'http://127.0.0.1:56733'
 
 try {
-  app.set = JSON.parse(fs.readFileSync(app.settings))
-  if (app.set.maximize) {
-    delete app.set.maximize
-    app.set.rec = {width: 800, height: 600}
+  app.configs = JSON.parse(fs.readFileSync(app.settings))
+  if (app.configs.maximize) {
+    delete app.configs.maximize
+    app.configs.rec = {width: 800, height: 600}
   }
 } catch (e) {
-  app.set = {rec: {width: 800, height: 600}}
+  app.configs = {rec: {width: 800, height: 600}}
 }
 
 
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: app.set.rec.width,
-    height: app.set.rec.height,
+    width: app.configs.rec.width,
+    height: app.configs.rec.height,
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
       nodeIntegration: true
     }
   })
-  try {win.setBounds(app.set.rec)} catch (e) {}
-  app.set.rec = win.getBounds()
+  try {win.setBounds(app.configs.rec)} catch (e) {}
+  app.configs.rec = win.getBounds()
   app.thisWin = win;
   win.loadFile('html/index.html')
   win.setMenu(null)
@@ -69,9 +69,9 @@ app.on('activate', () => {
 })
 
 function save(key, value)  {
-  app.set[key] = value
+  app.configs[key] = value
   try {
-    var content = JSON.stringify(app.set)
+    var content = JSON.stringify(app.configs)
   } catch (e) {
     return false
   }
@@ -87,6 +87,16 @@ const http = require('http').createServer(exp)
 const io = require('socket.io')(http)
 
 app.io = io;
+
+var lyrics = ''
+ipcMain.on('lyrics', (event, arg) => {
+  lyrics = arg
+  io.emit('lyrics', lyrics)
+})
+
+io.on('connection', (socket) => {
+  socket.emit('lyrics', lyrics)
+});
 
 exp.use(express.static(path.join(app.getAppPath(), 'node_modules/jquery/dist')))
 
