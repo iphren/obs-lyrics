@@ -114,7 +114,7 @@ http.on('error', error => {
   }
   switch (error.code) {
     case 'EADDRINUSE':
-      dialog.showErrorBox('Error','OBS Lyrics Manager is already running.')
+      dialog.showErrorBox('Error','Port 56733 in use.')
       process.exit(1)
       break
     default:
