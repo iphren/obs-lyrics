@@ -10,17 +10,18 @@
       "buildResources": "build",
       "output": "dist"
     },
+    "publish": ["github"],
     "win": {
       "target": "nsis",
-      "icon": "build/favicon.ico",
-      "publish": ["github"]
+      "icon": "build/favicon.ico"
     }
   },
   "main": "index.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "release": "electron-builder build"
   },
   "license": "MIT",
   "repository": {
@@ -28,6 +29,7 @@
     "url": "https://github.com/iphren/live-lyrics.git"
   },
   "dependencies": {
+    "electron-updater": "^4.3.1",
     "express": "^4.17.1",
     "jquery": "^3.5.1",
     "pinyin": "^2.9.1",

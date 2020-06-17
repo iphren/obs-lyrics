@@ -1,4 +1,5 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron')
+const { autoUpdater } = require("electron-updater")
 const path = require('path')
 const fs = require('fs')
 
@@ -40,6 +41,9 @@ function createWindow () {
   //win.webContents.openDevTools()
   win.webContents.focus()
 
+  win.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify()
+  })
   win.on('resize', () => {
     save('rec', win.getBounds())
   })
