@@ -24,22 +24,22 @@ try {
 let win;
 
 autoUpdater.on('checking-for-update', () => {
-  win.webContents.send('update', 'Checking for update...')
+  win.webContents.send('update', 'checking for update...')
 })
 autoUpdater.on('update-available', (info) => {
-  win.webContents.send('update', 'Update available')
+  win.webContents.send('update', 'update available')
 })
 autoUpdater.on('update-not-available', (info) => {
-  win.webContents.send('update', `Latest version ${app.getVersion()}`)
+  win.webContents.send('update', 'latest version')
 })
 autoUpdater.on('error', (err) => {
-  win.webContents.send('update', 'Update error')
+  win.webContents.send('update', 'update error')
 })
 autoUpdater.on('download-progress', (progressObj) => {
-  win.webContents.send('update', 'Update downloading ' + progressObj.percent + '%')
+  win.webContents.send('update', `downloading update ${Math.round(progressObj.percent)}%`)
 })
 autoUpdater.on('update-downloaded', (info) => {
-  win.webContents.send('update', 'Restart to update')
+  win.webContents.send('update', 'restart to update')
 })
 
 function createWindow () {
