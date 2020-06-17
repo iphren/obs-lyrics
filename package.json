@@ -2,7 +2,7 @@
   "name": "live-lyrics",
   "productName": "Live Lyrics",
   "appname": "Live Lyrics",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Live Lyrics",
   "build": {
     "appId": "com.electron.live-lyrics",
@@ -21,7 +21,7 @@
       "icon": "build/icon.icns"
     },
     "dmg": {
-      "title": "$productName",
+      "title": "${productName}",
       "icon": "build/icon.icns"
     }
   },
