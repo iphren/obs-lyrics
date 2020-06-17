@@ -1,19 +1,21 @@
 {
-  "name": "obs-lyrics",
-  "productName": "OBS Lyrics Manager",
-  "appname": "OBS Lyrics Manager",
+  "name": "live-lyrics",
+  "productName": "Live Lyrics",
+  "appname": "Live Lyrics",
   "version": "1.0.0",
-  "description": "OBS Lyrics Manager",
+  "description": "Live Lyrics",
+  "build": {
+    "appId": "com.electron.live-lyrics"
+  },
   "main": "index.js",
   "scripts": {
     "start": "electron .",
     "pack": ""
   },
-  "author": "Renjie Yun",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/iphren/obs-lyrics.git"
+    "url": "https://github.com/iphren/live-lyrics.git"
   },
   "dependencies": {
     "electron": "^8.1.1",

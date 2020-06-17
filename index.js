@@ -2,7 +2,7 @@ const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-const appData = path.join(app.getPath('appData'), 'obs-lyrics')
+const appData = path.join(app.getPath('appData'), 'live-lyrics')
 app.settings = path.join(appData, 'settings.json')
 app.playlist = path.join(appData, 'playlist.json')
 app.token = path.join(appData, 'token.json')

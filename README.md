@@ -1,1 +1,1 @@
-# obs-lyrics
+# Live Lyrics

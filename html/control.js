@@ -30,7 +30,7 @@ hideUp.onclick = function() {
     }
 }
 
-plURL.value = app.configs.plURL;
+if (app.configs.plURL) plURL.value = app.configs.plURL;
 plURL.oninput = function() {
     app.save('plURL',plURL.value);
 }
@@ -45,6 +45,7 @@ send.onmousedown = function(e) {
 sendBtn.onclick = function() {
     if (!app.configs.plURL || !plURL.value) {
         plURL.style.display = 'block';
+        plURL.focus();
         return;
     }
     app.save('plURL',plURL.value);
