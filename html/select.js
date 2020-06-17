@@ -289,9 +289,11 @@ function keyControl(e) {
                 }
             }
             break;
+        case 'ArrowRight':
         case 'PageDown':
             showLyrics(getNext(playlist, currentPlaying));
             break;
+        case 'ArrowLeft':
         case 'PageUp':
             showLyrics(getPrev(playlist, currentPlaying));
             break;
