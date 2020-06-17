@@ -1,8 +1,3 @@
-app.thisWin.webContents.on('did-finish-load', function(){
-    document.getElementById('app').style.visibility = 'visible';
-});
-
-document.getElementById('reload').onclick = reload;
 liveFrame.src = app.html;
 clear.onclick = function() {
     search.value = '';

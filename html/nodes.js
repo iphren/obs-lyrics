@@ -22,3 +22,14 @@ const password = document.getElementById('password');
 const status = document.getElementById('status');
 
 const hide = document.getElementById('hide');
+
+app.thisWin.webContents.on('did-finish-load', function(){
+    document.getElementById('app').style.visibility = 'visible';
+});
+
+document.title = app.getName();
+ipcRenderer.on('update', function(event, text) {
+    document.title = `${app.getName()} - ${text}`;
+});
+
+document.getElementById('reload').onclick = reload;

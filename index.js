@@ -21,10 +21,29 @@ try {
   app.configs = {rec: {width: 800, height: 600}}
 }
 
+let win;
 
+autoUpdater.on('checking-for-update', () => {
+  win.webContents.send('update', 'Checking for update...')
+})
+autoUpdater.on('update-available', (info) => {
+  win.webContents.send('update', 'Update available')
+})
+autoUpdater.on('update-not-available', (info) => {
+  win.webContents.send('update', `Latest version ${app.getVersion()}`)
+})
+autoUpdater.on('error', (err) => {
+  win.webContents.send('update', 'Update error')
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  win.webContents.send('update', 'Update downloading ' + progressObj.percent + '%')
+})
+autoUpdater.on('update-downloaded', (info) => {
+  win.webContents.send('update', 'Restart to update')
+})
 
 function createWindow () {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: app.configs.rec.width,
     height: app.configs.rec.height,
     minWidth: 800,
@@ -41,9 +60,10 @@ function createWindow () {
   //win.webContents.openDevTools()
   win.webContents.focus()
 
-  win.once('ready-to-show', () => {
+  win.webContents.on('did-finish-load', function(){
     autoUpdater.checkForUpdatesAndNotify()
   })
+
   win.on('resize', () => {
     save('rec', win.getBounds())
   })
