@@ -43,10 +43,11 @@ send.onmousedown = function(e) {
     e.stopPropagation();
 }
 sendBtn.onclick = function() {
-    if (!app.configs.plURL) {
+    if (!app.configs.plURL || !plURL.value) {
         plURL.style.display = 'block';
         return;
     }
+    app.save('plURL',plURL.value);
     let pl = [];
     for (let o of playlist.childNodes) {
         let v = o.getAttribute('value');
@@ -224,8 +225,10 @@ function addSong(song, list) {
 
     item.className = 'song preview';
     if (song.id === '_filter') item.classList.add('filter');
-    else item.classList.add('option');
-    if (list.id === 'playlist') item.classList.add('result');
+    else {
+        item.classList.add('option');
+        if (list.id === 'playlist') item.classList.add('result');
+    }
     item.setAttribute('keywords', song.keywords);
     item.setAttribute('songId', song.id);
     item.setAttribute('value', JSON.stringify(song));

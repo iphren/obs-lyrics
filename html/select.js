@@ -216,7 +216,7 @@ search.addEventListener('keydown', function(e) {
 window.addEventListener('keydown', keyControl);
 
 ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true};
-metaKeys = {r:true, R:true, h:true, H:true, s:true, S:true, Backspace:true};
+metaKeys = {};
 function keyControl(e) {
     if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
     hide.focus();
@@ -247,10 +247,8 @@ function keyControl(e) {
             }
             break;
         case 'Backspace':
-            if (!e.metaKey) {
-                changeLyrics();
-                break;
-            }
+            changeLyrics();
+            break;
         case 'Delete':
             if (focused && focused.id === 'forPlaylist' && selectedParent.isSameNode(playlist)) {
                 let next = getNext(playlist, selected);
@@ -299,7 +297,7 @@ function keyControl(e) {
             reload();
             break;
         default:
-            if (e.ctrlKey || e.metaKey) {
+            if (e.ctrlKey) {
                 if (e.key.toLowerCase() === 'r') {
                     reload();
                     break;
