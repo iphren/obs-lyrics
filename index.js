@@ -33,7 +33,7 @@ autoUpdater.on('update-not-available', (info) => {
   win.webContents.send('update', 'latest version')
 })
 autoUpdater.on('error', (err) => {
-  win.webContents.send('update', 'update error')
+  win.webContents.send('update', `update error: ${err}`)
 })
 autoUpdater.on('download-progress', (progressObj) => {
   win.webContents.send('update', `downloading update ${Math.round(progressObj.percent)}%`)
