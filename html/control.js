@@ -1,3 +1,7 @@
+app.thisWin.webContents.on('did-finish-load', function(){
+    document.getElementById('app').style.visibility = 'visible';
+});
+
 document.getElementById('reload').onclick = reload;
 liveFrame.src = app.html;
 clear.onclick = function() {
@@ -59,6 +63,10 @@ sendBtn.onclick = function() {
         if(xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 plURL.style.display = 'none';
+                sendBtn.classList.add('success');
+                setTimeout(function(){
+                    sendBtn.classList.remove('success');
+                },1000);
             } else {
                 plURL.style.display = 'block';
             }
@@ -189,7 +197,11 @@ async function reload() {
     }
     clearTimeout(showSongs);
     showSongs = setTimeout(function(){
+        for (let song of songlist.childNodes) {
+            song.classList.add('result');
+        }
         songlist.style.opacity = 1;
+        search.disabled = false;
     },1000);
     let sel = null, pla = null;
     for (let i of playlist.childNodes) {
@@ -200,7 +212,9 @@ async function reload() {
     }
     selectSong(sel, playlist);
     showLyrics(pla);
+    search.disabled = true;
     search.value = '';
+    notFound.style.visibility = 'hidden';
 }
 
 function addSong(song, list) {
@@ -208,10 +222,10 @@ function addSong(song, list) {
     let title = document.createElement('div');
     let lyrics = document.createElement('div');
 
-    if (song.id == '_filter')
-        item.className = 'filter song preview';
-    else
-        item.className = 'song option preview result';
+    item.className = 'song preview';
+    if (song.id === '_filter') item.classList.add('filter');
+    else item.classList.add('option');
+    if (list.id === 'playlist') item.classList.add('result');
     item.setAttribute('keywords', song.keywords);
     item.setAttribute('songId', song.id);
     item.setAttribute('value', JSON.stringify(song));

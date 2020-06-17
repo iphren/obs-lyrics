@@ -9,13 +9,21 @@ body {
     font-weight: 400;
     height: 100vh;
     width: 100vw;
-    box-sizing: border-box;
     margin: 0;
+    padding: 0;
+    background-color: #eee;
+}
+
+#app {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
     padding: 8px 0;
-    background-color: #eee;
+    visibility: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -141,6 +149,7 @@ input.control {
     box-sizing: border-box;
     text-align: center;
     opacity: 0.5;
+    font-weight: 300;
 }
 
 .button:hover {
@@ -167,6 +176,10 @@ input.control {
     width: 312px;
 }
 
+#search:disabled {
+    background-color: #f8f8f8;
+}
+
 #clear {
     position: absolute;
     left: 286px;
@@ -188,6 +201,24 @@ input.control {
 
 #send {
     display: none;
+}
+
+#sendBtn.success {
+    background-color: #4CAF50;
+}
+
+#sendBtn::after {
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    content: '\2713';
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    font-size: x-large;
+}
+
+#sendBtn.success::after {
+    opacity: 1;
 }
 
 #plURL {

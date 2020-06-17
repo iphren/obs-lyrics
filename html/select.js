@@ -194,7 +194,13 @@ search.addEventListener('keydown', function(e) {
     e.stopPropagation();
     switch (e.key) {
         case 'Enter':
-            changeFocus(songlist.parentNode);
+            if (!hideUp.classList.contains('active')) {
+                changeFocus(songlist.parentNode);
+                selectSong(getNext(songlist), songlist);
+            } else {
+                hideUp.click();
+                break;
+            }
         case 'Escape':
             search.blur();
             break;
@@ -209,8 +215,10 @@ search.addEventListener('keydown', function(e) {
 
 window.addEventListener('keydown', keyControl);
 
+ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true};
+metaKeys = {r:true, R:true, h:true, H:true, s:true, S:true, Backspace:true};
 function keyControl(e) {
-    if (e.ctrlKey || (e.metaKey && e.key !== 'Backspace')) return;
+    if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
     hide.focus();
     switch (e.key) {
         case 'Tab':
@@ -234,6 +242,7 @@ function keyControl(e) {
                     showLyrics(selected);
                 } else if (focused.id === 'forSonglist' && selectedParent.isSameNode(songlist)) {
                     addToPlaylist(selected);
+                    selectSong(getPrev(playlist), playlist);
                 }
             }
             break;
@@ -286,7 +295,22 @@ function keyControl(e) {
         case 'PageUp':
             showLyrics(getPrev(playlist, currentPlaying));
             break;
+        case 'F5':
+            reload();
+            break;
         default:
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key.toLowerCase() === 'r') {
+                    reload();
+                    break;
+                } else if (e.key.toLowerCase() === 'h') {
+                    hideUp.click();
+                    break;
+                } else if (e.key.toLowerCase() === 's' && app.configs.send) {
+                    sendBtn.click();
+                    break;
+                }
+            }
             let item = document.getElementById(`live-${e.key.toUpperCase()}`);
             if (item) {
                 changeLyrics(item);
