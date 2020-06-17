@@ -149,7 +149,6 @@ input.control {
     box-sizing: border-box;
     text-align: center;
     opacity: 0.5;
-    font-weight: 300;
 }
 
 .button:hover {

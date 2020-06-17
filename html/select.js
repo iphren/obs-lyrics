@@ -234,7 +234,7 @@ function keyControl(e) {
             break;
         case '/':
             e.preventDefault();
-            search.focus();
+            clear.click();
             break;
         case 'Enter':
             if (selected && focused) {
@@ -244,6 +244,8 @@ function keyControl(e) {
                     addToPlaylist(selected);
                     selectSong(getPrev(playlist), playlist);
                 }
+            } else if (!focused) {
+                changeFocus(live.parentNode);
             }
             break;
         case 'Backspace':
