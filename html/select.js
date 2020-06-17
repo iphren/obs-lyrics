@@ -244,7 +244,7 @@ function keyControl(e) {
                     addToPlaylist(selected);
                     selectSong(getPrev(playlist), playlist);
                 }
-            } else if (!focused) {
+            } else if (!focused && live.innerHTML) {
                 changeFocus(live.parentNode);
             }
             break;

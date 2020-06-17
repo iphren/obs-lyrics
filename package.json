@@ -2,7 +2,7 @@
   "name": "live-lyrics",
   "productName": "Live Lyrics",
   "appname": "Live Lyrics",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Live Lyrics",
   "build": {
     "appId": "com.electron.live-lyrics",
@@ -17,7 +17,7 @@
     },
     "mac": {
       "category": "public.app-category.productivity",
-      "target": "dmg",
+      "target": "default",
       "icon": "build/icon.icns"
     },
     "dmg": {
