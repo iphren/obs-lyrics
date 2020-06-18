@@ -1,18 +1,20 @@
 async function reload() {
+    loading.classList.remove('none');
+    search.disabled = true;
     status.value = 'Loading...';
+    clearSearch();
     let songs = await post(`https://${address.value}/lyrics`, {token: password.value})
     .then(x => {
         status.value = `Server Connected`;
-        login.style.display = 'none';
+        login.classList.add('none');
         fs.writeFile(app.token, JSON.stringify({url: address.value, token: password.value}), ()=>{});
         return x;
     })
     .catch(() => {
         status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
-        login.style.display = 'flex';
+        login.classList.remove('none');
         return [];
     });
-    songlist.style.opacity = 0;
     songlist.innerHTML = '';
     for (let song of songs) {
         let item = addSong(song, songlist);
@@ -24,12 +26,8 @@ async function reload() {
             }
         }
     }
-    clearTimeout(showSongsTimer);
-    showSongsTimer = setTimeout(function(){
-        for (let song of songlist.childNodes) {
-            song.classList.add('result');
-        }
-        songlist.style.opacity = 1;
+    setTimeout(function(){
+        loading.classList.add('none');
         search.disabled = false;
     },1000);
     let sel = null, pla = null;
@@ -41,9 +39,7 @@ async function reload() {
     }
     selectSong(sel, playlist);
     showLyrics(pla);
-    search.disabled = true;
-    search.value = '';
-    notFound.style.visibility = 'hidden';
+    if (!currentPlaying) changeFocus();
 }
 
 function addSong(song, list) {
@@ -54,8 +50,7 @@ function addSong(song, list) {
     item.className = 'song preview';
     if (song.id === '_filter') item.classList.add('filter');
     else {
-        item.classList.add('option');
-        if (list.id === 'playlist') item.classList.add('result');
+        item.classList.add('option', 'result');
     }
     item.setAttribute('keywords', song.keywords);
     item.setAttribute('songId', song.id);

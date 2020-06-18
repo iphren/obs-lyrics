@@ -1,11 +1,11 @@
 search.oninput = function(e) {
     if (e.target.value === 'whosyourdaddy') app.thisWin.webContents.openDevTools();
     else if (e.target.value === 'thereisnospoon') {
-        send.style.display = 'inline-block';
+        send.classList.remove('none');
         app.save('send',true);
     }
     let term = '';
-    let py = pinyin(e.target.value.replace(/行/g,'形'), {style: pinyin.STYLE_NORMAL});
+    let py = pinyin(e.target.value.replace(/行/g,'形').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
     for (let p of py) {
         term += p[0].toLowerCase().replace(/[^a-z0-9]/g, '');
     }
@@ -18,8 +18,9 @@ search.oninput = function(e) {
             song.classList.remove('result');
         }       
     }
-    notFound.style.visibility = found ? 'hidden' : 'visible';
-    if (hideUp.classList.contains('active')) hideUp.click();
+    if (found) notFound.classList.add('none');
+    else notFound.classList.remove('none');
+    if (hideUp.classList.contains('active')) toggleHide();
 }
 
 address.onkeydown = function(e) {
@@ -53,7 +54,7 @@ search.onkeydown = function(e) {
                     break;
                 }
             } else {
-                hideUp.click();
+                toggleHide();
                 break;
             }
         case 'Escape':
@@ -61,7 +62,7 @@ search.onkeydown = function(e) {
             break;
         case 'Backspace':
             if (search.value === '' && !hideUp.classList.contains('active')) {
-                hideUp.click();
+                toggleHide();
                 search.blur();
             }
             break;
@@ -78,10 +79,10 @@ plURL.onkeydown = function(e) {
 
 window.onkeydown = function (e) {
     if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
+    e.preventDefault();
     hide.focus();
     switch (e.key) {
         case 'Tab':
-            e.preventDefault();
             let ind = 0;
             if (focused) {
                 for (let i = 0; i < rotation.length; i++) {
@@ -96,8 +97,7 @@ window.onkeydown = function (e) {
             else changeFocus(rotation[ind]);
             break;
         case '/':
-            e.preventDefault();
-            clear.click();
+            clearSearch();
             break;
         case 'Enter':
             if (selected && focused) {
@@ -112,7 +112,11 @@ window.onkeydown = function (e) {
             }
             break;
         case 'Backspace':
-            changeLyrics();
+            if (currentLyrics) changeLyrics();
+            else if (currentPlaying) {
+                selectSong(currentPlaying, playlist);
+                showLyrics();
+            }
             break;
         case 'Delete':
             if (focused && focused.id === 'forPlaylist' && selectedParent.isSameNode(playlist)) {
@@ -128,7 +132,6 @@ window.onkeydown = function (e) {
             break;
         case 'Escape':
             selectSong();
-            showLyrics();
             changeFocus();
             break;
         case 'ArrowDown':
@@ -170,10 +173,10 @@ window.onkeydown = function (e) {
                     reload();
                     break;
                 } else if (e.key.toLowerCase() === 'h') {
-                    hideUp.click();
+                    toggleHide();
                     break;
                 } else if (e.key.toLowerCase() === 's' && app.configs.send) {
-                    sendBtn.click();
+                    sendPlaylist();
                     break;
                 }
             }

@@ -19,8 +19,8 @@ function post(url, data) {
 }
 
 function sendPlaylist() {
-    if (!app.configs.plURL || !plURL.value) {
-        plURL.style.display = 'block';
+    if (!app.configs.plURL && !plURL.value) {
+        plURL.classList.remove('none');
         plURL.focus();
         return;
     }
@@ -35,12 +35,12 @@ function sendPlaylist() {
     post(`https://${plURL.value}`,{playlist: pl, token: password.value})
     .then(() => {
         app.save('plURL',plURL.value);
-        plURL.style.display = 'none';
+        plURL.classList.add('none');
         sendBtn.classList.add('success');
         setTimeout(function(){
             sendBtn.classList.remove('success');
         },1000);
     }).catch(() => {
-        plURL.style.display = 'block';
+        plURL.classList.remove('none');
     });
 }

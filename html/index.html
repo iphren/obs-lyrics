@@ -3,22 +3,22 @@
   <head>
     <meta charset="UTF-8">
     <title>Live Lyrics</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <script src="../node_modules/sortablejs/Sortable.min.js"></script>
   </head>
   <body>
-    <div id="app">
+    <div id="app" class="hidden">
       <div id="menu">
         <input type="text" id="search" class="control" placeholder="Search">
-        <span id="clear" class="button"><div>&times;</div></span>
+        <span id="clear" class="button"></span>
         <span id="reload" class="button"><div>Reload</div></span>
         <span id="hideUp" class="button"><div>Hide</div></span>
-        <span id='send'>
+        <span id='send' class="none">
           <div id='sendBtn' class="button">
             <div>Send</div>
           </div>
-          <input id="plURL" class="control" type="text">
+          <input id="plURL" class="control none" type="text">
         </span>
         <span id="update"></span>
         <span id="clock"></span>
@@ -26,9 +26,9 @@
       <div id="main">
         <div id="control">
           <div id="forSonglist" class="container">
-            <div id="loading" class="control"><div>Loading songs......</div></div>
             <div id="songlist" class="control select"></div>
-            <div id="notFound" class="control"><div>No results found</div></div>
+            <div id="notFound" class="control none"><div>No results found</div></div>
+            <div id="loading" class="control"><div>Loading songs......</div></div>
           </div>
           <div id="forPlaylist" class="container">
             <div id="playlist" class="control select"></div>
@@ -51,28 +51,29 @@
           </div>
           <input type="text" id="path" class="control" readonly>
           <div id="liveLyrics" class="control">
-            <div id="liveMark">&#8226; Live preview</div>
             <iframe id="liveFrame"></iframe>
             <div class="cover"></div>
           </div>
         </div>
       </div>
       <input type="text" id="hide" readonly>
-      <div id="login">
+      <div id="login" class="none">
         <input type="url" id="address" placeholder="server">
         <input type="text" id="password" placeholder="token">
         <input type="text" id="status" readonly>
       </div>
     </div>
     <script src="js/define.js"></script>
-    <script src="js/update.js"></script>
-    <script src="js/file.js"></script>
+    
     <script src="js/request.js"></script>
-    <script src="js/select.js"></script>
     <script src="js/reload.js"></script>
-    <script src="js/clock.js"></script>
+    <script src="js/file.js"></script>
+    <script src="js/select.js"></script>
+
     <script src="js/mouse.js"></script>
     <script src="js/keyboard.js"></script>
+    <script src="js/focus.js"></script>
+
     <script src="js/control.js"></script>
   </body>
 </html>

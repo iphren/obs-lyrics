@@ -1,5 +1,5 @@
 document.body.onmousedown = function () {
-    plURL.style.display = 'none';
+    plURL.classList.add('none');
     changeFocus();
 }
 
@@ -16,19 +16,27 @@ search.onmousedown = function(e) {
     e.stopPropagation();
 }
 
-clear.onmousedown = function(e) {
-    e.stopPropagation();
+clear.onmousedown = clearSearch;
+
+function clearSearch(e = null) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
     search.value = '';
     for (let song of songlist.childNodes) {
         song.classList.add('result');
     }
-    notFound.style.visibility = 'hidden';
+    notFound.classList.add('none');
     search.focus();
 }
 
 reloadBtn.onclick = reload;
 
-hideUp.onclick = function() {
+hideUp.onmousedown = toggleHide;
+
+function toggleHide(e = null) {
+    if (e) e.stopPropagation();
     let act = hideUp.classList.contains('active');
     if (act)
         hideUp.classList.remove('active');

@@ -50,8 +50,6 @@ function select(e) {
         case 'playlist':
             if (item && !(item.classList.contains('selected'))) {
                 selectSong(item, list);
-            } else if (!item) {
-                selectSong();
             }
             break;
         case 'live':
@@ -90,6 +88,8 @@ function showLyrics(item = null) {
     for (let o of playlist.childNodes)
         o.classList.remove('playing');
     if (!item) {
+        if (playlist.getElementsByClassName('result').length !== 0) changeFocus(playlist.parentNode);
+        else changeFocus();
         live.innerHTML = '';
         return;
     }

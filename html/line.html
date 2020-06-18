@@ -2,59 +2,58 @@
   <head>
     <meta charset="utf-8">
     <style>
-        @font-face {
-            font-family: SourceHanSans;
-            src: url(font.ttc);
-        }
         body {
           margin: 0;
           padding: 0;
         }
-        .lyrics {
-            position: fixed;
-            bottom: 3.5vw;
-            font-size: 3.2vw;
-            font-family: SourceHanSans;
-            width: 100vw;
-            text-align: center;
-            color: white;
-            text-shadow: 0px 0px 8px black, 0px 0px 8px black;
-            font-weight: 700;
-            transition: opacity 0.5s ease-in-out;
-            opacity: 0;
+        div {
+          position: fixed;
+          width: 100vw;
+          left: 0;
+          bottom: 3.5vw;
+          font-size: 3.2vw;
+          font-weight: 700;
+          font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+          color: white;
+          text-align: center;
+          text-shadow: 0px 0px 8px black, 0px 0px 8px black;
+          transition: opacity 0.5s ease-in-out;
+          animation:opac 0.5s;
+          opacity: 0;
+        }
+        @keyframes opac{from{opacity:0} to{opacity:1}}
+        div:last-child {
+          opacity: 1;
+        }
+        #iphren {
+          height: 0;
+          width: 0;
+          opacity: 0;
+          text-shadow: none;
+          overflow: hidden;
         }
     </style>
     <script src="/jquery.slim.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-  </head>
-  <body>
-    <div style='font-family:SourceHanSans;opacity:0;position:fixed;top:0;left:0;height:0;width:0;overflow:hidden;'>By iphren</div>
     <script>
-      var socket;
+      var socket, timer;
+      const showLyrics = function(data) {
+        if (data === document.body.lastChild.innerHTML) return;
+        clearTimeout(timer);
+        let div = document.createElement("div");
+        div.innerHTML = data;
+        document.body.appendChild(div);
+        timer = setTimeout(function(){
+          while (document.body.childElementCount > 2) document.body.firstChild.remove();
+        }, 600);
+      }
       $(function() {
-        const showLyrics = function(data) {
-          if (data == line) return;
-          line = data;
-          let old = [];
-          for (let x of document.getElementsByClassName('lyrics')) old.push(x);
-          let div = document.createElement("div");
-          div.className = "lyrics";
-          div.innerHTML = line;
-          document.body.appendChild(div);
-          
-          setTimeout(()=>{
-            for (let x of old) x.remove();
-          },550);
-          setTimeout(()=>{
-            div.style.opacity = 1;
-            for (let x of old) x.style.opacity = 0;
-          },50);
-        }
-        var line = 'Initiating lyrics......';
-        showLyrics(' ');
         socket = io();
         socket.on('lyrics', showLyrics);
       })
     </script>
+  </head>
+  <body>
+    <div id="iphren">By Iphren</div>
   </body>
 </html>

@@ -14,6 +14,7 @@ const sendBtn = document.getElementById('sendBtn');
 const plURL = document.getElementById('plURL');
 const clock = document.getElementById('clock');
 const songlist = document.getElementById('songlist');
+const loading = document.getElementById('loading');
 const notFound = document.getElementById('notFound');
 const playlist = document.getElementById('playlist');
 const bin = document.getElementById('bin');
@@ -34,7 +35,6 @@ var currentPlayingLyrics = null;
 var selected = null;
 var selectedParent = null;
 var focused = null;
-var showSongsTimer;
 
 const rotation = [search, songlist.parentNode, playlist.parentNode, live.parentNode];
 const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';

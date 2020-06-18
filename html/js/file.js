@@ -1,19 +1,14 @@
-fs.readFile(app.token, {encoding: 'utf-8'}, (err, data) => {
-    if (!err) {
-        let json = JSON.parse(data);
-        address.value = json.url;
-        password.value = json.token;
-        reload();
-    } else {
-        login.style.display = 'flex';
-    }
-});
-
-function savePlaylist() {
-    let list = [];
-    for (let i of playlist.childNodes)
-        list.push(i.getAttribute('value'));
-    fs.writeFile(app.playlist,JSON.stringify(list),()=>{});
+function loadToken() {
+    fs.readFile(app.token, {encoding: 'utf-8'}, (err, data) => {
+        if (!err) {
+            let json = JSON.parse(data);
+            address.value = json.url;
+            password.value = json.token;
+            reload();
+        } else {
+            login.classList.remove('none');
+        }
+    });
 }
 
 function loadPlaylist() {
@@ -29,4 +24,11 @@ function loadPlaylist() {
             }
         }
     });
+}
+
+function savePlaylist() {
+    let list = [];
+    for (let i of playlist.childNodes)
+        list.push(i.getAttribute('value'));
+    fs.writeFile(app.playlist,JSON.stringify(list),()=>{});
 }
