@@ -1,3 +1,5 @@
+document.getElementById('reload').onclick = reload;
+
 liveFrame.src = app.html;
 clear.onclick = function() {
     search.value = '';

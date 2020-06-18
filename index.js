@@ -39,7 +39,7 @@ autoUpdater.on('download-progress', (progressObj) => {
   win.webContents.send('update', `downloading update ${Math.round(progressObj.percent)}%`)
 })
 autoUpdater.on('update-downloaded', (info) => {
-  win.webContents.send('update', 'restart to update')
+  win.webContents.send('update', 'install update on exit')
 })
 
 function createWindow () {

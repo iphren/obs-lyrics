@@ -59,7 +59,8 @@ function selecting(e) {
         if (list.classList.contains('option')) item = list;
         list = list.parentNode;
     }
-    changeFocus(list.parentNode);
+    if (list.getElementsByClassName('result').length !== 0)
+        changeFocus(list.parentNode);
     switch (list.id) {
         case 'songlist':
         case 'playlist':
@@ -172,6 +173,8 @@ function changeLyrics(item = null) {
     }
 }
 
+ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true};
+metaKeys = {};
 plURL.addEventListener('keydown', function(e) {
     e.stopPropagation();
     switch (e.key) {
@@ -186,7 +189,7 @@ search.onblur = function() {
     search.classList.remove('focused');
 }
 search.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
+    if (e.key === 'Tab' || (e.ctrlKey && e.key in ctrlKeys)) {
         e.preventDefault();
         search.blur();
         return;
@@ -195,8 +198,12 @@ search.addEventListener('keydown', function(e) {
     switch (e.key) {
         case 'Enter':
             if (!hideUp.classList.contains('active')) {
-                changeFocus(songlist.parentNode);
-                selectSong(getNext(songlist), songlist);
+                if (songlist.getElementsByClassName('result').length !== 0) {
+                    changeFocus(songlist.parentNode);
+                    selectSong(getNext(songlist), songlist);
+                } else {
+                    break;
+                }
             } else {
                 hideUp.click();
                 break;
@@ -215,8 +222,6 @@ search.addEventListener('keydown', function(e) {
 
 window.addEventListener('keydown', keyControl);
 
-ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true};
-metaKeys = {};
 function keyControl(e) {
     if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
     hide.focus();
@@ -230,7 +235,11 @@ function keyControl(e) {
                 }
             }
             if (rotation[ind].classList.contains('hide')) ind = (ind + 1) % rotation.length;
-            changeFocus(rotation[ind]);
+            if (rotation[ind].id === 'forSonglist' && songlist.getElementsByClassName('result').length === 0) ind = (ind + 1) % rotation.length;
+            if (rotation[ind].id === 'forPlaylist' && playlist.getElementsByClassName('result').length === 0) ind = (ind + 1) % rotation.length;
+            if (rotation[ind].id === 'forLive' && live.getElementsByClassName('result').length === 0) ind = (ind + 1) % rotation.length;
+            if (rotation[ind].isSameNode(focused)) changeFocus();
+            else changeFocus(rotation[ind]);
             break;
         case '/':
             e.preventDefault();
@@ -259,6 +268,7 @@ function keyControl(e) {
                 if (selected.isSameNode(currentPlaying)) showLyrics();
                 selected.remove();
                 selectSong(next, playlist);
+                if (!selected) changeFocus();
                 savePlaylist();
             }
             break;

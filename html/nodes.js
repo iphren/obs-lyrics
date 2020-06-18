@@ -29,7 +29,5 @@ app.thisWin.webContents.on('did-finish-load', function(){
 
 document.title = app.getName();
 ipcRenderer.on('update', function(event, text) {
-    document.title = `${app.getName()} - ${text}`;
+    document.title = text === 'latest version' ? app.getName() : `${app.getName()} - ${text}`;
 });
-
-document.getElementById('reload').onclick = reload;
