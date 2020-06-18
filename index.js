@@ -3,7 +3,7 @@ const { autoUpdater } = require("electron-updater")
 const path = require('path')
 const fs = require('fs')
 
-const appData = path.join(app.getPath('appData'), 'live-lyrics')
+const appData = path.join(app.getPath('appData'), app.getName())
 app.settings = path.join(appData, 'settings.json')
 app.playlist = path.join(appData, 'playlist.json')
 app.token = path.join(appData, 'token.json')
@@ -57,7 +57,7 @@ function createWindow () {
   app.thisWin = win;
   win.loadFile('html/index.html')
   win.setMenu(null)
-  //win.webContents.openDevTools()
+  if (!app.isPackaged) win.webContents.openDevTools()
   win.webContents.focus()
 
   win.webContents.on('did-finish-load', function(){
