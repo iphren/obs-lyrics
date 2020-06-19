@@ -1,7 +1,7 @@
 loadToken();
 loadPlaylist();
 
-menu.style.top = `${main.offsetTop - menu.offsetTop - search.offsetTop - search.offsetHeight}px`;
+menu.style.top = `${5 + main.offsetTop - menu.offsetTop - search.offsetTop - search.offsetHeight}px`;
 
 document.title = app.getName();
 ipcRenderer.on('update', function(event, text) {
