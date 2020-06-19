@@ -28,9 +28,9 @@ function addToPlaylist(item) {
 function changeFocus(node = null) {
     if (focused) focused.classList.remove('focused');
     focused = node;
+    if (search.isSameNode(node)) search.focus();
+    else search.blur();
     if (node) {
-        if (node.isSameNode(search)) search.focus();
-        else search.blur();
         node.classList.add('focused');
     }
 }
