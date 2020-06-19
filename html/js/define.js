@@ -6,6 +6,7 @@ const pinyin = require('pinyin');
 const app = remote.app;
 
 const webApp = document.getElementById('app');
+const menu = document.getElementById('menu');
 const search = document.getElementById('search');
 const clear = document.getElementById('clear');
 const reloadBtn = document.getElementById('reload');
@@ -13,6 +14,7 @@ const hideUp = document.getElementById('hideUp');
 const sendBtn = document.getElementById('sendBtn');
 const plURL = document.getElementById('plURL');
 const clock = document.getElementById('clock');
+const main = document.getElementById('main');
 const songlist = document.getElementById('songlist');
 const loading = document.getElementById('loading');
 const notFound = document.getElementById('notFound');

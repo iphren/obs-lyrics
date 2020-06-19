@@ -169,7 +169,6 @@ input.control {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    top: 5px;
 }
 
 #menu .button {
@@ -178,6 +177,7 @@ input.control {
 
 #search {
     width: 312px;
+    min-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 31px;
@@ -191,10 +191,10 @@ input.control {
 
 #clear {
     width: 16.5px;
+    min-width: 16.5px;
     height: 16.5px;
     padding: 0;
-    position: absolute;
-    left: 292px;
+    margin-left: -28px !important;
     background-image: url('../img/times-circle.svg');
     background-position: center center;
     background-repeat: no-repeat;
@@ -204,6 +204,10 @@ input.control {
 
 #search:placeholder-shown + #clear {
     visibility: hidden;
+}
+
+#reload {
+    margin-left: 16px !important;
 }
 
 #hideUp.active {
