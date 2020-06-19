@@ -5,6 +5,7 @@ document.body.onmousedown = function () {
 
 send.onmousedown = function(e) {
     e.stopPropagation();
+    e.preventDefault();
 }
 
 for (let list of document.getElementsByClassName('select')) {
@@ -14,6 +15,7 @@ for (let list of document.getElementsByClassName('select')) {
 
 search.onmousedown = function(e) {
     e.stopPropagation();
+    hideUp.classList.contains('active') && toggleHide();
 }
 
 clear.onmousedown = clearSearch;
@@ -31,12 +33,15 @@ function clearSearch(e = null) {
     search.focus();
 }
 
-reloadBtn.onclick = reload;
+reloadBtn.onmousedown = reload;
 
 hideUp.onmousedown = toggleHide;
 
 function toggleHide(e = null) {
-    if (e) e.stopPropagation();
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
     let act = hideUp.classList.contains('active');
     if (act)
         hideUp.classList.remove('active');

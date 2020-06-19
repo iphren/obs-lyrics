@@ -40,7 +40,6 @@ password.onkeydown = function(e) {
 search.onkeydown = function(e) {
     if (e.key === 'Tab' || (e.ctrlKey && e.key in ctrlKeys)) {
         e.preventDefault();
-        search.blur();
         return;
     }
     e.stopPropagation();
@@ -48,16 +47,16 @@ search.onkeydown = function(e) {
         case 'Enter':
             if (!hideUp.classList.contains('active')) {
                 if (songlist.getElementsByClassName('result').length !== 0) {
-                    changeFocus(songlist.parentNode);
                     selectSong(getNext(songlist), songlist);
-                } else {
-                    break;
+                    changeFocus(songlist.parentNode);
                 }
+                break;
             } else {
                 toggleHide();
                 break;
             }
         case 'Escape':
+            changeFocus();
             search.blur();
             break;
         case 'Backspace':
@@ -80,7 +79,7 @@ plURL.onkeydown = function(e) {
 window.onkeydown = function (e) {
     if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
     e.preventDefault();
-    hide.focus();
+    if (!search.isSameNode(focused)) hide.focus();
     switch (e.key) {
         case 'Tab':
             let ind = 0;
@@ -97,6 +96,7 @@ window.onkeydown = function (e) {
             else changeFocus(rotation[ind]);
             break;
         case '/':
+            hideUp.classList.contains('active') && toggleHide();
             clearSearch();
             break;
         case 'Enter':
@@ -116,6 +116,10 @@ window.onkeydown = function (e) {
             else if (currentPlaying) {
                 selectSong(currentPlaying, playlist);
                 showLyrics();
+            }
+            else {
+                selectSong();
+                changeFocus();
             }
             break;
         case 'Delete':

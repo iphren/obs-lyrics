@@ -17,7 +17,6 @@ body {
     width: 100%;
     box-sizing: border-box;
     margin: 0;
-    padding: 8px 0;
 }
 
 ::-webkit-scrollbar {
@@ -26,8 +25,7 @@ body {
 
 .control {
     border: none;
-    outline: 1px solid #999;
-    outline-color: rgba(0,0,0,0);
+    outline: none;
     box-sizing: border-box;
     background-color: white;
     border-radius: 10px;
@@ -80,13 +78,20 @@ input.control {
 
 .focused {
     box-shadow: 0 0 8px 2px rgba(120,120,120,0.5);
-    outline: none;
+}
+
+.reloading .focused {
+    box-shadow: none;
+}
+
+.reloading .focused .selected {
+    background-color: #bbb;
 }
 
 .option {
     user-select: none;
     width: 100%;
-    padding: 6px 10px;
+    padding: .3rem 1rem;
     box-sizing: border-box;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -103,7 +108,6 @@ input.control {
     text-overflow: ellipsis;
     overflow: hidden;
     width: 100%;
-    font-weight: 700;
 }
 
 .song .lyrics {
@@ -153,20 +157,32 @@ input.control {
     background-color: #777;
 }
 
+.spacer {
+    display: inline-block;
+    flex-grow: 1;
+}
+
 #menu {
     position: relative;
     padding: 0 8px;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    top: 5px;
 }
 
-#menu > * {
-    position: relative;
-    top: 2px;
+#menu .button {
+    margin-left: 4px;
 }
 
 #search {
-    top: 0;
     width: 312px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 31px;
+    padding-left: 1rem;
+    margin-right: 4px;
 }
 
 #search:disabled {
@@ -174,12 +190,11 @@ input.control {
 }
 
 #clear {
-    position: absolute;
-    left: 296px;
-    top: 10.5px;
     width: 16.5px;
     height: 16.5px;
     padding: 0;
+    position: absolute;
+    left: 292px;
     background-image: url('../img/times-circle.svg');
     background-position: center center;
     background-repeat: no-repeat;
@@ -191,16 +206,16 @@ input.control {
     visibility: hidden;
 }
 
-#reload {
-    margin-left: 2px;
-}
-
 #hideUp.active {
     background-color: tomato;
 }
 
 #send {
     display: inline-block;
+}
+
+#sendBtn {
+    position: relative;
 }
 
 #sendBtn.success {
@@ -230,13 +245,10 @@ input.control {
 }
 
 #clock {
-    top: unset;
     user-select: none;
-    position: absolute;
-    right: 18px;
     font-size: xx-large;
-    top: -7px;
     color: #777;
+    margin-right: 10px;
 }
 
 #main {
@@ -338,7 +350,7 @@ input.control {
     height: 100%;
     overflow: auto;
     box-sizing: border-box;
-    padding: 2em;
+    padding: 2rem;
 }
 
 #pTitle {
@@ -351,10 +363,14 @@ input.control {
     background-color: #4CAF50;
 }
 
+.reloading .focused #live .selected {
+    background-color: #bbb;
+}
+
 #live .option {
     position: relative;
-    padding-left: 2em;
-    padding-right: 2em;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 #live .key {

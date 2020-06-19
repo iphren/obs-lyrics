@@ -29,8 +29,9 @@ function changeFocus(node = null) {
     if (focused) focused.classList.remove('focused');
     focused = node;
     if (node) {
-        focused.classList.add('focused');
         if (node.isSameNode(search)) search.focus();
+        else search.blur();
+        node.classList.add('focused');
     }
 }
 

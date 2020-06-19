@@ -34,7 +34,7 @@ var currentPlaying = null;
 var currentPlayingLyrics = null;
 var selected = null;
 var selectedParent = null;
-var focused = null;
+var focused = null, lastFocused = null;
 
 const rotation = [search, songlist.parentNode, playlist.parentNode, live.parentNode];
 const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';

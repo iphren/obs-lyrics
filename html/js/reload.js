@@ -1,7 +1,13 @@
-async function reload() {
+async function reload(e = null) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    lastFocused = focused;
     loading.classList.remove('none');
     search.disabled = true;
     status.value = 'Loading...';
+    webApp.classList.add('reloading');
     clearSearch();
     let songs = await post(`https://${address.value}/lyrics`, {token: password.value})
     .then(x => {
@@ -29,6 +35,8 @@ async function reload() {
     setTimeout(function(){
         loading.classList.add('none');
         search.disabled = false;
+        changeFocus(lastFocused);
+        webApp.classList.remove('reloading');
     },1000);
     let sel = null, pla = null;
     for (let i of playlist.childNodes) {
@@ -39,7 +47,6 @@ async function reload() {
     }
     selectSong(sel, playlist);
     showLyrics(pla);
-    if (!currentPlaying) changeFocus();
 }
 
 function addSong(song, list) {
