@@ -1,8 +1,6 @@
 loadToken();
 loadPlaylist();
 
-menu.style.top = `${5 + main.offsetTop - menu.offsetTop - search.offsetTop - search.offsetHeight}px`;
-
 document.title = app.getName();
 ipcRenderer.on('update', function(event, text) {
     document.title = text === 'latest version' ? app.getName() : `${app.getName()} - ${text}`;

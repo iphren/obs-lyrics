@@ -157,12 +157,8 @@ input.control {
     background-color: #777;
 }
 
-.spacer {
-    display: inline-block;
-    flex-grow: 1;
-}
-
 #menu {
+    margin-top: 8px;
     position: relative;
     padding: 0 8px;
     white-space: nowrap;
@@ -249,10 +245,11 @@ input.control {
 }
 
 #clock {
+    position: absolute;
+    right: 10px;
     user-select: none;
     font-size: xx-large;
     color: #777;
-    margin-right: 10px;
 }
 
 #main {
