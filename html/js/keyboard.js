@@ -87,6 +87,11 @@ window.onkeydown = function (e) {
     if (!search.isSameNode(focused)) hide.focus();
     switch (e.key) {
         case 'Tab':
+            if (!pTitle.readOnly) {
+                changeFocus();
+                pTitle.focus();
+                break;
+            }
             let ind = 0;
             if (focused) {
                 for (let i = 0; i < rotation.length; i++) {
@@ -188,6 +193,20 @@ window.onkeydown = function (e) {
                     break;
                 } else if (e.key.toLowerCase() === 'l' && app.configs.send) {
                     sendPlaylist();
+                    break;
+                } else if (e.key.toLowerCase() === 's') {
+                    save();
+                    break;
+                } else if (e.key.toLowerCase() === 'e' && selected) {
+                    openEditor();
+                    break;
+                } else if (e.key.toLowerCase() === 'n') {
+                    selectSong();
+                    if (selected) selected.classList.remove('selected');
+                    selected = null;
+                    savedTitle = pTitle.value = '';
+                    savedLyrics = pLyrics.value = '';
+                    openEditor();
                     break;
                 }
             }

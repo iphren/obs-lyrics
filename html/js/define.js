@@ -52,6 +52,6 @@ var savedTitle = '', savedLyrics = '';
 
 const rotation = [search, songlist.parentNode, playlist.parentNode, live.parentNode];
 const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
-const ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true, l:true, L:true};
+const ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true, l:true, L:true, e:true, E:true, n:true, N:true};
 const funcKeys = {Tab: true, F5: true}
 const metaKeys = {};

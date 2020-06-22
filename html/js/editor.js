@@ -37,10 +37,19 @@ function closeEditor(e = null, restore = true) {
     hideUp.classList.remove('disabled');
     search.classList.remove('disabled');
     search.disabled = false;
-    return true;
+    editorInput();
+    hideUp.focus();
 }
 
 function editorControl(e) {
+    if (e.key === 'Tab' && !e.target.readOnly) {
+        e.stopPropagation();
+        e.preventDefault();
+        changeFocus();
+        if (e.target.isSameNode(pTitle)) pLyrics.focus();
+        else pTitle.focus();
+        return;
+    }
     if (e.key in funcKeys || (e.ctrlKey && e.key in ctrlKeys)) {
         e.preventDefault();
         return;
@@ -65,10 +74,9 @@ function save(e = null) {
         e.preventDefault();
     }
     if (saveBtn.classList.contains('disabled')) return;
-    let song = {}, newsong = true;
+    let song = {};
     if (selected) {
         song = JSON.parse(selected.getAttribute('value'));
-        newsong = false;
     }
     song.title = pTitle.value;
     song.lyrics = pLyrics.value;
@@ -76,10 +84,7 @@ function save(e = null) {
     post(`https://${address.value}/save`, {song: song, token: password.value, needId: true})
     .then(x => {
         closeEditor(null, false);
-        if (newsong)
-            reload(null, x.song.id);
-        else
-            reload();
+        reload(null, x.song.id);
     }).catch(xhr => {
         status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
         login.classList.remove('none');
