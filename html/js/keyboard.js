@@ -176,11 +176,11 @@ window.onkeydown = function (e) {
             showLyrics(getPrev(playlist, currentPlaying));
             break;
         case 'F5':
-            reload();
+            if (!reloadBtn.classList.contains('disabled')) reload();
             break;
         default:
             if (e.ctrlKey) {
-                if (e.key.toLowerCase() === 'r') {
+                if (e.key.toLowerCase() === 'r' && !reloadBtn.classList.contains('disabled')) {
                     reload();
                     break;
                 } else if (e.key.toLowerCase() === 'h') {

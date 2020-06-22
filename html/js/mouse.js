@@ -36,7 +36,9 @@ function clearSearch(e = null) {
     search.focus();
 }
 
-reloadBtn.onmousedown = reload;
+reloadBtn.onmousedown = function(e) {
+    if (!reloadBtn.classList.contains('disabled')) reload(e);
+}
 
 hideUp.onmousedown = toggleHide;
 

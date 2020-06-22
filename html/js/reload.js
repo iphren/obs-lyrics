@@ -3,7 +3,6 @@ async function reload(e = null, sel = null) {
         e.preventDefault();
         e.stopPropagation();
     }
-    if (reloadBtn.classList.contains('disabled')) return;
     let selp = null;
     if (songlist.isSameNode(selectedParent) && selected) {
         sel = selected.getAttribute('songId');
