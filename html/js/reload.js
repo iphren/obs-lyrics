@@ -4,7 +4,7 @@ async function reload(e = null, sel = null) {
         e.stopPropagation();
     }
     let selp = null;
-    if (songlist.isSameNode(selectedParent) && selected) {
+    if (songlist.isSameNode(selectedParent) && selected && !sel) {
         sel = selected.getAttribute('songId');
     }
     lastFocused = focused;
