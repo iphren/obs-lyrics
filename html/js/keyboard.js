@@ -1,5 +1,5 @@
 search.oninput = function(e) {
-    if (e.target.value === 'whosyourdaddy') app.thisWin.webContents.openDevTools();
+    if (e.target.value === 'whosyourdaddy') remote.getCurrentWebContents().openDevTools();
     else if (e.target.value === 'thereisnospoon') {
         send.classList.remove('none');
         app.save('send',true);
@@ -38,7 +38,7 @@ password.onkeydown = function(e) {
 }
 
 search.onkeydown = function(e) {
-    if (e.key === 'Tab' || (e.ctrlKey && e.key in ctrlKeys)) {
+    if (e.key in funcKeys || (e.ctrlKey && e.key in ctrlKeys)) {
         e.preventDefault();
         return;
     }
@@ -62,7 +62,6 @@ search.onkeydown = function(e) {
         case 'Backspace':
             if (search.value === '' && !hideUp.classList.contains('active')) {
                 toggleHide();
-                search.blur();
             }
             break;
     }
@@ -75,6 +74,12 @@ plURL.onkeydown = function(e) {
             sendPlaylist();
     }
 }
+
+pTitle.onkeydown = editorControl;
+pLyrics.onkeydown = editorControl;
+
+pTitle.oninput = editorInput;
+pLyrics.oninput = editorInput;
 
 window.onkeydown = function (e) {
     if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
@@ -132,6 +137,8 @@ window.onkeydown = function (e) {
                 selectSong(next, playlist);
                 if (!selected) changeFocus();
                 savePlaylist();
+            } else if (focused && focused.id === 'forSonglist' && selectedParent.isSameNode(songlist)) {
+                deleteSong(selected);
             }
             break;
         case 'Escape':
@@ -179,7 +186,7 @@ window.onkeydown = function (e) {
                 } else if (e.key.toLowerCase() === 'h') {
                     toggleHide();
                     break;
-                } else if (e.key.toLowerCase() === 's' && app.configs.send) {
+                } else if (e.key.toLowerCase() === 'l' && app.configs.send) {
                     sendPlaylist();
                     break;
                 }
@@ -188,5 +195,17 @@ window.onkeydown = function (e) {
             if (item) {
                 changeLyrics(item);
             }
+    }
+}
+
+typeDelete.onkeydown = function(e) {
+    e.stopPropagation();
+}
+
+typeDelete.oninput = function(e) {
+    if (typeDelete.value === 'delete') {
+        confirmDelete.classList.remove('disabled');
+    } else {
+        confirmDelete.classList.add('disabled');
     }
 }

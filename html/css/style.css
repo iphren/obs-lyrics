@@ -1,5 +1,4 @@
 body {
-    font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
     font-style: normal;
     font-weight: 400;
     height: 100vh;
@@ -7,6 +6,10 @@ body {
     margin: 0;
     padding: 0;
     background-color: #eee;
+}
+
+* {
+    font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
 #app {
@@ -28,26 +31,35 @@ body {
     outline: none;
     box-sizing: border-box;
     background-color: white;
-    border-radius: 10px;
+    border-radius: .6rem;
 }
 
 input.control {
     outline-offset: 0;
-    height: 32px;
-    padding: 5px 10px;
+    height: 2rem;
+    padding: .3rem 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+textarea.control {
+    outline-offset: 0;
+    padding: .3rem 1rem;
+    overflow: auto;
+    resize: none;
 }
 
 .container {
-    height: calc(49.999% - 4px);
+    height: calc(49.999% - .15rem);
     width: 100%;
     position: relative;
     transition: height ease-in-out 0.3s, margin-bottom ease-in-out 0.3s;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: .6rem;
 }
 
 .container:first-child {
-    margin-bottom: 8px;
+    margin-bottom: .3rem;
 }
 
 .container.hide {
@@ -73,11 +85,11 @@ input.control {
 }
 
 .focused .selected {
-    background-color: #607d8b;
+    background-color: #2195f3;
 }
 
 .focused {
-    box-shadow: 0 0 8px 2px rgba(120,120,120,0.5);
+    box-shadow: 0 0 .3rem .1rem rgba(120,120,120,0.5);
 }
 
 .reloading .focused {
@@ -129,16 +141,16 @@ input.control {
     left: 0;
     height: 100%;
     width: 100%;
-    z-index: 2;
+    z-index: 10;
 }
 
 .button {
     user-select: none;
     cursor: pointer;
     transition: opacity 0.3s ease-in-out, background-color 0.1s ease-in-out;
-    border-radius: 16.5px;
-    padding: 5px 15px;
-    height: 33px;
+    border-radius: .6rem;
+    padding: .3rem 1rem;
+    height: 2rem;
     background-color: #999;
     color: white;
     display: inline-flex;
@@ -154,13 +166,32 @@ input.control {
 }
 
 .button:active {
-    background-color: #777;
+    filter: brightness(0.9);
+}
+
+.icon {
+    top: unset;
+    left: unset;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    width: 3rem;
+    height: 2rem;
+    position: absolute;
+    bottom: 1rem;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.icon:hover {
+    opacity: 1;
 }
 
 #menu {
-    margin-top: 8px;
+    margin-top: .3rem;
     position: relative;
-    padding: 0 8px;
+    padding: 0 .3rem;
     white-space: nowrap;
     display: flex;
     align-items: center;
@@ -168,17 +199,15 @@ input.control {
 }
 
 #menu .button {
-    margin-left: 4px;
+    margin-left: .3rem;
 }
 
 #search {
-    width: 312px;
-    min-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-right: 31px;
-    padding-left: 1rem;
-    margin-right: 4px;
+    width: 20rem;
+    min-width: 10rem;
+    padding-right: 2rem;
+    margin-right: .15rem;
+    transition: opacity 0.3s ease-in-out;
 }
 
 #search:disabled {
@@ -186,11 +215,11 @@ input.control {
 }
 
 #clear {
-    width: 16.5px;
-    min-width: 16.5px;
-    height: 16.5px;
+    width: 1rem;
+    min-width: 1rem;
+    height: 1rem;
     padding: 0;
-    margin-left: -28px !important;
+    margin-left: -1.65rem !important;
     background-image: url('../img/times-circle.svg');
     background-position: center center;
     background-repeat: no-repeat;
@@ -203,7 +232,7 @@ input.control {
 }
 
 #reload {
-    margin-left: 16px !important;
+    margin-left: .8rem !important;
 }
 
 #hideUp.active {
@@ -212,6 +241,7 @@ input.control {
 
 #send {
     display: inline-block;
+    position: relative;
 }
 
 #sendBtn {
@@ -224,8 +254,8 @@ input.control {
 
 #sendBtn::after {
     position: absolute;
-    right: 5px;
-    top: 3px;
+    right: .3rem;
+    top: .2rem;
     content: '\2713';
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -238,15 +268,15 @@ input.control {
 
 #plURL {
     position: absolute;
-    z-index: 1000;
-    top: 40px;
+    z-index: 100;
+    top: 2.3rem;
     left: 0;
-    box-shadow: 0 0 8px 2px rgba(120,120,120,0.5);
+    box-shadow: 0 0 .3rem .1rem rgba(120,120,120,0.5);
 }
 
 #clock {
     position: absolute;
-    right: 10px;
+    right: .6rem;
     user-select: none;
     font-size: xx-large;
     color: #777;
@@ -260,12 +290,13 @@ input.control {
 }
 
 #main > * {
-    padding: 8px;
+    margin: .3rem;
 }
 
 #control {
-    width: 320px;
-    padding-right: 0;
+    width: 20rem;
+    margin-right: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
 #control, #view {
@@ -284,7 +315,6 @@ input.control {
     font-weight: 700;
     user-select: none;
     text-align: center;
-    z-index: 2;
 }
 
 #songlist, #playlist, #live {
@@ -294,27 +324,6 @@ input.control {
 
 #playlist .filter {
     padding: 0;
-}
-
-#delete {
-    top: unset;
-    left: 135px;
-    width: 50px;
-    height: 50px;
-    bottom: 8px;
-    opacity: 0;
-    z-index: -100;
-    background-image: url('../img/trash-alt.svg');
-    background-size: auto 80%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: rgba(0,0,0,0.1);
-    border-radius: 8px;
-}
-
-#delete.show {
-    z-index: 100;
-    opacity: 0.5;
 }
 
 #playlist .playing {
@@ -328,11 +337,32 @@ input.control {
     color: #4CAF50;
 }
 
+.focused #playlist .selected.showing .lyrics {
+    color: #69e96d;
+}
+
 #bin {
     opacity: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
+
+#trash {
+    top: unset;
+    left: 8.5rem;
+    width: 3rem;
+    height: 3rem;
+    bottom: .6rem;
+    opacity: 0.5;
+    background-image: url('../img/trash-alt.svg');
+    background-size: auto 80%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: .3rem;
+    transition: all 0.3s ease-in-out;
+    filter: grayscale(100%);
 }
 
 #view {
@@ -344,20 +374,48 @@ input.control {
 }
 
 #preview {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
     box-sizing: border-box;
-    padding: 2rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#preview > * {
+    transition: all 0.3s ease-in-out;
+}
+
+#preview > *:read-only {
+    background-color: #f8f8f8;
+    color: #666;
 }
 
 #pTitle {
     font-weight: 700;
-    font-size: large;
-    margin-bottom: 1em;
+    font-size: 120%;
+    height: 2.4rem;
+    border-radius: .6rem .6rem 0 0;
+    border-bottom: 1px solid #eee;
+}
+
+#pLyrics {
+    flex-grow: 1;
+    font-size: inherit;
+    border-radius: 0 0 .6rem .6rem;
+}
+
+#edit {
+    background-image: url('../img/edit.svg');
+    right: 1rem;
+}
+
+#cancel {
+    background-image: url('../img/times.svg');
+    right: 3.5rem;
+}
+
+#save {
+    background-image: url('../img/check.svg');
+    right: 1rem;
 }
 
 .focused #live .selected {
@@ -377,10 +435,9 @@ input.control {
 #live .key {
     font-size: small;
     position: absolute;
-    left: 5px;
+    left: .35rem;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 100;
     padding: .1em .5em .2em .5em;
     border-radius: .5em;
     background-color: black;
@@ -395,11 +452,15 @@ input.control {
     -webkit-text-stroke-color: black;
 }
 
+#liveBin {
+    opacity: 0;
+}
+
 #path {
-    border-radius: 10px 10px 0 0;
+    border-radius: .6rem .6rem 0 0;
     background-color: #999;
     color: white;
-    margin-top: 8px;
+    margin-top: .3rem;
     opacity: 0.5;
     transition: opacity 0.3s ease-in-out;
 }
@@ -409,14 +470,14 @@ input.control {
 }
 
 #path:active {
-    background-color: #777;
+    filter: brightness(0.9);
 }
 
 #liveLyrics {
     padding-top: 15.5%;
     position: relative;
     user-select: none;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 .6rem .6rem;
     overflow: hidden;
 }
 
@@ -426,7 +487,6 @@ input.control {
     left: 0;
     height: 100%;
     width: 100%;
-    z-index: 1;
     border: none;
     outline: none;
     background-color: #000;
@@ -435,7 +495,7 @@ input.control {
 
 #hide {
     position: fixed;
-    z-index: -999;
+    z-index: -100;
     opacity: 0;
     padding: 0;
     margin: 0;
@@ -443,7 +503,23 @@ input.control {
     width: 0;
 }
 
-#login {
+#controlDelete {
+    display: flex;
+}
+
+#typeDelete {
+    flex-grow: 1;
+}
+
+#cancelDelete {
+    margin: 0 .3rem;
+}
+
+#confirmDelete {
+    background-color: #f44336;
+}
+
+.modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -456,33 +532,19 @@ input.control {
     flex-direction: column;
     box-sizing: border-box;
     padding: 0 20%;
-    z-index: 99999;
-}
-
-#login > * {
-    border: none;
-    outline: none;
+    z-index: 10000;
     text-align: center;
-    padding: 8px 16px;
-    border-radius: 20px;
-    margin: 8px;
-    font-size: 16px;
-    background-color: #eee;
-    color: #999;
-    height: 40px;
-    box-sizing: border-box;
-    font-weight: 300;
-    font-family: SourceHanSans;
 }
 
-#login > input {
-    color: #333;
-    background-color: white;
-    text-overflow: ellipsis;
-    overflow: hidden;
+.modal input {
+    text-align: center;
 }
 
-#login > input:read-only {
+.modal > * {
+    margin-bottom: .3rem;
+}
+
+.modal input:read-only {
     background-color: #eee;
     color: #999;
 }
@@ -497,4 +559,14 @@ input.control {
 
 .opaque {
     opacity: 1 !important;
+}
+
+.real {
+    filter: none !important;
+}
+
+.disabled, .disabled:hover {
+    cursor: initial !important;
+    filter: grayscale(100%) !important;
+    opacity: 0.1 !important;
 }

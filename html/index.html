@@ -16,7 +16,7 @@
         <span id="hideUp" class="button"><div>Hide</div></span>
         <span id='send' class="none">
           <div id='sendBtn' class="button">
-            <div>Send</div>
+            <div>Live</div>
           </div>
           <input id="plURL" class="control none" type="text">
         </span>
@@ -26,12 +26,12 @@
         <div id="control">
           <div id="forSonglist" class="container">
             <div id="songlist" class="control select"></div>
-            <div id="notFound" class="control none"><div>No results found</div></div>
-            <div id="loading" class="control"><div>Loading songs......</div></div>
+            <div id="notFound" class="control cover none"><div>No results found</div></div>
+            <div id="loading" class="control cover"><div>Loading songs......</div></div>
           </div>
           <div id="forPlaylist" class="container">
             <div id="playlist" class="control select"></div>
-            <div id="delete">
+            <div id="trash" class="hidden">
               <div id="bin"></div>
             </div>
           </div>
@@ -40,12 +40,16 @@
           <div>
             <div class="container">
               <div id="preview" class="control">
-                <div id="pTitle"></div>
-                <div id="pLyrics"></div>
+                <input type="text" class="control" id="pTitle" readonly>
+                <textarea id="pLyrics" class="control" readonly></textarea>
               </div>
+              <div id="edit" class="icon"></div>
+              <div id="cancel" class="icon none"></div>
+              <div id="save" class="icon none disabled"></div>
             </div>
             <div id="forLive" class="container">
               <div id="live" class="control select"></div>
+              <div id="liveBin" class="control hidden"></div>
             </div>
           </div>
           <input type="text" id="path" class="control" readonly>
@@ -56,10 +60,18 @@
         </div>
       </div>
       <input type="text" id="hide" readonly>
-      <div id="login" class="none">
-        <input type="url" id="address" placeholder="server">
-        <input type="text" id="password" placeholder="token">
-        <input type="text" id="status" readonly>
+      <div id="onDelete" class="modal none">
+        <input type="text" id="askDelete" class="control" readonly>
+        <div id="controlDelete">
+          <input type="text" id="typeDelete" class="control" placeholder="delete">
+          <span id="cancelDelete" class="button">Cancel</span>
+          <span id="confirmDelete" class="button disabled">Delete</span>
+        </div>
+      </div>
+      <div id="login" class="modal none">
+        <input type="url" id="address" class="control" placeholder="server">
+        <input type="text" id="password" class="control" placeholder="token">
+        <input type="text" id="status" class="control" readonly>
       </div>
     </div>
     <script src="js/define.js"></script>
@@ -68,6 +80,7 @@
     <script src="js/reload.js"></script>
     <script src="js/file.js"></script>
     <script src="js/select.js"></script>
+    <script src="js/editor.js"></script>
 
     <script src="js/mouse.js"></script>
     <script src="js/keyboard.js"></script>

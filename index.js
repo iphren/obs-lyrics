@@ -13,10 +13,6 @@ app.html = 'http://127.0.0.1:56733';
 
 try {
   app.configs = JSON.parse(fs.readFileSync(app.settings));
-  if (app.configs.maximize) {
-    delete app.configs.maximize;
-    app.configs.rec = {width: 800, height: 600}
-  }
 } catch (e) {
   app.configs = {rec: {width: 800, height: 600}}
 }
@@ -54,7 +50,6 @@ function createWindow () {
   });
   try {win.setBounds(app.configs.rec)} catch (e) {}
   app.configs.rec = win.getBounds();
-  app.thisWin = win;
   win.loadFile('html/index.html');
   win.setMenu(null);
   if (!app.isPackaged) win.webContents.openDevTools();
@@ -130,7 +125,7 @@ http.on('error', error => {
   }
   switch (error.code) {
     case 'EADDRINUSE':
-      dialog.showErrorBox('Error','Port 56733 in use.');
+      dialog.showErrorBox('Error','port 56733 in use');
       process.exit(1);
       break;
     default:

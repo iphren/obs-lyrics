@@ -1,5 +1,6 @@
 function play(e) {
     e.stopPropagation();
+    if (control.classList.contains('disabled')) return;
     let list = e.target, item = undefined;
     while (list && !list.classList.contains('select')) {
         if (list.classList.contains('option')) item = list;
@@ -42,18 +43,19 @@ function select(e) {
         if (list.classList.contains('option')) item = list;
         list = list.parentNode;
     }
-    if (list.getElementsByClassName('result').length !== 0)
-        changeFocus(list.parentNode);
-    else
-        changeFocus();
     switch (list.id) {
         case 'songlist':
         case 'playlist':
+            if (control.classList.contains('disabled')) return;
+            if (list.getElementsByClassName('result').length !== 0) changeFocus(list.parentNode);
+            else changeFocus();
             if (item && !(item.classList.contains('selected'))) {
                 selectSong(item, list);
             }
             break;
         case 'live':
+            if (list.getElementsByClassName('result').length !== 0) changeFocus(list.parentNode);
+            else changeFocus();
             if (item && !(item.classList.contains('selected'))) {
                 changeLyrics(item);
             }
@@ -62,6 +64,7 @@ function select(e) {
 }
 
 function selectSong(item = null, parent = null) {
+    if (control.classList.contains('disabled')) return;
     if (selected) selected.classList.remove('selected');
     selected = item;
     if (item) {
@@ -73,12 +76,12 @@ function selectSong(item = null, parent = null) {
         item.classList.add('selected');
         if (item.classList.contains('preview')) {
             let song = JSON.parse(item.getAttribute('value'));
-            pTitle.innerHTML = song.title;
-            pLyrics.innerHTML = song.lyrics.replace(/\n/g,'<br>');
+            savedTitle = pTitle.value = song.title;
+            savedLyrics = pLyrics.value = song.lyrics;
         }
     } else {
-        pTitle.innerHTML = '';
-        pLyrics.innerHTML = '';
+        savedTitle = pTitle.value = '';
+        savedLyrics = pLyrics.value = '';
     }
 }
 

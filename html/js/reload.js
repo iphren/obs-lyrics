@@ -1,7 +1,12 @@
-async function reload(e = null) {
+async function reload(e = null, sel = null) {
     if (e) {
         e.preventDefault();
         e.stopPropagation();
+    }
+    if (reloadBtn.classList.contains('disabled')) return;
+    let selp = null;
+    if (songlist.isSameNode(selectedParent) && selected) {
+        sel = selected.getAttribute('songId');
     }
     lastFocused = focused;
     loading.classList.remove('none');
@@ -16,7 +21,7 @@ async function reload(e = null) {
         fs.writeFile(app.token, JSON.stringify({url: address.value, token: password.value}), ()=>{});
         return x;
     })
-    .catch(() => {
+    .catch(xhr => {
         status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
         login.classList.remove('none');
         return [];
@@ -24,6 +29,10 @@ async function reload(e = null) {
     songlist.innerHTML = '';
     for (let song of songs) {
         let item = addSong(song, songlist);
+        if (item.getAttribute('songId') === sel) {
+            selp = songlist;
+            sel = item;
+        }
         for (let i of playlist.childNodes) {
             if (i.getAttribute('songId') == song.id) {
                 let node = item.cloneNode(true);
@@ -32,21 +41,24 @@ async function reload(e = null) {
             }
         }
     }
+    let pla = null;
+    for (let i of playlist.childNodes) {
+        if (i.classList.contains('selected')) {
+            selp = playlist;
+            sel = i;
+        }
+        if (i.classList.contains('playing'))
+            pla = i;
+    }
+    if (selp) selectSong(sel, selp);
+    else selectSong();
+    showLyrics(pla);
     setTimeout(function(){
         loading.classList.add('none');
         search.disabled = false;
         changeFocus(lastFocused);
         webApp.classList.remove('reloading');
     },1000);
-    let sel = null, pla = null;
-    for (let i of playlist.childNodes) {
-        if (i.classList.contains('selected'))
-            sel = i;
-        if (i.classList.contains('playing'))
-            pla = i;
-    }
-    selectSong(sel, playlist);
-    showLyrics(pla);
 }
 
 function addSong(song, list) {

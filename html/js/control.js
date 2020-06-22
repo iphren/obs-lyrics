@@ -1,3 +1,5 @@
+const Sortable = require("sortablejs");
+
 loadToken();
 loadPlaylist();
 
@@ -6,7 +8,7 @@ ipcRenderer.on('update', function(event, text) {
     document.title = text === 'latest version' ? app.getName() : `${app.getName()} - ${text}`;
 });
 
-app.thisWin.webContents.on('did-finish-load', function(){
+remote.getCurrentWebContents().on('did-finish-load', function(){
     webApp.classList.remove('hidden');
 });
 
@@ -31,34 +33,72 @@ new Sortable(songlist, {
     },
     sort: false,
     draggable: '.option',
-    onStart: () => bin.parentNode.classList.add('show'),
-    onUnchoose: () => bin.parentNode.classList.remove('show'),
+    onStart: dragOn,
+    onUnchoose: dragOff,
     onClone: e => {
         if (e.item.isSameNode(selected)) selectSong(e.clone, songlist);
     },
-    onChange: e => bin.parentNode.classList.remove('opaque'),
+    onChange: e => trash.classList.remove('real'),
     animation: 150
 });
 new Sortable(playlist, {
-    group: 'shared',
+    group: {
+        name: 'shared',
+        pull: function(to, from) {
+            return to.el.id === 'liveBin' ? 'clone' : true;
+        }
+    },
     draggable: '.option',
     filter: '.filter',
-    onStart: () => bin.parentNode.classList.add('show'),
-    onUnchoose: () => bin.parentNode.classList.remove('show'),
+    onStart: dragOn,
+    onUnchoose: dragOff,
     onSort: e => {
         savePlaylist();
         changeFocus(playlist.parentNode);
     },
-    onChange: e => bin.parentNode.classList.remove('opaque'),
+    onChange: e => trash.classList.remove('real'),
     animation: 150
 });
 new Sortable(bin, {
-    group: 'shared',
-    draggable: '.option',
-    onChange: e => bin.parentNode.classList.add('opaque'),
+    group: {
+        name: 'shared',
+        pull: false
+    },
+    onChange: e => trash.classList.add('real'),
     onAdd: e => {
         if (e.item.isSameNode(currentPlaying)) showLyrics();
         if (e.item.isSameNode(selected)) selectSong();
         e.item.remove();
+        if (e.from.id === 'songlist') {
+            deleteSong(e.clone);
+        }
     }
 });
+new Sortable(liveBin, {
+    group: {
+        name: 'shared',
+        pull: false
+    },
+    onAdd: e => {
+        if (e.clone.parentNode.isSameNode(songlist)) {
+            addToPlaylist(e.clone);
+            selectSong(playlist.lastChild, playlist);
+            showLyrics(playlist.lastChild);
+        } else {
+            selectSong(e.clone, playlist);
+            showLyrics(e.clone);
+        }
+        e.item.remove();
+    }
+});
+
+function dragOn() {
+    trash.classList.remove('hidden');
+    liveBin.classList.remove('hidden');
+}
+
+function dragOff() {
+    trash.classList.remove('real');
+    trash.classList.add('hidden');
+    liveBin.classList.add('hidden');
+}

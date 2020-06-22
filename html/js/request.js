@@ -10,7 +10,7 @@ function post(url, data) {
                 if (xhr.status === 200) {
                     resolve(xhr.response);
                 } else {
-                    reject();
+                    reject(xhr);
                 }
             }
         }
@@ -18,7 +18,8 @@ function post(url, data) {
     });
 }
 
-function sendPlaylist() {
+function sendPlaylist(e = null) {
+    if (e) e.preventDefault();
     if (!app.configs.plURL && !plURL.value) {
         plURL.classList.remove('none');
         plURL.focus();
