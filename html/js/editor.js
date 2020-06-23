@@ -42,7 +42,8 @@ function closeEditor(e = null, restore = true) {
 }
 
 function editorControl(e) {
-    if (e.key === 'Tab' && !e.target.readOnly) {
+    if (e.target.readOnly) return;
+    if (e.key === 'Tab') {
         e.stopPropagation();
         e.preventDefault();
         changeFocus();

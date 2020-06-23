@@ -57,7 +57,7 @@ async function reload(e = null, sel = null) {
         search.disabled = false;
         changeFocus(lastFocused);
         webApp.classList.remove('reloading');
-    },1000);
+    },100);
 }
 
 function addSong(song, list) {
