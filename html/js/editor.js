@@ -3,6 +3,7 @@ function openEditor(e = null) {
         e.stopPropagation();
         e.preventDefault();
     }
+    hideUp.classList.contains('active') && toggleHide();
     edit.classList.add('none');
     cancel.classList.remove('none');
     saveBtn.classList.remove('none');
