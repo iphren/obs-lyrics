@@ -2,7 +2,7 @@
   "name": "live-lyrics",
   "productName": "Live Lyrics",
   "appname": "Live Lyrics",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Live Lyrics",
   "build": {
     "appId": "com.electron.live-lyrics",

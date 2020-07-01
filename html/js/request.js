@@ -26,12 +26,9 @@ function sendPlaylist(e = null) {
         return;
     }
     let pl = [];
-    for (let o of playlist.childNodes) {
+    for (let o of playlist.getElementsByClassName('result')) {
         let v = o.getAttribute('value');
-        if (v) {
-            v = JSON.parse(v);
-            if (v.title && !(pl.includes(v.title))) pl.push(v.title);
-        }
+        if (v) pl.push(JSON.parse(v));
     }
     post(`https://${plURL.value}`,{playlist: pl, token: password.value})
     .then(() => {
