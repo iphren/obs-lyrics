@@ -81,6 +81,7 @@ function selectSong(item = null, parent = null) {
             savedLyrics = pLyrics.value = song.lyrics;
             for (let key in savedInfo) {
                 if (key in song) savedInfo[key] = document.getElementById(key).value = song[key];
+                else savedInfo[key] = document.getElementById(key).value = '';
             }
         }
     } else {
