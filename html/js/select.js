@@ -38,6 +38,7 @@ function changeFocus(node = null) {
 
 function select(e) {
     e.stopPropagation();
+    closeInfo();
     let list = e.target, item = undefined;
     while (list && !list.classList.contains('select')) {
         if (list.classList.contains('option')) item = list;
@@ -78,10 +79,16 @@ function selectSong(item = null, parent = null) {
             let song = JSON.parse(item.getAttribute('value'));
             savedTitle = pTitle.value = song.title;
             savedLyrics = pLyrics.value = song.lyrics;
+            for (let key in savedInfo) {
+                if (key in song) savedInfo[key] = document.getElementById(key).value = song[key];
+            }
         }
     } else {
         savedTitle = pTitle.value = '';
         savedLyrics = pLyrics.value = '';
+        for (let key in savedInfo) {
+            savedInfo[key] = document.getElementById(key).value = '';
+        }
     }
 }
 

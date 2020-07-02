@@ -403,6 +403,13 @@ textarea.control {
     border-radius: 0 0 .6rem .6rem;
 }
 
+#editInfo {
+    background-image: url('../img/clipboard-list.svg');
+    top: .35rem;
+    right: -.5rem;
+    height: 1.5rem;
+}
+
 #edit {
     background-image: url('../img/edit.svg');
     right: 1rem;
@@ -503,6 +510,22 @@ textarea.control {
     width: 0;
 }
 
+#songInfo {
+    width: 15rem;
+    height: 20rem;
+    padding: 1rem;
+    left: calc(50vw - 7.5rem);
+    top: calc(50vh - 10rem);
+}
+
+#songInfo input {
+    text-align: left;
+}
+
+#songInfo input::placeholder {
+    opacity: .3;
+}
+
 #controlDelete {
     display: flex;
 }
@@ -542,6 +565,10 @@ textarea.control {
 
 .modal > * {
     margin-bottom: .3rem;
+}
+
+.modal > *:last-child {
+    margin-bottom: 0;
 }
 
 .modal input:read-only {

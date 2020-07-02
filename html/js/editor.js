@@ -9,6 +9,9 @@ function openEditor(e = null) {
     saveBtn.classList.remove('none');
     pTitle.readOnly = false;
     pLyrics.readOnly = false;
+    for (let key in savedInfo) {
+        document.getElementById(key).readOnly = false;
+    }
     reloadBtn.classList.add('disabled');
     control.classList.add('disabled');
     hideUp.classList.add('disabled');
@@ -24,6 +27,7 @@ function closeEditor(e = null, restore = true) {
         e.stopPropagation();
         e.preventDefault();
     }
+    closeInfo();
     if (restore) {
         pTitle.value = savedTitle;
         pLyrics.value = savedLyrics;
@@ -33,6 +37,10 @@ function closeEditor(e = null, restore = true) {
     saveBtn.classList.add('none');
     pTitle.readOnly = true;
     pLyrics.readOnly = true;
+    for (let key in savedInfo) {
+        if (restore) document.getElementById(key).value = savedInfo[key];
+        document.getElementById(key).readOnly = true;
+    }
     reloadBtn.classList.remove('disabled');
     control.classList.remove('disabled');
     hideUp.classList.remove('disabled');
@@ -40,6 +48,22 @@ function closeEditor(e = null, restore = true) {
     search.disabled = false;
     editorInput();
     hideUp.focus();
+}
+
+function openInfo(e = null) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    songInfo.classList.remove('none');
+}
+
+function closeInfo(e = null) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    songInfo.classList.add('none');
 }
 
 function editorControl(e) {
@@ -63,7 +87,14 @@ function editorControl(e) {
 }
 
 function editorInput() {
-    if ((savedTitle !== pTitle.value || savedLyrics !== pLyrics.value) && pTitle.value && pLyrics.value) {
+    let info = false;
+    for (let key in savedInfo) {
+        if (savedInfo[key] !== document.getElementById(key).value) {
+            info = true;
+            break;
+        }
+    }
+    if ((info || savedTitle !== pTitle.value || savedLyrics !== pLyrics.value) && pTitle.value && pLyrics.value) {
         saveBtn.classList.remove('disabled');
     } else {
         saveBtn.classList.add('disabled');
@@ -75,6 +106,7 @@ function save(e = null) {
         e.stopPropagation();
         e.preventDefault();
     }
+    closeInfo();
     if (saveBtn.classList.contains('disabled')) return;
     let song = {};
     if (selected) {
@@ -82,6 +114,9 @@ function save(e = null) {
     }
     song.title = pTitle.value;
     song.lyrics = pLyrics.value;
+    for (let key in savedInfo) {
+        song[key] = document.getElementById(key).value;
+    }
     if (!song.id) song.id = '';
     post(`https://${address.value}/save`, {song: song, token: password.value, needId: true})
     .then(x => {
@@ -91,6 +126,17 @@ function save(e = null) {
         status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
         login.classList.remove('none');
     });
+}
+
+function noDelete(e = null) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    onDelete.classList.add('none');
+    typeDelete.value = '';
+    confirmDelete.classList.add('disabled');
+    confirmDelete.setAttribute('songid', '');
 }
 
 function deleteSong(node) {

@@ -4,6 +4,7 @@ window.oncontextmenu = function (e) {
 
 window.onmousedown = function () {
     plURL.classList.add('none');
+    closeInfo();
     changeFocus();
 }
 
@@ -47,6 +48,7 @@ function toggleHide(e = null) {
         e.stopPropagation();
         e.preventDefault();
     }
+    closeInfo();
     if (hideUp.classList.contains('disabled')) return;
     let act = hideUp.classList.contains('active');
     if (act)
@@ -67,18 +69,27 @@ function toggleHide(e = null) {
 
 sendBtn.onmousedown = sendPlaylist;
 
+editInfo.onmousedown = openInfo;
 edit.onmousedown = openEditor;
 cancel.onmousedown = closeEditor;
 saveBtn.onmousedown = save;
 
-cancelDelete.onmousedown = function(e) {
+songInfo.onmousedown = function(e) {
+    e.stopPropagation();
+}
+
+onDelete.onmousedown = function(e) {
     e.stopPropagation();
     e.preventDefault();
-    onDelete.classList.add('none');
-    typeDelete.value = '';
-    confirmDelete.classList.add('disabled');
-    confirmDelete.setAttribute('songid', '');
+    typeDelete.focus();
 }
+
+askDelete.onmousedown = function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    typeDelete.focus();
+}
+cancelDelete.onmousedown = noDelete;
 
 confirmDelete.onmousedown = function(e) {
     e.stopPropagation();

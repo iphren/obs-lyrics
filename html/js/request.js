@@ -20,6 +20,7 @@ function post(url, data) {
 
 function sendPlaylist(e = null) {
     if (e) e.preventDefault();
+    closeInfo();
     if (!app.configs.plURL && !plURL.value) {
         plURL.classList.remove('none');
         plURL.focus();

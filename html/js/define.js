@@ -24,6 +24,7 @@ const trash = document.getElementById('trash');
 const bin = document.getElementById('bin');
 const pTitle = document.getElementById('pTitle');
 const pLyrics = document.getElementById('pLyrics');
+const editInfo = document.getElementById('editInfo');
 const edit = document.getElementById('edit');
 const cancel = document.getElementById('cancel');
 const saveBtn = document.getElementById('save');
@@ -36,6 +37,7 @@ const address = document.getElementById('address');
 const password = document.getElementById('password');
 const status = document.getElementById('status');
 const hide = document.getElementById('hide');
+const songInfo = document.getElementById('songInfo');
 const onDelete = document.getElementById('onDelete');
 const askDelete = document.getElementById('askDelete');
 const typeDelete = document.getElementById('typeDelete');
@@ -49,6 +51,10 @@ var selected = null;
 var selectedParent = null;
 var focused = null, lastFocused = null;
 var savedTitle = '', savedLyrics = '';
+var savedInfo = {};
+for (let node of songInfo.getElementsByTagName('input')) {
+    savedInfo[node.id] = '';
+}
 
 const rotation = [search, songlist.parentNode, playlist.parentNode, live.parentNode];
 const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';

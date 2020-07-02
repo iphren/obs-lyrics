@@ -43,6 +43,7 @@
                 <input type="text" class="control" id="pTitle" readonly>
                 <textarea id="pLyrics" class="control" readonly></textarea>
               </div>
+              <div id="editInfo" class="icon"></div>
               <div id="edit" class="icon"></div>
               <div id="cancel" class="icon none"></div>
               <div id="save" class="icon none disabled"></div>
@@ -60,6 +61,16 @@
         </div>
       </div>
       <input type="text" id="hide" readonly>
+      <div id="songInfo" class="modal control none">
+        <input type="text" id="lyricist" class="control" placeholder="Lyricist" readonly>
+        <input type="text" id="composer" class="control" placeholder="Composer" readonly>
+        <input type="text" id="album" class="control" placeholder="Album" readonly>
+        <input type="text" id="series" class="control" placeholder="Series" readonly>
+        <input type="text" id="key" class="control" placeholder="Key" readonly>
+        <input type="text" id="year" class="control" placeholder="Year" readonly>
+        <input type="text" id="copyright" class="control" placeholder="Copyright" readonly>
+        <input type="text" id="ccli" class="control" placeholder="CCLI Song No." readonly>
+      </div>
       <div id="onDelete" class="modal none">
         <input type="text" id="askDelete" class="control" readonly>
         <div id="controlDelete">

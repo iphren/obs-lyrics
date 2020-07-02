@@ -81,6 +81,26 @@ pLyrics.onkeydown = editorControl;
 pTitle.oninput = editorInput;
 pLyrics.oninput = editorInput;
 
+typeDelete.onkeydown = function(e) {
+    e.stopPropagation();
+    if (e.key === 'Escape') noDelete();
+}
+
+typeDelete.oninput = function(e) {
+    if (typeDelete.value === 'delete') {
+        confirmDelete.classList.remove('disabled');
+    } else {
+        confirmDelete.classList.add('disabled');
+    }
+}
+
+for (let node of songInfo.getElementsByTagName('input')) {
+    node.onkeydown = function(e) {
+        e.stopPropagation();
+    }
+    node.oninput  = editorInput;
+}
+
 window.onkeydown = function (e) {
     if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
     e.preventDefault();
@@ -214,17 +234,5 @@ window.onkeydown = function (e) {
             if (item) {
                 changeLyrics(item);
             }
-    }
-}
-
-typeDelete.onkeydown = function(e) {
-    e.stopPropagation();
-}
-
-typeDelete.oninput = function(e) {
-    if (typeDelete.value === 'delete') {
-        confirmDelete.classList.remove('disabled');
-    } else {
-        confirmDelete.classList.add('disabled');
     }
 }
