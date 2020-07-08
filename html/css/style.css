@@ -100,6 +100,10 @@ textarea.control {
     background-color: #bbb;
 }
 
+.highlight {
+    color: #4CAF50 !important;
+}
+
 .option {
     user-select: none;
     width: 100%;

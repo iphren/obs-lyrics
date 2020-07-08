@@ -17,7 +17,7 @@ try {
   app.configs = {rec: {width: 800, height: 600}}
 }
 
-let win;
+let win, top;
 
 autoUpdater.on('checking-for-update', () => {
   win.webContents.send('update', 'checking for update...');
@@ -44,6 +44,7 @@ function createWindow () {
     height: app.configs.rec.height,
     minWidth: 800,
     minHeight: 600,
+    show: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -71,6 +72,43 @@ function createWindow () {
   win.on('unmaximize', () => {
     save('maximize', false);
   });
+
+  top = new BrowserWindow({
+    width: 466,
+    height: 120,
+    x: 150,
+    y: 150,
+    resizable: false,
+    frame: false,
+    transparent: true,
+    minimizable: false,
+    maximizable: false,
+    closable: false,
+    show: false,
+    skipTaskbar: true,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+  top.setAlwaysOnTop(true, "pop-up-menu");
+  top.loadFile('html/top.html');
+  top.setMenu(null);
+  if (!app.isPackaged) {
+    //top.webContents.openDevTools();
+    //top.setSize(800,600);
+  }
+
+  win.on('focus', () => {
+    top.hide();
+  });
+  win.on('blur', () => {
+    top.show();
+  });
+  win.on('close', () => {
+    top.destroy();
+  });
+
+  win.show();
 }
 
 app.whenReady().then(createWindow);
@@ -97,6 +135,20 @@ function save(key, value)  {
   return true;
 }
 app.save = save;
+
+ipcMain.on('top', (event, key) => {
+  win.webContents.send('top', key);
+});
+
+ipcMain.on('title', (event, data) => {
+  top.webContents.send('title', data);
+});
+
+
+
+
+
+
 
 const express = require('express');
 const exp = express();

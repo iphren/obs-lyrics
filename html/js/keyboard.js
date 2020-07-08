@@ -101,7 +101,9 @@ for (let node of songInfo.getElementsByTagName('input')) {
     node.oninput  = editorInput;
 }
 
-window.onkeydown = function (e) {
+window.onkeydown = keyControl;
+
+function keyControl(e) {
     if ((e.ctrlKey && !(e.key in ctrlKeys)) || (e.metaKey && !(e.key in metaKeys))) return;
     e.preventDefault();
     if (!search.isSameNode(focused)) hide.focus();
@@ -236,3 +238,12 @@ window.onkeydown = function (e) {
             }
     }
 }
+
+ipcRenderer.on('top', (event, key) => {
+    let e = {preventDefault:function(){}};
+    if (key in allowedTop || key.length === 1) {
+        if (key === 'Backspace' && !currentLyrics) return;
+        e.key = key;
+        keyControl(e);
+    }
+});

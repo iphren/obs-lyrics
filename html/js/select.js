@@ -80,8 +80,7 @@ function selectSong(item = null, parent = null) {
             savedTitle = pTitle.value = song.title;
             savedLyrics = pLyrics.value = song.lyrics;
             for (let key in savedInfo) {
-                if (key in song) savedInfo[key] = document.getElementById(key).value = song[key];
-                else savedInfo[key] = document.getElementById(key).value = '';
+                savedInfo[key] = document.getElementById(key).value = key in song ? song[key] : '';
             }
         }
     } else {
@@ -103,6 +102,7 @@ function showLyrics(item = null) {
         if (playlist.getElementsByClassName('result').length !== 0) changeFocus(playlist.parentNode);
         else changeFocus();
         live.innerHTML = '';
+        ipcRenderer.send('title', {title: ''});
         return;
     }
     changeFocus(live.parentNode);
@@ -110,13 +110,15 @@ function showLyrics(item = null) {
         playlist.scrollTop = item.offsetTop;
     else if (item.offsetTop + item.clientHeight > playlist.scrollTop + playlist.clientHeight)
         playlist.scrollTop = item.offsetTop + item.clientHeight - playlist.clientHeight;
-    let lyrics = JSON.parse(item.getAttribute('value')).lyrics.split('\n\n');
+    let highlight = item.classList.contains('showing');
+    let data = JSON.parse(item.getAttribute('value'));
+    ipcRenderer.send('title', {title: data.title, highlight: highlight});
+    let lyrics = data.lyrics.split('\n\n');
     item.classList.add('playing');
     let step = 2;
     live.innerHTML = '';
     let m = 0;
     let style = true;
-    let highlight = item.classList.contains('showing');
     for (let i of lyrics) {
         let j = i.split('\n');
         for (let k = 0; k < j.length; k += step) {
@@ -152,6 +154,7 @@ function changeLyrics(item = null) {
         o.classList.remove('selected');
     for (let o of playlist.childNodes)
         o.classList.remove('showing');
+    ipcRenderer.send('title', {same: true, highlight: Boolean(item)});
     if (item) {
         changeFocus(live.parentNode);
         currentPlaying.classList.add('showing');

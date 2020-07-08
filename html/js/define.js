@@ -61,3 +61,12 @@ const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
 const ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true, l:true, L:true, e:true, E:true, n:true, N:true};
 const funcKeys = {Tab: true, F5: true}
 const metaKeys = {};
+const allowedTop = {
+    Backspace: true,
+    ArrowDown: true,
+    ArrowUp: true,
+    ArrowRight: true,
+    PageDown: true,
+    ArrowLeft: true,
+    PageUp: true
+}

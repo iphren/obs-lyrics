@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Live Lyrics</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <style>
+      #title {
+        color: #888;
+      }
+    </style>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body style="background-color: #00000000; margin: 0; padding: 0; ">
+    <input type="text" id="path" class="control" style="width: 100%; margin: 0; " readonly>
+    <div id="liveLyrics" class="control" style="background-color: #00000000; -webkit-app-region: drag; padding-top: calc(15.5% + 1rem);">
+      <iframe id="liveFrame"></iframe>
+      <div class="cover">
+        <div id="title" style="position: absolute; top: .25rem; left: 0; font-weight: bold; width: 100%; text-align: center;"></div>
+      </div>
+    </div>
+    <input type="text" id="hide" readonly>
+    <script src="js/top.js"></script>
+  </body>
+</html>
