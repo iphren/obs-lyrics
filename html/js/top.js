@@ -20,3 +20,7 @@ ipcRenderer.on('title', (event, data) => {
     if (data.highlight) title.classList.add('highlight');
     else title.classList.remove('highlight');
 });
+
+document.getElementById('pin').onmouseup = function() {
+    ipcRenderer.send('toggleTop', false);
+}

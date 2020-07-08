@@ -18,6 +18,7 @@ try {
 }
 
 let win, top;
+let showTop = true;
 
 autoUpdater.on('checking-for-update', () => {
   win.webContents.send('update', 'checking for update...');
@@ -102,7 +103,7 @@ function createWindow () {
     top.hide();
   });
   win.on('blur', () => {
-    top.show();
+    if (showTop) top.show();
   });
   win.on('close', () => {
     top.destroy();
@@ -144,6 +145,12 @@ ipcMain.on('title', (event, data) => {
   top.webContents.send('title', data);
 });
 
+ipcMain.on('toggleTop', (event, st) => {
+  showTop = st;
+  if (showTop) top.show();
+  else top.hide();
+  win.webContents.send('toggleTop', showTop);
+});
 
 
 

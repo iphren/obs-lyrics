@@ -69,6 +69,13 @@ function toggleHide(e = null) {
 
 sendBtn.onmousedown = sendPlaylist;
 
+pin.onmousedown = function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    closeInfo();
+    ipcRenderer.send('toggleTop', true);
+}
+
 editInfo.onmousedown = openInfo;
 edit.onmousedown = openEditor;
 cancel.onmousedown = closeEditor;

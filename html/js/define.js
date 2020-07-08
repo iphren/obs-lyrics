@@ -13,6 +13,7 @@ const reloadBtn = document.getElementById('reload');
 const hideUp = document.getElementById('hideUp');
 const sendBtn = document.getElementById('sendBtn');
 const plURL = document.getElementById('plURL');
+const pin = document.getElementById('pin');
 const clock = document.getElementById('clock');
 const main = document.getElementById('main');
 const control = document.getElementById('control');
