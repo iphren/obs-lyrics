@@ -1,5 +1,3 @@
-const Sortable = require("sortablejs");
-
 loadToken();
 loadPlaylist();
 
@@ -28,7 +26,13 @@ path.value = app.html.replace(/\\/g,'/');
 
 setInterval(function () {
     let t = new Date();
-    clock.innerHTML = `${tt(t.getHours())}:${tt(t.getMinutes())}:${tt(t.getSeconds())}`;
+    let s = t.getSeconds();
+    let ttext = `${tt(t.getHours())}:${tt(t.getMinutes())}:${tt(s)}`;
+    clock.innerHTML = ttext;
+    if (seconds !== s) {
+        seconds = s;
+        ipcRenderer.send('time', ttext);
+    }
 }, 100);
 
 function tt(i) {return i > 9 ? i : `0${i}`}

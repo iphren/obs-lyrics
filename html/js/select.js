@@ -112,13 +112,13 @@ function showLyrics(item = null) {
         playlist.scrollTop = item.offsetTop + item.clientHeight - playlist.clientHeight;
     let highlight = item.classList.contains('showing');
     let data = JSON.parse(item.getAttribute('value'));
-    ipcRenderer.send('title', {title: data.title, highlight: highlight});
     let lyrics = data.lyrics.split('\n\n');
     item.classList.add('playing');
     let step = 2;
     live.innerHTML = '';
     let m = 0;
     let style = true;
+    let info = [];
     for (let i of lyrics) {
         let j = i.split('\n');
         for (let k = 0; k < j.length; k += step) {
@@ -127,24 +127,29 @@ function showLyrics(item = null) {
                 lyricsList.push(j[l]);
             }
             key = keyMap[m];
-            addLyrics(lyricsList, key, style, highlight);
+            let a = addLyrics(lyricsList, key, style, highlight);
+            info.push({key: key, style: style, highlight: a});
             m++;
         }
         style = !style;
     }
+    ipcRenderer.send('title', {title: data.title, highlight: highlight, info: info});
 }
 
 function addLyrics(lyricsList, key, style, highlight) {
     let item = document.createElement('div');
+    let hlKey = false;
     item.className = `option result${style ? '' : ' alt'}`;
     if (highlight && currentLyrics === JSON.stringify(lyricsList)) {
         currentPlayingLyrics = item;
         item.classList.add('selected');
+        hlKey = true;
     }
     item.setAttribute('value', JSON.stringify(lyricsList));
     item.id = `live-${key}`;
     item.innerHTML = `<span class="key">${key}</span>` + lyricsList.join('<br>');
     live.appendChild(item);
+    return hlKey;
 }
 
 function changeLyrics(item = null) {
@@ -154,7 +159,7 @@ function changeLyrics(item = null) {
         o.classList.remove('selected');
     for (let o of playlist.childNodes)
         o.classList.remove('showing');
-    ipcRenderer.send('title', {same: true, highlight: Boolean(item)});
+    ipcRenderer.send('title', {same: true, key: item ? item.id : null});
     if (item) {
         changeFocus(live.parentNode);
         currentPlaying.classList.add('showing');

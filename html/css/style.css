@@ -100,10 +100,6 @@ textarea.control {
     background-color: #bbb;
 }
 
-.highlight {
-    color: #4CAF50 !important;
-}
-
 .option {
     user-select: none;
     width: 100%;
@@ -600,4 +596,29 @@ textarea.control {
     cursor: initial !important;
     filter: grayscale(100%) !important;
     opacity: 0.1 !important;
+}
+
+.highlight {
+    color: #4CAF50;
+}
+
+.topKey {
+    border-radius: .5rem;
+    background-color: white;
+    padding: 0 .34rem .08rem .34rem;
+    margin-right: .25rem;
+    color: black;
+}
+
+.topKey:first-child {
+    margin-left: .25rem;
+}
+
+.topKey.alt {
+    border-radius: .25rem;
+}
+
+.topKey.highlight {
+    background-color: #4CAF50;
+    color: white;
 }

@@ -2,6 +2,7 @@ const remote = require('electron').remote;
 const ipcRenderer = require('electron').ipcRenderer;
 const fs = require('fs');
 const pinyin = require('pinyin');
+const Sortable = require("sortablejs");
 
 const app = remote.app;
 
@@ -71,3 +72,4 @@ const allowedTop = {
     ArrowLeft: true,
     PageUp: true
 }
+var seconds = null;

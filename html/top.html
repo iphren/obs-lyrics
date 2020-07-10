@@ -4,23 +4,21 @@
     <meta charset="UTF-8">
     <title>Live Lyrics</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <style>
-      #title {
-        color: #888;
-      }
-    </style>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body style="background-color: #00000000; margin: 0; padding: 0; ">
-    <input type="text" id="path" class="control" style="width: 100%; margin: 0; " readonly>
-    <div id="liveLyrics" class="control" style="background-color: #00000000; -webkit-app-region: drag; padding-top: calc(15.5% + 1rem);">
-      <iframe id="liveFrame"></iframe>
-      <div class="cover">
-        <div id="title" style="position: absolute; top: .25rem; left: 0; font-weight: bold; width: 100%; text-align: center;"></div>
+    <input type="text" id="path" class="control" style="width: 100%; margin: 0; opacity: 1;" readonly>
+    <div id="liveLyrics" class="control" style="background-color: #00000000; padding-top: calc(15.5% + 1rem); -webkit-app-region: drag;">
+      <iframe id="liveFrame" style="opacity: 1;"></iframe>
+      <div class="cover"></div>
+      <div style="z-index: 100; position: absolute; top: .25rem; left: .5rem; width: calc(100% - 1rem); box-sizing: border-box; font-size: 80%; color: #888; white-space: nowrap;">
+        <span id="title"></span>
+        <span id="info"></span>
+        <span id="time" style="position: absolute; top: 0; right: 0; color: #2196F3"></span>
       </div>
     </div>
     <input type="text" id="hide" readonly>
-    <img id="pin" src="img/thumbtack.svg" style="cursor: pointer; position: fixed; top: .25rem; right: .4rem; height: 1.5rem; opacity: .5; transform: rotate(45deg);">
+    <img id="pin" src="img/thumbtack.svg" style="cursor: pointer; position: fixed; top: .3rem; right: .475rem; height: 1.5rem; opacity: .5; transform: rotate(45deg);">
     <script src="js/top.js"></script>
   </body>
 </html>

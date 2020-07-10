@@ -18,7 +18,7 @@ try {
 }
 
 let win, top;
-let showTop = true;
+let showTop = false;
 
 autoUpdater.on('checking-for-update', () => {
   win.webContents.send('update', 'checking for update...');
@@ -103,10 +103,19 @@ function createWindow () {
     top.hide();
   });
   win.on('blur', () => {
-    if (showTop) top.show();
+    if (showTop) {
+      top.show();
+      top.focus();
+    }
   });
   win.on('close', () => {
     top.destroy();
+  });
+  top.on('focus', () => {
+    top.setOpacity(1);
+  });
+  top.on('blur', () => {
+    top.setOpacity(0.5);
   });
 
   win.show();
@@ -138,6 +147,7 @@ function save(key, value)  {
 app.save = save;
 
 ipcMain.on('top', (event, key) => {
+  if (key === '/') win.focus();
   win.webContents.send('top', key);
 });
 
@@ -152,6 +162,9 @@ ipcMain.on('toggleTop', (event, st) => {
   win.webContents.send('toggleTop', showTop);
 });
 
+ipcMain.on('time', (event, time) => {
+  top.webContents.send('time', time);
+});
 
 
 

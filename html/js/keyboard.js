@@ -59,11 +59,6 @@ search.onkeydown = function(e) {
             changeFocus();
             search.blur();
             break;
-        case 'Backspace':
-            if (search.value === '' && !hideUp.classList.contains('active')) {
-                toggleHide();
-            }
-            break;
     }
 }
 
@@ -242,7 +237,6 @@ function keyControl(e) {
 ipcRenderer.on('top', (event, key) => {
     let e = {preventDefault:function(){}};
     if (key in allowedTop || key.length === 1) {
-        if (key === 'Backspace' && !currentLyrics) return;
         e.key = key;
         keyControl(e);
     }

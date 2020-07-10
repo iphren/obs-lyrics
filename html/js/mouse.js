@@ -1,5 +1,7 @@
 window.oncontextmenu = function (e) {
-    remote.getCurrentWindow().inspectElement(e.x, e.y);
+    if (!app.isPackaged) {
+        remote.getCurrentWindow().inspectElement(e.x, e.y);
+    }
 }
 
 window.onmousedown = function () {
