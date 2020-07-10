@@ -605,7 +605,7 @@ textarea.control {
 .topKey {
     border-radius: .5rem;
     background-color: white;
-    padding: 0 .34rem .08rem .34rem;
+    padding: .08rem .34rem;
     margin-right: .25rem;
     color: black;
 }
