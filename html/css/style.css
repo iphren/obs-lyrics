@@ -192,10 +192,7 @@ textarea.control {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: auto 100%;
-    width: 3rem;
-    height: 2rem;
     position: absolute;
-    bottom: 1rem;
     opacity: 0.5;
     cursor: pointer;
     transition: opacity 0.3s ease-in-out;
@@ -413,23 +410,33 @@ textarea.control {
 #editInfo {
     background-image: url('../img/clipboard-list.svg');
     top: .35rem;
-    right: -.5rem;
+    right: .25rem;
     height: 1.5rem;
+    width: 1.5rem;
 }
 
 #edit {
     background-image: url('../img/edit.svg');
-    right: 1rem;
+    top: .35rem;
+    right: 1.65rem;
+    height: 1.5rem;
+    width: 2rem;
 }
 
 #cancel {
     background-image: url('../img/times.svg');
-    right: 3.5rem;
+    right: 3rem;
+    bottom: .05em;
+    width: 1.5rem;
+    height: 2.1rem;
 }
 
 #save {
     background-image: url('../img/check.svg');
-    right: 1rem;
+    right: .5rem;
+    bottom: .2rem;
+    width: 2rem;
+    height: 2rem;
 }
 
 .focused #live .selected {
