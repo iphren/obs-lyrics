@@ -15,6 +15,7 @@ async function reload(e = null, sel = null) {
     clearSearch();
     let songs;
     if (local) {
+        status.value = 'Running local mode...';
         songs = await loadSong().then(x => x).catch(e => []);
     } else {    
         songs = await post(`https://${address.value}/lyrics`, {token: password.value})
