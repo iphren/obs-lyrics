@@ -161,8 +161,25 @@ textarea.control {
     opacity: 0.5;
 }
 
+.button img {
+    height: 1rem;
+    transition: transform 0.3s ease-in-out;
+}
+
 .button:hover {
     opacity: 1;
+}
+
+.button:hover img {
+    transform: rotate(45deg);
+}
+
+.button.active img {
+    transform: rotate(180deg);
+}
+
+.button.active:hover img {
+    transform: rotate(135deg);
 }
 
 .button:active {
@@ -235,6 +252,10 @@ textarea.control {
     margin-left: .8rem !important;
 }
 
+#newBtn:hover img {
+    transform: unset;
+}
+
 #hideUp.active {
     background-color: tomato;
 }
@@ -250,20 +271,6 @@ textarea.control {
 
 #sendBtn.success {
     background-color: #4CAF50;
-}
-
-#sendBtn::after {
-    position: absolute;
-    right: .3rem;
-    top: .2rem;
-    content: '\2713';
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    font-size: x-large;
-}
-
-#sendBtn.success::after {
-    opacity: 1;
 }
 
 #plURL {

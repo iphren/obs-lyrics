@@ -118,14 +118,24 @@ function save(e = null) {
         song[key] = document.getElementById(key).value;
     }
     if (!song.id) song.id = '';
-    post(`https://${address.value}/save`, {song: song, token: password.value, needId: true})
-    .then(x => {
-        closeEditor(null, false);
-        reload(null, x.song.id);
-    }).catch(xhr => {
-        status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
-        login.classList.remove('none');
-    });
+    if (local) {
+        localSave(song)
+        .then(x => {
+            closeEditor(null, false);
+            reload(null, x.song.id);
+        }).catch(x => {
+            console.error(x);
+        });
+    } else {
+        post(`https://${address.value}/save`, {song: song, token: password.value, needId: true})
+        .then(x => {
+            closeEditor(null, false);
+            reload(null, x.song.id);
+        }).catch(xhr => {
+            status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
+            login.classList.remove('none');
+        });
+    }
 }
 
 function noDelete(e = null) {
@@ -147,4 +157,18 @@ function deleteSong(node) {
     confirmDelete.classList.add('disabled');
     confirmDelete.setAttribute('songid', song.id);
     typeDelete.focus();
+}
+
+function newSong(e = null) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    closeInfo();
+    selectSong();
+    if (selected) selected.classList.remove('selected');
+    selected = null;
+    savedTitle = pTitle.value = '';
+    savedLyrics = pLyrics.value = '';
+    openEditor();
 }

@@ -1,4 +1,5 @@
-loadToken();
+if (local) reload();
+else loadToken();
 loadPlaylist();
 
 ipcRenderer.on('toggleTop', (event, st) => {

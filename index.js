@@ -7,7 +7,9 @@ const appData = path.join(app.getPath('appData'), app.getName());
 app.settings = path.join(appData, 'settings.json');
 app.playlist = path.join(appData, 'playlist.json');
 app.token = path.join(appData, 'token.json');
+app.songs = path.join(appData, 'songs.json');
 fs.mkdirSync(appData, { recursive: true });
+if (!fs.existsSync(app.songs)) fs.writeFileSync(app.songs,'[]');
 
 app.html = 'http://127.0.0.1:56733';
 
@@ -50,11 +52,14 @@ function createWindow () {
       nodeIntegration: true
     }
   });
-  try {win.setBounds(app.configs.rec)} catch (e) {}
-  app.configs.rec = win.getBounds();
   win.loadFile('html/index.html');
   win.setMenu(null);
-  if (!app.isPackaged) win.webContents.openDevTools();
+  if (!app.isPackaged) {
+    win.webContents.openDevTools();
+    win.setSize(1280,720);
+  } else {
+    win.setBounds(app.configs.rec);
+  }
   win.webContents.focus();
 
   win.webContents.on('did-finish-load', function(){
@@ -62,16 +67,16 @@ function createWindow () {
   });
 
   win.on('resize', () => {
-    save('rec', win.getBounds());
+    if (app.isPackaged) save('rec', win.getBounds());
   });
   win.on('move', () => {
-    save('rec', win.getBounds());
+    if (app.isPackaged) save('rec', win.getBounds());
   });
   win.on('maximize', () => {
-    save('maximize', true);
+    if (app.isPackaged) save('maximize', true);
   });
   win.on('unmaximize', () => {
-    save('maximize', false);
+    if (app.isPackaged) save('maximize', false);
   });
 
   top = new BrowserWindow({

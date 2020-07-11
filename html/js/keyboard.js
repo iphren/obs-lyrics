@@ -4,8 +4,12 @@ search.oninput = function(e) {
         send.classList.remove('none');
         app.save('send',true);
     }
+    else if (e.target.value === 'somebodysetusupthebomb') {
+        local = !local;
+        loadToken();
+    }
     let term = '';
-    let py = pinyin(e.target.value.replace(/行/g,'形').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
+    let py = myPinyin(e.target.value);
     for (let p of py) {
         term += p[0].toLowerCase().replace(/[^a-z0-9]/g, '');
     }
@@ -208,9 +212,6 @@ function keyControl(e) {
                 } else if (e.key.toLowerCase() === 'h') {
                     toggleHide();
                     break;
-                } else if (e.key.toLowerCase() === 'l' && app.configs.send) {
-                    sendPlaylist();
-                    break;
                 } else if (e.key.toLowerCase() === 's') {
                     save();
                     break;
@@ -218,12 +219,7 @@ function keyControl(e) {
                     openEditor();
                     break;
                 } else if (e.key.toLowerCase() === 'n') {
-                    selectSong();
-                    if (selected) selected.classList.remove('selected');
-                    selected = null;
-                    savedTitle = pTitle.value = '';
-                    savedLyrics = pLyrics.value = '';
-                    openEditor();
+                    newSong();
                     break;
                 }
             }

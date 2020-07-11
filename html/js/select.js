@@ -38,12 +38,12 @@ function changeFocus(node = null) {
 
 function select(e) {
     e.stopPropagation();
-    closeInfo();
     let list = e.target, item = undefined;
     while (list && !list.classList.contains('select')) {
         if (list.classList.contains('option')) item = list;
         list = list.parentNode;
     }
+    if (!item || list.id === 'live') closeInfo();
     switch (list.id) {
         case 'songlist':
         case 'playlist':

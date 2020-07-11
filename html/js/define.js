@@ -2,6 +2,9 @@ const remote = require('electron').remote;
 const ipcRenderer = require('electron').ipcRenderer;
 const fs = require('fs');
 const pinyin = require('pinyin');
+const myPinyin = function(text) {
+    return pinyin(text.replace(/行/g,'形').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
+}
 const Sortable = require("sortablejs");
 
 const app = remote.app;
@@ -11,6 +14,7 @@ const menu = document.getElementById('menu');
 const search = document.getElementById('search');
 const clear = document.getElementById('clear');
 const reloadBtn = document.getElementById('reload');
+const newBtn = document.getElementById('newBtn');
 const hideUp = document.getElementById('hideUp');
 const sendBtn = document.getElementById('sendBtn');
 const plURL = document.getElementById('plURL');
@@ -60,7 +64,7 @@ for (let node of songInfo.getElementsByTagName('input')) {
 
 const rotation = [search, songlist.parentNode, playlist.parentNode, live.parentNode];
 const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
-const ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true, l:true, L:true, e:true, E:true, n:true, N:true};
+const ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true, e:true, E:true, n:true, N:true};
 const funcKeys = {Tab: true, F5: true}
 const metaKeys = {};
 const allowedTop = {
@@ -73,3 +77,4 @@ const allowedTop = {
     PageUp: true
 }
 var seconds = null;
+var local = !fs.existsSync(app.token);

@@ -43,6 +43,8 @@ reloadBtn.onmousedown = function(e) {
     if (!reloadBtn.classList.contains('disabled')) reload(e);
 }
 
+newBtn.onmousedown = newSong;
+
 hideUp.onmousedown = toggleHide;
 
 function toggleHide(e = null) {
@@ -83,14 +85,21 @@ edit.onmousedown = openEditor;
 cancel.onmousedown = closeEditor;
 saveBtn.onmousedown = save;
 
-songInfo.onmousedown = function(e) {
-    e.stopPropagation();
-}
-
-onDelete.onmousedown = function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    typeDelete.focus();
+for (let m of document.getElementsByClassName('modal')) {
+    m.onmousedown = function(e) {
+        e.stopPropagation();
+        if (!e.target.classList.contains('modal')) return;
+        e.preventDefault();
+        let f = false;
+        for (let i of e.target.getElementsByTagName('input')) {
+            if (!i.readOnly) {
+                f = true;
+                i.focus();
+                break;
+            }
+        }
+        if (!f) e.target.getElementsByTagName('input')[0].focus();
+    }
 }
 
 askDelete.onmousedown = function(e) {
@@ -107,14 +116,24 @@ confirmDelete.onmousedown = function(e) {
     onDelete.classList.add('none');
     typeDelete.value = '';
     confirmDelete.classList.add('disabled');
-    post(`https://${address.value}/delete`, {id: confirmDelete.getAttribute('songid'), token: password.value})
-    .then(x => {
-        if (x.deleted) reload();
-    }).catch(xhr => {
-        status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
-        login.classList.remove('none');
-    }).finally(() => {
-        confirmDelete.setAttribute('songid', '');
-    });
-    
+    if (local) {
+        localDelete(confirmDelete.getAttribute('songid'))
+        .then(() => {
+            reload();
+        }).catch(e => {
+            console.error(e);
+        }).finally(() => {
+            confirmDelete.setAttribute('songid', '');
+        });
+    } else {
+        post(`https://${address.value}/delete`, {id: confirmDelete.getAttribute('songid'), token: password.value})
+        .then(x => {
+            if (x.deleted) reload();
+        }).catch(xhr => {
+            status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
+            login.classList.remove('none');
+        }).finally(() => {
+            confirmDelete.setAttribute('songid', '');
+        });
+    }
 }

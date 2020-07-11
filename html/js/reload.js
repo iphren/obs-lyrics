@@ -13,18 +13,23 @@ async function reload(e = null, sel = null) {
     status.value = 'Loading...';
     webApp.classList.add('reloading');
     clearSearch();
-    let songs = await post(`https://${address.value}/lyrics`, {token: password.value})
-    .then(x => {
-        status.value = `Server Connected`;
-        login.classList.add('none');
-        fs.writeFile(app.token, JSON.stringify({url: address.value, token: password.value}), ()=>{});
-        return x;
-    })
-    .catch(xhr => {
-        status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
-        login.classList.remove('none');
-        return [];
-    });
+    let songs;
+    if (local) {
+        songs = await loadSong().then(x => x).catch(e => []);
+    } else {    
+        songs = await post(`https://${address.value}/lyrics`, {token: password.value})
+        .then(x => {
+            status.value = `Server Connected`;
+            login.classList.add('none');
+            fs.writeFile(app.token, JSON.stringify({url: address.value, token: password.value}), ()=>{});
+            return x;
+        })
+        .catch(xhr => {
+            status.value = `Server Response: ${xhr.status} ${xhr.response ? xhr.response.error : 'server not found'}`;
+            login.classList.remove('none');
+            return [];
+        });
+    }
     songlist.innerHTML = '';
     for (let song of songs) {
         let item = addSong(song, songlist);
