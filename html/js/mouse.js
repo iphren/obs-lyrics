@@ -107,13 +107,21 @@ for (let m of document.getElementsByClassName('modal')) {
         e.preventDefault();
         let f = false;
         for (let i of e.target.getElementsByTagName('input')) {
-            if (!i.readOnly) {
+            if (document.activeElement.isSameNode(i)) {
                 f = true;
-                i.focus();
                 break;
             }
         }
-        if (!f) e.target.getElementsByTagName('input')[0].focus();
+        if (!f) {
+            for (let i of e.target.getElementsByTagName('input')) {
+                if (!i.readOnly) {
+                    f = true;
+                    i.focus();
+                    break;
+                }
+            }
+            if (!f) e.target.getElementsByTagName('input')[0].focus();
+        }
     }
 }
 

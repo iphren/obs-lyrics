@@ -27,22 +27,8 @@ search.oninput = function(e) {
     if (hideUp.classList.contains('active')) toggleHide();
 }
 
-address.onkeydown = function(e) {
-    e.stopPropagation();
-    if (e.key === 'Enter')
-        password.focus();
-}
-
-password.onkeydown = function(e) {
-    e.stopPropagation();
-    if (e.key === 'Enter') {
-        reload();
-        password.focus();
-    }
-}
-
 search.onkeydown = function(e) {
-    if (e.key in funcKeys || (e.ctrlKey && e.key in ctrlKeys)) {
+    if (e.key in funcKeys || (e.ctrlKey && e.key in ctrlKeys) || (e.metaKey && e.key in metaKeys)) {
         e.preventDefault();
         return;
     }
@@ -80,9 +66,36 @@ pLyrics.onkeydown = editorControl;
 pTitle.oninput = editorInput;
 pLyrics.oninput = editorInput;
 
+address.onkeydown = function(e) {
+    e.stopPropagation();
+    if (e.key === 'Enter' || e.key === 'Tab') password.focus();
+    if (e.key === 'Tab') e.preventDefault();
+}
+
+password.onkeydown = function(e) {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+        reload();
+        password.focus();
+    }
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        address.focus();
+    }
+}
+
+status.onkeydown = function(e) {
+    e.stopPropagation();
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        address.focus();
+    }
+}
+
 typeDelete.onkeydown = function(e) {
     e.stopPropagation();
     if (e.key === 'Escape') noDelete();
+    if (e.key === 'Tab') e.preventDefault();
 }
 
 typeDelete.oninput = function(e) {
@@ -201,21 +214,12 @@ function keyControl(e) {
         case 'PageUp':
             showLyrics(getPrev(playlist, currentPlaying));
             break;
-        case 'F5':
-            if (!reloadBtn.classList.contains('disabled')) reload();
-            break;
         default:
-            if (e.ctrlKey) {
-                if (e.key.toLowerCase() === 'r' && !reloadBtn.classList.contains('disabled')) {
-                    reload();
-                    break;
-                } else if (e.key.toLowerCase() === 'h') {
-                    toggleHide();
-                    break;
-                } else if (e.key.toLowerCase() === 's') {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key.toLowerCase() === 's') {
                     save();
                     break;
-                } else if (e.key.toLowerCase() === 'e' && selected) {
+                } else if (e.key.toLowerCase() === 'o' && selected) {
                     openEditor();
                     break;
                 } else if (e.key.toLowerCase() === 'n') {

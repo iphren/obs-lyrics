@@ -65,9 +65,9 @@ for (let node of songInfo.getElementsByTagName('input')) {
 
 const rotation = [search, songlist.parentNode, playlist.parentNode, live.parentNode];
 const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
-const ctrlKeys = {r:true, R:true, h:true, H:true, s:true, S:true, e:true, E:true, n:true, N:true};
-const funcKeys = {Tab: true, F5: true}
-const metaKeys = {};
+const ctrlKeys = {s:true, S:true, o:true, O:true, n:true, N:true};
+const funcKeys = {Tab: true}
+const metaKeys = ctrlKeys;
 const allowedTop = {
     Backspace: true,
     ArrowDown: true,

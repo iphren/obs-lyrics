@@ -76,7 +76,7 @@ function editorControl(e) {
         else pTitle.focus();
         return;
     }
-    if (e.key in funcKeys || (e.ctrlKey && e.key in ctrlKeys)) {
+    if (e.key in funcKeys || (e.ctrlKey && e.key in ctrlKeys) || (e.metaKey && e.key in metaKeys)) {
         e.preventDefault();
         return;
     }
