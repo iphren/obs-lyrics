@@ -80,6 +80,21 @@ pin.onmousedown = function(e) {
     ipcRenderer.send('toggleTop', true);
 }
 
+songlist.onmouseover = function(e) {
+    songX = e.clientX;
+    songY = e.clientY;
+}
+
+songlist.onscroll = function(e) {
+    clearTimeout(scrollTimer);
+    let id = document.elementFromPoint(songX, songY).getAttribute('songId');
+    if (id) letter.innerHTML = /^./.exec(id)[0].toUpperCase();
+    letter.classList.add('scrolling');
+    scrollTimer = setTimeout(() => {
+        letter.classList.remove('scrolling');
+    }, 1000);
+}
+
 editInfo.onmousedown = openInfo;
 edit.onmousedown = openEditor;
 cancel.onmousedown = closeEditor;

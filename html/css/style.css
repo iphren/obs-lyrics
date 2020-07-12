@@ -321,6 +321,24 @@ textarea.control {
     text-align: center;
 }
 
+#letter {
+    position: absolute;
+    opacity: 0;
+    font-size: 300%;
+    left: unset;
+    top: unset;
+    bottom: .25em;
+    right: .5em;
+    user-select: none;
+    height: unset;
+    width: unset;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#letter.scrolling {
+    opacity: .1;
+}
+
 #songlist, #playlist, #live {
     overflow-y: auto;
     overflow-x: hidden;

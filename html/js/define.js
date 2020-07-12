@@ -25,6 +25,7 @@ const control = document.getElementById('control');
 const songlist = document.getElementById('songlist');
 const loading = document.getElementById('loading');
 const notFound = document.getElementById('notFound');
+const letter = document.getElementById('letter');
 const playlist = document.getElementById('playlist');
 const trash = document.getElementById('trash');
 const bin = document.getElementById('bin');
@@ -78,3 +79,5 @@ const allowedTop = {
 }
 var seconds = null;
 var local = !fs.existsSync(app.token);
+var songX = 0, songY = 0;
+var scrollTimer;
