@@ -1,7 +1,6 @@
 function post(url, data) {
     let xhr = new XMLHttpRequest();
-    let method = 'POST';
-    xhr.open(method, url, true);
+    xhr.open('POST', url, true);
     xhr.responseType = 'json';
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     return new Promise((resolve, reject) => {
@@ -15,6 +14,27 @@ function post(url, data) {
             }
         }
         xhr.send(JSON.stringify(data));
+    });
+}
+
+function get(options) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', options.url, true);
+    xhr.responseType = 'text';
+    for (let h in options.headers) {
+        xhr.setRequestHeader(h, options.headers[h]);
+    }
+    return new Promise((resolve, reject) => {
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    resolve(xhr.response);
+                } else {
+                    reject(xhr);
+                }
+            }
+        }
+        xhr.send();
     });
 }
 

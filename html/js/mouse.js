@@ -24,7 +24,9 @@ search.onmousedown = function(e) {
     hideUp.classList.contains('active') && toggleHide();
 }
 
-clear.onmousedown = clearSearch;
+clear.onmousedown = function(e) {
+    if (!clear.classList.contains('disabled')) clearSearch(e);
+}
 
 function clearSearch(e = null) {
     if (e) {
@@ -72,6 +74,12 @@ function toggleHide(e = null) {
 }
 
 sendBtn.onmousedown = sendPlaylist;
+
+liveStats.onmousedown = function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    ipcRenderer.send('stats');
+}
 
 pin.onmousedown = function(e) {
     e.stopPropagation();
@@ -121,6 +129,16 @@ for (let m of document.getElementsByClassName('modal')) {
                 }
             }
             if (!f) e.target.getElementsByTagName('input')[0].focus();
+        }
+    }
+}
+
+for (let c of document.getElementsByClassName('close')) {
+    c.onmousedown = function(e) {
+        if (e.target.parentNode.classList.contains('modal')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.target.parentNode.classList.add('none');
         }
     }
 }

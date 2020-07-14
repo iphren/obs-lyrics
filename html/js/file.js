@@ -4,6 +4,7 @@ function loadToken() {
             let json = JSON.parse(data);
             address.value = json.url;
             password.value = json.token;
+            if (json.stats) stats.value = json.stats;
             reload();
         } else {
             login.classList.remove('none');

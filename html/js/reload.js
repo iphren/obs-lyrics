@@ -22,7 +22,7 @@ async function reload(e = null, sel = null) {
         .then(x => {
             status.value = `Server Connected`;
             login.classList.add('none');
-            fs.writeFile(app.token, JSON.stringify({url: address.value, token: password.value}), ()=>{});
+            fs.writeFile(app.token, JSON.stringify({url: address.value, token: password.value, stats: stats.value}), ()=>{});
             return x;
         })
         .catch(xhr => {

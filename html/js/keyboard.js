@@ -1,12 +1,25 @@
+const { Stats } = require("fs");
+
 search.oninput = function(e) {
-    if (e.target.value === 'whosyourdaddy') remote.getCurrentWebContents().openDevTools();
-    else if (e.target.value === 'thereisnospoon') {
-        send.classList.remove('none');
-        app.save('send',true);
-    }
-    else if (e.target.value === 'somebodysetusupthebomb') {
-        local = !local;
-        loadToken();
+    switch (e.target.value) {
+        case 'whosyourdaddy':
+            remote.getCurrentWebContents().openDevTools();
+            clearSearch();
+            break;
+        case 'thereisnospoon':
+            send.classList.remove('none');
+            app.save('send',true);
+            clearSearch();
+            break;
+        case 'somebodysetusupthebomb':
+            local = !local;
+            loadToken();
+            break;
+        case 'daylightsavings':
+            liveStats.classList.remove('none');
+            app.save('liveStats',true);
+            clearSearch();
+            break;
     }
     let term = '';
     let py = myPinyin(e.target.value);
@@ -84,6 +97,12 @@ password.onkeydown = function(e) {
     }
 }
 
+stats.onkeydown = function(e) {
+    e.stopPropagation();
+    if (e.key === 'Tab') e.preventDefault();
+    else if (e.key === 'Enter') reload();
+}
+
 status.onkeydown = function(e) {
     e.stopPropagation();
     if (e.key === 'Tab') {
@@ -95,7 +114,7 @@ status.onkeydown = function(e) {
 typeDelete.onkeydown = function(e) {
     e.stopPropagation();
     if (e.key === 'Escape') noDelete();
-    if (e.key === 'Tab') e.preventDefault();
+    else if (e.key === 'Tab') e.preventDefault();
 }
 
 typeDelete.oninput = function(e) {
@@ -111,6 +130,13 @@ for (let node of songInfo.getElementsByTagName('input')) {
         e.stopPropagation();
     }
     node.oninput  = editorInput;
+}
+
+for (let b of document.getElementsByClassName('blackhole')) {
+    b.onkeydown = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
 }
 
 window.onkeydown = keyControl;

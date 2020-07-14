@@ -574,6 +574,14 @@ textarea.control {
     background-color: #f44336;
 }
 
+.close {
+    background-image: url('../img/times-circle.svg');
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -653,4 +661,10 @@ textarea.control {
 .topKey.highlight {
     background-color: #4CAF50;
     color: white;
+}
+
+.blackhole {
+    position: fixed;
+    z-index: -1;
+    opacity: 0;
 }

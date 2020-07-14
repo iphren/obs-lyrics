@@ -19,8 +19,9 @@ try {
   app.configs = {rec: {width: 800, height: 600}}
 }
 
-let win, top;
+let win, top, stats;
 let showTop = false;
+let reloadStatsTimer;
 
 autoUpdater.on('checking-for-update', () => {
   win.webContents.send('update', 'checking for update...');
@@ -79,6 +80,31 @@ function createWindow () {
     if (app.isPackaged) save('maximize', false);
   });
 
+  stats = new BrowserWindow({
+    width: 1280,
+    height: 720,
+    resizable: false,
+    frame: false,
+    minimizable: false,
+    maximizable: false,
+    center: true,
+    closable: false,
+    show: false,
+    skipTaskbar: true,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+  stats.setMenu(null);
+  stats.on('blur', () => {
+    stats.hide();
+    clearInterval(reloadStatsTimer);
+    if (!win.isFocused() && showTop) {
+      top.show();
+      top.focus();
+    }
+  })
+
   top = new BrowserWindow({
     width: 466,
     height: 120,
@@ -108,12 +134,13 @@ function createWindow () {
     top.hide();
   });
   win.on('blur', () => {
-    if (showTop) {
+    if (showTop && !stats.isVisible()) {
       top.show();
       top.focus();
     }
   });
   win.on('close', () => {
+    stats.destroy();
     top.destroy();
   });
   top.on('focus', () => {
@@ -137,6 +164,27 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+ipcMain.on('stats', (event) => {
+  reloadStats();
+  reloadStatsTimer = setInterval(reloadStats, 10000);
+});
+
+function reloadStats() {
+  fs.readFile(app.token, {encoding: 'utf-8'}, (err, data) => {
+    if (!err) {
+      let json = JSON.parse(data);
+      if (!json.stats) win.webContents.send('stats');
+      stats.loadURL(`https://${json.stats}`, {
+        extraHeaders: `appidentifier: ${json.token}`
+      }).then(() => {
+        if (json.stats.length > 0 && !stats.isVisible()) stats.show();
+      }).catch(() => {
+        win.webContents.send('stats');
+      });
+    }
+  });
+}
 
 function save(key, value)  {
   app.configs[key] = value;

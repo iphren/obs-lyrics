@@ -3,7 +3,7 @@ const ipcRenderer = require('electron').ipcRenderer;
 const fs = require('fs');
 const pinyin = require('pinyin');
 const myPinyin = function(text) {
-    return pinyin(text.replace(/行/g,'形').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
+    return pinyin(text.replace(/行/g,'形').replace(/弹/g,'谈').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
 }
 const Sortable = require("sortablejs");
 
@@ -18,6 +18,7 @@ const newBtn = document.getElementById('newBtn');
 const hideUp = document.getElementById('hideUp');
 const sendBtn = document.getElementById('sendBtn');
 const plURL = document.getElementById('plURL');
+const liveStats = document.getElementById('liveStats');
 const pin = document.getElementById('pin');
 const clock = document.getElementById('clock');
 const main = document.getElementById('main');
@@ -42,6 +43,7 @@ const path = document.getElementById('path');
 const login = document.getElementById('login');
 const address = document.getElementById('address');
 const password = document.getElementById('password');
+const stats = document.getElementById('stats');
 const status = document.getElementById('status');
 const hide = document.getElementById('hide');
 const songInfo = document.getElementById('songInfo');

@@ -10,6 +10,10 @@ ipcRenderer.on('toggleTop', (event, st) => {
     }
 });
 
+ipcRenderer.on('stats', (event) => {
+    login.classList.remove('none');
+});
+
 document.title = app.getName();
 ipcRenderer.on('update', function(event, text) {
     document.title = text === 'latest version' ? app.getName() : `${app.getName()} - ${text}`;
@@ -21,6 +25,7 @@ remote.getCurrentWebContents().on('did-finish-load', function(){
 
 if (app.configs.send) send.classList.remove('none');
 if (app.configs.plURL) plURL.value = app.configs.plURL;
+if (app.configs.liveStats) liveStats.classList.remove('none');
 
 liveFrame.src = app.html;
 path.value = app.html.replace(/\\/g,'/');

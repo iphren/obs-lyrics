@@ -13,6 +13,7 @@ function openEditor(e = null) {
         document.getElementById(key).readOnly = false;
     }
     reloadBtn.classList.add('disabled');
+    clear.classList.add('disabled');
     control.classList.add('disabled');
     hideUp.classList.add('disabled');
     search.classList.add('disabled');
@@ -42,6 +43,7 @@ function closeEditor(e = null, restore = true) {
         document.getElementById(key).readOnly = true;
     }
     reloadBtn.classList.remove('disabled');
+    clear.classList.remove('disabled');
     control.classList.remove('disabled');
     hideUp.classList.remove('disabled');
     search.classList.remove('disabled');
