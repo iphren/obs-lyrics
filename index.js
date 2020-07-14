@@ -174,13 +174,18 @@ function reloadStats() {
   fs.readFile(app.token, {encoding: 'utf-8'}, (err, data) => {
     if (!err) {
       let json = JSON.parse(data);
-      if (!json.stats) win.webContents.send('stats');
+      if (!json.stats) {
+        win.webContents.send('stats');
+        clearInterval(reloadStatsTimer);
+      }
       stats.loadURL(`https://${json.stats}`, {
         extraHeaders: `appidentifier: ${json.token}`
       }).then(() => {
         if (json.stats.length > 0 && !stats.isVisible()) stats.show();
+        else clearInterval(reloadStatsTimer);
       }).catch(() => {
         win.webContents.send('stats');
+        clearInterval(reloadStatsTimer);
       });
     }
   });
