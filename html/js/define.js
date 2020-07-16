@@ -3,7 +3,7 @@ const ipcRenderer = require('electron').ipcRenderer;
 const fs = require('fs');
 const pinyin = require('pinyin');
 const myPinyin = function(text) {
-    return pinyin(text.replace(/行/g,'形').replace(/弹/g,'谈').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
+    return pinyin(text.replace(/行/g,'形').replace(/着/g,'这').replace(/弹/g,'谈').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
 }
 const Sortable = require("sortablejs");
 
