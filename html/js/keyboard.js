@@ -20,6 +20,11 @@ search.oninput = function(e) {
             app.save('liveStats',true);
             clearSearch();
             break;
+        case 'warpten':
+            if (!fs.existsSync(app.customjs)) fs.copyFileSync(app.basejs, app.customjs);
+            runCustomJs();
+            clearSearch();
+            break;
     }
     let term = '';
     let py = myPinyin(e.target.value);
@@ -209,6 +214,10 @@ function keyControl(e) {
         case 'Escape':
             selectSong();
             changeFocus();
+            for (let m of document.getElementsByClassName('customjs')) {
+                if (m.id === 'modalForBtncustomjs' && !m.classList.contains('hidden')) runCustomJs();
+                m.classList.add('hidden');
+            }
             break;
         case 'ArrowDown':
             if (focused) {

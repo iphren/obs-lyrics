@@ -1,6 +1,8 @@
 const remote = require('electron').remote;
 const ipcRenderer = require('electron').ipcRenderer;
+const moment = require('moment');
 const fs = require('fs');
+var nzhcn = require("nzh/cn");
 const pinyin = require('pinyin');
 const myPinyin = function(text) {
     return pinyin(text.replace(/行/g,'形').replace(/着/g,'这').replace(/弹/g,'谈').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});

@@ -4,10 +4,13 @@ const path = require('path');
 const fs = require('fs');
 
 const appData = path.join(app.getPath('appData'), app.getName());
+app.appData = appData;
 app.settings = path.join(appData, 'settings.json');
 app.playlist = path.join(appData, 'playlist.json');
 app.token = path.join(appData, 'token.json');
 app.songs = path.join(appData, 'songs.json');
+app.basejs = path.join(app.getAppPath(), 'html/js/custom.js');
+app.customjs = path.join(appData, 'custom.txt');
 fs.mkdirSync(appData, { recursive: true });
 if (!fs.existsSync(app.songs)) fs.writeFileSync(app.songs,'[]');
 
@@ -57,7 +60,7 @@ function createWindow () {
   win.setMenu(null);
   if (!app.isPackaged) {
     win.webContents.openDevTools();
-    win.setSize(1280,720);
+    win.setBounds({width: 1500, height: 1000, x: 300, y: 25});
   } else {
     win.setBounds(app.configs.rec);
   }
@@ -233,6 +236,8 @@ const exp = express();
 const http = require('http').createServer(exp);
 const io = require('socket.io')(http);
 
+exp.use(express.json({limit: '5mb'}));
+
 var lyrics = '';
 ipcMain.on('lyrics', (event, arg) => {
   lyrics = arg;
@@ -247,6 +252,17 @@ exp.use(express.static(path.join(app.getAppPath(), 'node_modules/jquery/dist')))
 
 exp.get('/',(req, res) => {
   res.sendFile(path.join(app.getAppPath(), 'html', 'line.html'));
+});
+
+
+exp.get('/custom.js',(req, res) => {
+  res.sendFile(app.customjs);
+});
+
+exp.post('/custom.js',(req, res) => {
+  fs.writeFile(app.customjs + '.tmp', req.body.code, () => {
+    res.end();
+  });
 });
 
 http.on('error', error => {

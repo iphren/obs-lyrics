@@ -148,8 +148,8 @@ textarea.control {
     user-select: none;
     cursor: pointer;
     transition: opacity 0.3s ease-in-out, background-color 0.1s ease-in-out;
-    border-radius: .6rem;
-    padding: .3rem 1rem;
+    border-radius: 1rem;
+    width: 2rem;
     height: 2rem;
     background-color: #999;
     color: white;
@@ -276,6 +276,14 @@ textarea.control {
     top: 2.3rem;
     left: 0;
     box-shadow: 0 0 .3rem .1rem rgba(120,120,120,0.5);
+}
+
+#customjs {
+    background-color: orange;
+}
+
+#customjs:hover img {
+    transform: rotate(360deg);
 }
 
 #clock {
@@ -576,8 +584,8 @@ textarea.control {
 
 .close {
     background-image: url('../img/times-circle.svg');
-    top: 1rem;
-    right: 1rem;
+    bottom: 1rem;
+    right: calc(50vw - 1rem);
     width: 2rem;
     height: 2rem;
 }
@@ -614,6 +622,17 @@ textarea.control {
 .modal input:read-only {
     background-color: #eee;
     color: #999;
+}
+
+.modal > iframe {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    border:2px solid tomato;
+    outline:none;
+    box-sizing: border-box;
 }
 
 .hidden {
