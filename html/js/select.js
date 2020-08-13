@@ -70,10 +70,13 @@ function selectSong(item = null, parent = null) {
     selected = item;
     if (item) {
         selectedParent = parent;
-        if (item.offsetTop < parent.scrollTop)
+        if (item.offsetTop < parent.scrollTop) {
             parent.scrollTop = item.offsetTop;
-        else if (item.offsetTop + item.clientHeight > parent.scrollTop + parent.clientHeight)
+            letter.innerHTML = /^./.exec(item.getAttribute('songId'))[0].toUpperCase();
+        } else if (item.offsetTop + item.clientHeight > parent.scrollTop + parent.clientHeight) {
             parent.scrollTop = item.offsetTop + item.clientHeight - parent.clientHeight;
+            letter.innerHTML = /^./.exec(item.getAttribute('songId'))[0].toUpperCase();
+        }
         item.classList.add('selected');
         if (item.classList.contains('preview')) {
             let song = JSON.parse(item.getAttribute('value'));

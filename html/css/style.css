@@ -161,6 +161,13 @@ textarea.control {
     opacity: 0.5;
 }
 
+.button.text {
+    width: unset;
+    border-radius: .5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
 .button img {
     height: 1rem;
     transition: transform 0.3s ease-in-out;

@@ -24,7 +24,6 @@ try {
 
 let win, top, stats;
 let showTop = false;
-let reloadStatsTimer;
 
 autoUpdater.on('checking-for-update', () => {
   win.webContents.send('update', 'checking for update...');
@@ -101,7 +100,6 @@ function createWindow () {
   stats.setMenu(null);
   stats.on('blur', () => {
     stats.hide();
-    clearInterval(reloadStatsTimer);
     if (!win.isFocused() && showTop) {
       top.show();
       top.focus();
@@ -170,7 +168,6 @@ app.on('activate', () => {
 
 ipcMain.on('stats', (event) => {
   reloadStats();
-  reloadStatsTimer = setInterval(reloadStats, 10000);
 });
 
 function reloadStats() {
@@ -179,16 +176,13 @@ function reloadStats() {
       let json = JSON.parse(data);
       if (!json.stats) {
         win.webContents.send('stats');
-        clearInterval(reloadStatsTimer);
       }
       stats.loadURL(`https://${json.stats}`, {
         extraHeaders: `appidentifier: ${json.token}`
       }).then(() => {
         if (json.stats.length > 0 && !stats.isVisible()) stats.show();
-        else clearInterval(reloadStatsTimer);
       }).catch(() => {
         win.webContents.send('stats');
-        clearInterval(reloadStatsTimer);
       });
     }
   });
