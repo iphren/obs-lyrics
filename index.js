@@ -2,7 +2,7 @@ const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const { autoUpdater } = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
-
+//test
 const appData = path.join(app.getPath('appData'), app.getName());
 app.appData = appData;
 app.settings = path.join(appData, 'settings.json');
