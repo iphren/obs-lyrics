@@ -23,6 +23,7 @@ remote.getCurrentWebContents().on('did-finish-load', function(){
     webApp.classList.remove('hidden');
 });
 
+if (app.configs.slidesFolder) getPictures(app.configs.slidesFolder);
 if (app.configs.send) send.classList.remove('none');
 if (app.configs.plURL) plURL.value = app.configs.plURL;
 if (app.configs.liveStats) liveStats.classList.remove('none');

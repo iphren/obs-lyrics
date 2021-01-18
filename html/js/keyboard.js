@@ -189,7 +189,7 @@ function keyControl(e) {
         case 'Backspace':
             if (currentLyrics) changeLyrics();
             else if (currentPlaying) {
-                selectSong(currentPlaying, playlist);
+                selectSong();
                 showLyrics();
             }
             else {
@@ -248,6 +248,9 @@ function keyControl(e) {
         case 'ArrowLeft':
         case 'PageUp':
             showLyrics(getPrev(playlist, currentPlaying));
+            break;
+        case 'F5':
+            toggleShow();
             break;
         default:
             if (e.ctrlKey || e.metaKey) {

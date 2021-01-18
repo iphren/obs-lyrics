@@ -1,8 +1,9 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const electron = require('electron');
 const { autoUpdater } = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
-//test
+
 const appData = path.join(app.getPath('appData'), app.getName());
 app.appData = appData;
 app.settings = path.join(appData, 'settings.json');
@@ -22,8 +23,9 @@ try {
   app.configs = {rec: {width: 800, height: 600}}
 }
 
-let win, top, stats;
+let win, top, stats, slideShow;
 let showTop = false;
+let maxSlide = true;
 
 autoUpdater.on('checking-for-update', () => {
   win.webContents.send('update', 'checking for update...');
@@ -131,10 +133,31 @@ function createWindow () {
     //top.setSize(800,600);
   }
 
+  slideShow = new BrowserWindow({
+    resizable: false,
+    frame: false,
+    transparent: true,
+    minimizable: false,
+    maximizable: false,
+    closable: false,
+    show: false,
+    fullscreen: true,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+  slideShow.loadFile('html/slideShow.html');
+  slideShow.setMenu(null);
+  if (!app.isPackaged) {
+    slideShow.webContents.openDevTools();
+  }
+
   win.on('focus', () => {
+    win.webContents.send('focused',true);
     top.hide();
   });
   win.on('blur', () => {
+    win.webContents.send('focused',false);
     if (showTop && !stats.isVisible()) {
       top.show();
       top.focus();
@@ -143,6 +166,7 @@ function createWindow () {
   win.on('close', () => {
     stats.destroy();
     top.destroy();
+    slideShow.destroy();
   });
   top.on('focus', () => {
     top.setOpacity(1);
@@ -152,6 +176,11 @@ function createWindow () {
   });
 
   win.show();
+
+  fitShow();
+  electron.screen.addListener('display-added', fitShow);
+  electron.screen.addListener('display-removed', fitShow);
+  electron.screen.addListener('display-metrics-changed', fitShow);
 }
 
 app.whenReady().then(createWindow);
@@ -220,6 +249,61 @@ ipcMain.on('toggleTop', (event, st) => {
 ipcMain.on('time', (event, time) => {
   top.webContents.send('time', time);
 });
+
+ipcMain.on('endShow', () => {
+  slideShow.hide();
+  win.webContents.send('showEnded');
+  win.focus();
+});
+
+ipcMain.on('startShow', () => {
+  slideShow.show();
+  win.webContents.send('showStarted');
+});
+
+ipcMain.on('maxShow', () => {
+  maxSlide = true;
+  var electronScreen = electron.screen;
+  var bounds = slideShow.getBounds();
+  var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
+  slideShow.setBounds(display.bounds);
+});
+
+ipcMain.on('minShow', () => {
+  maxSlide = false;
+  var electronScreen = electron.screen;
+  var bounds = slideShow.getBounds();
+  var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
+  bounds = display.bounds;
+  bounds.x = bounds.x + bounds.width / 4;
+  bounds.y = bounds.y + bounds.height / 4;
+  bounds.width = bounds.width / 2;
+  bounds.height = bounds.height / 2;
+  slideShow.setBounds(bounds);
+});
+
+ipcMain.on('changeBackground', (event, link) => {
+  slideShow.webContents.send('changeBackground', link);
+});
+
+ipcMain.on('changeLyrics', (event, list) => {
+  slideShow.webContents.send('changeLyrics', list);
+});
+
+function fitShow() {
+  if (!maxSlide) return;
+  var electronScreen = electron.screen;
+  var displays = electronScreen.getAllDisplays();
+  var externalDisplay = displays[0];
+  for (var i in displays) {
+    if (displays[i].bounds.x != 0 || displays[i].bounds.y != 0) {
+      externalDisplay = displays[i];
+      break;
+    }
+  }
+  slideShow.setBounds(externalDisplay.bounds);
+}
+
 
 
 

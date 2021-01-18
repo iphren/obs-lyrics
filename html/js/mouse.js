@@ -45,6 +45,57 @@ reloadBtn.onmousedown = function(e) {
     if (!reloadBtn.classList.contains('disabled')) reload(e);
 }
 
+slidesBtn.onmousedown = function(e) {
+    if (slidesBtn.classList.contains('active')) {
+        slidesBtn.classList.remove('active');
+        slidesSettings.classList.add('none');
+        songEditor.classList.remove('none');
+    } else {
+        slidesBtn.classList.add('active');
+        slidesSettings.classList.remove('none');
+        songEditor.classList.add('none');
+    }
+}
+
+slidesFolder.onmousedown = function(e) {
+    const folders = dialog.showOpenDialogSync({
+        properties: ['openDirectory']
+    });
+    if (!folders) return;
+    app.save('slidesFolder', folders[0]);
+    if (slidesFolderWatcher) slidesFolderWatcher.close();
+    getPictures(folders[0]);
+}
+
+slidesPrevPage.onmouseup = function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    goToPage(slidesPage - 1);
+}
+
+slidesNextPage.onmouseup = function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    goToPage(slidesPage + 1);
+}
+
+clearBtn.onmousedown = function(e) {
+    if (!currentLyrics) return;
+    let evt = {
+        key: 'Backspace',
+        preventDefault:function(){}
+    };
+    keyControl(evt);
+}
+
+slideBtn.onmousedown = function(e) {
+    let evt = {
+        key: 'F5',
+        preventDefault:function(){}
+    };
+    keyControl(evt);
+}
+
 newBtn.onmousedown = newSong;
 
 hideUp.onmousedown = toggleHide;

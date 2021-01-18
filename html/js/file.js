@@ -145,3 +145,89 @@ function localDelete(id) {
         });
     });
 }
+
+function getPictures(folder) {
+    fs.readdir(folder, (err, files) => {
+        if (err) return;
+        if (slidesFolderWatcher) slidesFolderWatcher.close();
+        slidesFolderPath.value = folder;
+        slides = files
+            .filter(file => mediaTypes.test(file))
+            .sort((a,b) => {
+                return fs.statSync(join(folder,b)).mtime.getTime() -
+                       fs.statSync(join(folder,a)).mtime.getTime();
+            });
+        goToPage(slidesPage, folder);
+        slidesFolderWatcher = fs.watch(folder, (evt, file) => {
+            getPictures(folder);
+        });
+    })
+}
+
+function goToPage(page, folder = null) {
+    const maxPage = Math.ceil(slides.length / slidesPerPage);
+    slidesPage = Math.max(page > maxPage ? maxPage : page, Math.min(1, maxPage));
+    slidesBrowser.innerHTML = '';
+    slidesTotalPages.innerHTML = maxPage;
+    currentSlidesPage.innerHTML = slidesPage;
+    const first = (slidesPage - 1) * slidesPerPage;
+    const last = Math.min(slides.length, slidesPage * slidesPerPage);
+    for (let i = first; i < last; i++) {
+        makeThumb(slides[i], folder);
+    }
+    for (let i = 0; i < slidesPerPage - last + first; i++) {
+        makeThumb();
+    }
+    selectSlide(selectedSlide);
+}
+
+function makeThumb(link = null, folder = null) {
+    let container = document.createElement('div');
+    container.className = "slideBox";
+    if (link) container.classList.add('real');
+    let el;
+    if (!link) {
+        el = document.createElement('span');
+    } else if (videoTypes.test(link)) {
+        el = document.createElement('video');
+        el.playsinline = true;
+        el.muted = true;
+        el.autoplay = true;
+        el.loop = true;
+        el.addEventListener('loadedmetadata', function(e) {
+            this.classList.add(this.videoWidth / this.videoHeight > 16 / 9 ? 'landscape' : 'portrait');
+        });
+    } else {
+        el =document.createElement('img');
+        el.addEventListener('load', function(e) {
+            this.classList.add(this.naturalWidth / this.naturalHeight > 16 / 9 ? 'landscape' : 'portrait');
+        });
+    }
+    el.className = "slide";
+    if (link) {
+        let u = join(folder || slidesFolderPath.value, link);
+        el.src = u;
+        container.setAttribute('data-file',escape(u));
+        container.addEventListener('mousedown', function(e) {
+            let p = unescape(this.getAttribute('data-file'));
+            if (p === selectedSlide) p = '';
+            if (selected) {
+                let sid = selected.getAttribute('songid');
+                app.save(`slide-for-${sid}`, p);
+                if (currentPlaying && currentPlaying.getAttribute('songid') === sid)
+                    ipcRenderer.send('changeBackground', p ? p : app.configs['default-slide']);
+            } else {
+                app.save('default-slide', p);
+                if (!currentPlaying
+                    || !app.configs[`slide-for-${currentPlaying.getAttribute('songid')}`])
+                    ipcRenderer.send('changeBackground', p);
+            }
+            selectSlide(p);
+        });
+    }
+    let check = document.createElement('div');
+    check.className = 'check';
+    container.appendChild(el);
+    container.appendChild(check);
+    slidesBrowser.appendChild(container);
+}

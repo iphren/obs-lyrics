@@ -1,7 +1,5 @@
 runCustomJs();
 
-let join = require('path').join;
-
 function runCustomJs() {
     if (!fs.existsSync(app.customjs)) return;
     fs.readdir(app.appData, (err, files) => {

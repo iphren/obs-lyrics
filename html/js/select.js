@@ -18,6 +18,16 @@ function play(e) {
     }
 }
 
+function selectSlide(path) {
+    if (!path) path = '';
+    selectedSlide = path;
+    for (let el of document.getElementsByClassName('slideBox')) {
+        let p = unescape(el.getAttribute('data-file'));
+        if (p && p === path) el.classList.add('active');
+        else el.classList.remove('active'); 
+    }
+}
+
 function addToPlaylist(item) {
     changeFocus(playlist.parentNode);
     let i = item.cloneNode(true);
@@ -69,6 +79,7 @@ function selectSong(item = null, parent = null) {
     if (selected) selected.classList.remove('selected');
     selected = item;
     if (item) {
+        selectSlide(app.configs[`slide-for-${selected.getAttribute('songid')}`]);
         selectedParent = parent;
         if (item.offsetTop < parent.scrollTop) {
             parent.scrollTop = item.offsetTop;
@@ -80,6 +91,11 @@ function selectSong(item = null, parent = null) {
         item.classList.add('selected');
         if (item.classList.contains('preview')) {
             let song = JSON.parse(item.getAttribute('value'));
+            slidesFooter.innerHTML = song.title;
+            if (currentPlaying
+                && currentPlaying.getAttribute('songId') === item.getAttribute('songId'))
+                slidesFooter.classList.add('live');
+            else slidesFooter.classList.remove('live');
             savedTitle = pTitle.value = song.title;
             savedLyrics = pLyrics.value = song.lyrics;
             for (let key in savedInfo) {
@@ -87,6 +103,12 @@ function selectSong(item = null, parent = null) {
             }
         }
     } else {
+        selectSlide(app.configs['default-slide']);
+        slidesFooter.innerHTML = 'Default';
+        if (!currentPlaying
+            || !app.configs[`slide-for-${currentPlaying.getAttribute('songid')}`])
+            slidesFooter.classList.add('live');
+        else slidesFooter.classList.remove('live');
         savedTitle = pTitle.value = '';
         savedLyrics = pLyrics.value = '';
         for (let key in savedInfo) {
@@ -96,6 +118,17 @@ function selectSong(item = null, parent = null) {
 }
 
 function showLyrics(item = null) {
+    if (!item || !app.configs[`slide-for-${item.getAttribute('songid')}`]) {
+        let p = app.configs['default-slide'];
+        if (p) ipcRenderer.send('changeBackground', p);
+        if (selected) slidesFooter.classList.remove('live');
+        else slidesFooter.classList.add('live');
+    } else {
+        let iid = item.getAttribute('songid');
+        ipcRenderer.send('changeBackground', app.configs[`slide-for-${iid}`]);
+        if (selected && selected.getAttribute('songid') === iid) slidesFooter.classList.add('live');
+        else slidesFooter.classList.remove('live');
+    }
     hide.focus();
     currentPlayingLyrics = null;
     currentPlaying = item;
@@ -210,6 +243,35 @@ function getPrev(parent, item = null) {
     return list[prev];
 }
 
+function toggleShow() {
+    if (slideBtn.classList.contains('active')) {
+        ipcRenderer.send('endShow');
+    } else {
+        ipcRenderer.send('startShow');
+    }
+}
+
+ipcRenderer.on('showStarted', () => {
+    slideBtn.classList.add('active');
+    slideBtn.innerHTML = 'End Show';
+});
+
+ipcRenderer.on('showEnded', () => {
+    slideBtn.classList.remove('active');
+    slideBtn.innerHTML = 'Slide Show';
+});
+
 function update(lyricsList) {
+    let fineList = [];
+    let separator = /\s*,\s*|\s*\.\s*|(?<=[^A-Za-z])\s+(?=[^A-Za-z])/;
+    separator = /\s*,\s*|\s*\.\s*|\s+/;
+    for (let l of lyricsList) {
+        let line = [];
+        for (let phrase of l.split(separator)) {
+            line.push({text: phrase});
+        }
+        fineList.push(line);
+    }
+    ipcRenderer.send('changeLyrics', fineList);
     ipcRenderer.send('lyrics', lyricsList.join('<br>'));
 };

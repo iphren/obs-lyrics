@@ -23,6 +23,7 @@
         </span>
         <span id="liveStats" class="button none"><img src="img/stream.svg"></span>
         <span id="pin" class="button"><img src="img/thumbtack.svg"></span>
+        <span id="slidesBtn" class="button"><img src="img/image.svg"></span>
         <span id="clock"></span>
       </div>
       <div id="main">
@@ -42,7 +43,7 @@
         </div>
         <div id="view">
           <div>
-            <div class="container">
+            <div id="songEditor" class="container">
               <div id="preview" class="control">
                 <input type="text" class="control" id="pTitle" readonly>
                 <textarea id="pLyrics" class="control" readonly></textarea>
@@ -52,6 +53,26 @@
               <div id="cancel" class="icon none"></div>
               <div id="save" class="icon none disabled"></div>
             </div>
+            <div id="slidesSettings" class="container none">
+              <div id="slides" class="control">
+                <div id="slidesBox" class="shadow">
+                  <div id="slidesBrowserBox">
+                    <div id="slidesBrowser">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="slidesBar">
+                <span id="slidesFolder" class="button"><img src="img/folder-open.svg"></span>
+                <input type="text" id="slidesFolderPath" class="control inline" readonly>
+                <span id="slidesPrevPage" class="button still"><img src="img/chevron-left.svg"></span>
+                <span id="currentSlidesPage">0</span>
+                <span>/</span>
+                <span id="slidesTotalPages">0</span>
+                <span id="slidesNextPage" class="button still"><img src="img/chevron-right.svg"></span>
+              </div>
+              <div id="slidesFooter">Default</div>
+            </div>
             <div id="forLive" class="container">
               <div id="live" class="control select"></div>
               <div id="liveBin" class="control hidden"></div>
@@ -60,7 +81,10 @@
           <input type="text" id="path" class="control" readonly>
           <div id="liveLyrics" class="control">
             <iframe id="liveFrame"></iframe>
-            <div class="cover"></div>
+            <div class="cover">
+              <div id="clearBtn" class="button text">Clear</div>
+              <div id="slideBtn" class="button text">Slide Show</div>
+            </div>
           </div>
         </div>
       </div>
@@ -88,6 +112,9 @@
         <input type="text" id="password" class="control" placeholder="token">
         <input type="url" id="stats" class="control" placeholder="optional">
         <input type="text" id="status" class="control" readonly>
+      </div>
+      <div id="blurred" class="modal none">
+        <input>
       </div>
     </div>
     <script src="js/define.js"></script>
