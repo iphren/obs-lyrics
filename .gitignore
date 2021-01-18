@@ -1,6 +1,5 @@
-node_modules
-package-lock.json
-yarn.lock
-dist
+/node_modules
+/dist
 .env
 .DS_Store
+Thumbs.db
