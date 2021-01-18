@@ -932,5 +932,5 @@ textarea.control {
 
 .s-draggable {
     -webkit-app-region: drag;
-    background-color: white !important;
+    background-color: black !important;
 }
