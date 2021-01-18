@@ -71,6 +71,7 @@ const slidesNextPage = document.getElementById('slidesNextPage');
 const clearBtn = document.getElementById('clearBtn');
 const slideBtn = document.getElementById('slideBtn');
 const slidesFooter = document.getElementById('slidesFooter');
+const sizesBtn = document.getElementById('sizesBtn');
 
 var currentLyrics = '';
 var currentPlaying = null;

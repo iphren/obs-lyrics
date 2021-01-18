@@ -254,11 +254,21 @@ function toggleShow() {
 ipcRenderer.on('showStarted', () => {
     slideBtn.classList.add('active');
     slideBtn.innerHTML = 'End Show';
+    sizesBtn.classList.remove('none');
 });
 
 ipcRenderer.on('showEnded', () => {
     slideBtn.classList.remove('active');
     slideBtn.innerHTML = 'Slide Show';
+    sizesBtn.classList.add('none');
+});
+
+ipcRenderer.on('showFullScreen', (event, full) => {
+    if (full) {
+        sizesBtn.innerHTML = 'Window';
+    } else {
+        sizesBtn.innerHTML = 'Fullscreen';
+    }
 });
 
 function update(lyricsList) {

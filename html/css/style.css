@@ -177,6 +177,13 @@ textarea.control {
     padding-right: 1rem;
 }
 
+.button.small {
+    font-size: 0.8rem;
+    height: 1.6rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
 .button img {
     height: 1rem;
     transition: transform 0.3s ease-in-out;
@@ -688,16 +695,23 @@ textarea.control {
     opacity: 0.75;
 }
 
+#liveCoverBtns {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+}
+
 #clearBtn {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
 }
 
+#sizesBtn {
+    background-color: goldenrod;
+}
+
 #slideBtn {
-    position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
     background-color: cadetblue;
 }
 

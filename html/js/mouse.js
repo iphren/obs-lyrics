@@ -88,6 +88,11 @@ clearBtn.onmousedown = function(e) {
     keyControl(evt);
 }
 
+ipcRenderer.send(sizesBtn.innerHTML === 'Fullscreen' ? 'maxShow' : 'minShow');
+sizesBtn.onmousedown = function(e) {
+    ipcRenderer.send(sizesBtn.innerHTML === 'Fullscreen' ? 'maxShow' : 'minShow');
+}
+
 slideBtn.onmousedown = function(e) {
     let evt = {
         key: 'F5',

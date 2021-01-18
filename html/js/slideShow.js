@@ -118,14 +118,20 @@ function checkSize(el) {
     }
 }
 
+ipcRenderer.on('showFullScreen', (event, full) => {
+    if (full) {
+        document.body.classList.remove('s-draggable');
+    } else {
+        document.body.classList.add('s-draggable');
+    }
+})
+
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'F11':
             if (document.body.classList.contains('s-draggable')) {
-                document.body.classList.remove('s-draggable');
                 ipcRenderer.send('maxShow');
             } else {
-                document.body.classList.add('s-draggable');
                 ipcRenderer.send('minShow');
             }
             break;

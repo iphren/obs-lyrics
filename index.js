@@ -267,6 +267,8 @@ ipcMain.on('maxShow', () => {
   var bounds = slideShow.getBounds();
   var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
   slideShow.setBounds(display.bounds);
+  win.webContents.send('showFullScreen', true);
+  slideShow.webContents.send('showFullScreen', true);
 });
 
 ipcMain.on('minShow', () => {
@@ -280,6 +282,8 @@ ipcMain.on('minShow', () => {
   bounds.width = bounds.width / 2;
   bounds.height = bounds.height / 2;
   slideShow.setBounds(bounds);
+  win.webContents.send('showFullScreen', false);
+  slideShow.webContents.send('showFullScreen', false);
 });
 
 ipcMain.on('changeBackground', (event, link) => {
