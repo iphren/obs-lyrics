@@ -8,7 +8,7 @@ body {
     background-color: #eee;
 }
 
-* {
+#app * {
     font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
@@ -504,6 +504,10 @@ textarea.control {
     background-color: #bbb;
 }
 
+#slidesSettings {
+    height: 100%;
+}
+
 #slidesBar {
     display: flex;
     align-items: center;
@@ -518,9 +522,38 @@ textarea.control {
     background-color: white;
 }
 
-#slidesFolderPath {
+#slidesFolderPathBox {
     flex-grow: 1;
     margin: 0 0.5rem;
+    position: relative;
+    border-radius: .6rem;
+    background-color: #eee;
+    overflow: hidden;
+}
+
+#slidesFolderPathFill {
+    visibility: hidden;
+    opacity: 0;
+}
+
+#slidesFolderPathProgress {
+    background-color: gainsboro;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+}
+
+#slidesFolderPath {
+    background-color: transparent;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }
 
 #currentSlidesPage {
@@ -532,8 +565,10 @@ textarea.control {
 }
 
 #slides {
-    padding: 3.5rem 0.5rem 2.5rem 0.5rem;
+    padding: 3.5rem 0.5rem 6.5rem 0.5rem;
     box-sizing: border-box;
+    background-image: linear-gradient(white, white, white, #ffffff88);
+    background-color: transparent;
 }
 
 #slidesBox {
@@ -558,8 +593,7 @@ textarea.control {
     box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: space-between;
+    border: 1px solid black;
 }
 
 .slideBox {
@@ -569,10 +603,16 @@ textarea.control {
     box-sizing: border-box;
     display: block;
     position: relative;
+    border: 1px solid black;
+}
+
+.slideBox.timeout {
+    background: url('../img/eye-slash.svg') center no-repeat darkgray;
 }
 
 .slideBox.real:hover {
-    outline: 2px solid slategrey;
+    border: 1px solid dodgerblue;
+    outline: 1px solid dodgerblue;
     z-index: 10;
 }
 
@@ -602,16 +642,33 @@ textarea.control {
 }
 
 .landscape {
-    height: 100%;
+    height: 102%;
 }
 
 .portrait {
+    width: 102%;
+}
+
+.currentSlideBack {
+    top: unset;
+    bottom: 0;
     width: 100%;
+    height: unset;
+}
+
+.currentSlideView {
+    position: absolute;
+    bottom: 0.25rem;
+    left: 0.5rem;
+    height: 4rem;
+    top: unset;
+    display: block;
+    width: unset;
 }
 
 #slidesFooter {
     position: absolute;
-    bottom: 0.25rem;
+    bottom: 4.25rem;
     left: 0.5rem;
     color: cadetblue;
     height: 1.5rem;
@@ -883,6 +940,10 @@ textarea.control {
 /* Slide Show CSS */
 
 @keyframes opac{from{opacity:0} to{opacity:1}}
+
+#s-app {
+    font-family: STZhongsong, "Microsoft YaHei", "WenQuanYi Micro Hei", "Hiragino Sans GB", sans-serif;
+}
 
 #s-debug {
     position: fixed;

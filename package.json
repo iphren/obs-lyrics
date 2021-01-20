@@ -2,7 +2,7 @@
   "name": "live-lyrics",
   "productName": "Live Lyrics",
   "appname": "Live Lyrics",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "Live Lyrics",
   "build": {
     "appId": "com.electron.live-lyrics",
@@ -43,6 +43,7 @@
   "dependencies": {
     "electron-updater": "^4.3.1",
     "express": "^4.17.1",
+    "get-system-fonts": "^2.0.2",
     "jquery": "^3.5.1",
     "moment": "^2.27.0",
     "monaco-editor": "^0.20.0",

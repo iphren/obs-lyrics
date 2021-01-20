@@ -45,17 +45,7 @@ reloadBtn.onmousedown = function(e) {
     if (!reloadBtn.classList.contains('disabled')) reload(e);
 }
 
-slidesBtn.onmousedown = function(e) {
-    if (slidesBtn.classList.contains('active')) {
-        slidesBtn.classList.remove('active');
-        slidesSettings.classList.add('none');
-        songEditor.classList.remove('none');
-    } else {
-        slidesBtn.classList.add('active');
-        slidesSettings.classList.remove('none');
-        songEditor.classList.add('none');
-    }
-}
+slidesBtn.onmousedown = toggleSlides;
 
 slidesFolder.onmousedown = function(e) {
     const folders = dialog.showOpenDialogSync({
@@ -105,6 +95,20 @@ newBtn.onmousedown = newSong;
 
 hideUp.onmousedown = toggleHide;
 
+function toggleSlides(e) {
+    if (slidesBtn.classList.contains('active')) {
+        slidesBtn.classList.remove('active');
+        slidesSettings.classList.add('none');
+        songEditor.classList.remove('none');
+        forLive.classList.remove('none');
+    } else {
+        slidesBtn.classList.add('active');
+        slidesSettings.classList.remove('none');
+        songEditor.classList.add('none');
+        forLive.classList.add('none');
+    }
+}
+
 function toggleHide(e = null) {
     if (e) {
         e.stopPropagation();
@@ -118,6 +122,7 @@ function toggleHide(e = null) {
     else
         hideUp.classList.add('active');
     for (let c of document.getElementsByClassName('container')) {
+        if (c.id === 'slidesSettings') continue;
         if (c.nextElementSibling) {
             if (act)
                 c.classList.remove('hide');

@@ -10,6 +10,7 @@ const myPinyin = function(text) {
     return pinyin(text.replace(/行/g,'形').replace(/着/g,'这').replace(/弹/g,'谈').replace(/祢|袮/g,'你'), {style: pinyin.STYLE_NORMAL});
 }
 const Sortable = require("sortablejs");
+const getSystemFonts = require('get-system-fonts');
 
 const app = remote.app;
 
@@ -72,6 +73,11 @@ const clearBtn = document.getElementById('clearBtn');
 const slideBtn = document.getElementById('slideBtn');
 const slidesFooter = document.getElementById('slidesFooter');
 const sizesBtn = document.getElementById('sizesBtn');
+const slidesFolderPathProgress = document.getElementById('slidesFolderPathProgress');
+const currentSlideViewImg = document.getElementById('currentSlideViewImg');
+const currentSlideBackImg = document.getElementById('currentSlideBackImg');
+const currentSlideViewVideo = document.getElementById('currentSlideViewVideo');
+const currentSlideBackVideo = document.getElementById('currentSlideBackVideo');
 
 var currentLyrics = '';
 var currentPlaying = null;
@@ -109,5 +115,6 @@ var slidesPerPage = 16;
 var slide = '';
 var slides = [];
 var selectedSlide = '';
+var slidesLoading = false;
 const mediaTypes = /\.(jpg|jpeg|png|gif|svg|mp4|webm|ogg|apng|avif|jfif|pjpeg|pjp|webp)$/i;
 const videoTypes = /\.(mp4|webm|ogg)$/i;

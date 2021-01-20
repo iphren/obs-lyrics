@@ -19,7 +19,28 @@ function play(e) {
 }
 
 function selectSlide(path) {
-    if (!path) path = '';
+    if (!path) {
+        path = '';
+        currentSlideViewImg.classList.remove('none');
+        currentSlideBackImg.classList.add('none');
+        currentSlideViewVideo.classList.add('none');
+        currentSlideBackVideo.classList.add('none');
+        currentSlideViewImg.src = path;
+    } else if (videoTypes.test(path)) {
+        currentSlideViewImg.classList.add('none');
+        currentSlideBackImg.classList.add('none');
+        currentSlideViewVideo.classList.remove('none');
+        currentSlideBackVideo.classList.remove('none');
+        currentSlideViewVideo.src = path;
+        currentSlideBackVideo.src = path;
+    } else {
+        currentSlideViewImg.classList.remove('none');
+        currentSlideBackImg.classList.remove('none');
+        currentSlideViewVideo.classList.add('none');
+        currentSlideBackVideo.classList.add('none');
+        currentSlideViewImg.src = path;
+        currentSlideBackImg.src = path;
+    }
     selectedSlide = path;
     for (let el of document.getElementsByClassName('slideBox')) {
         let p = unescape(el.getAttribute('data-file'));
@@ -120,7 +141,7 @@ function selectSong(item = null, parent = null) {
 function showLyrics(item = null) {
     if (!item || !app.configs[`slide-for-${item.getAttribute('songid')}`]) {
         let p = app.configs['default-slide'];
-        if (p) ipcRenderer.send('changeBackground', p);
+        ipcRenderer.send('changeBackground', p);
         if (selected) slidesFooter.classList.remove('live');
         else slidesFooter.classList.add('live');
     } else {

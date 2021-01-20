@@ -164,7 +164,10 @@ function getPictures(folder) {
     })
 }
 
-function goToPage(page, folder = null) {
+async function goToPage(page, folder = null) {
+    if (slidesLoading) return;
+    slidesLoading = true;
+    slidesBox.style.visibility = 'hidden';
     const maxPage = Math.ceil(slides.length / slidesPerPage);
     slidesPage = Math.max(page > maxPage ? maxPage : page, Math.min(1, maxPage));
     slidesBrowser.innerHTML = '';
@@ -173,61 +176,85 @@ function goToPage(page, folder = null) {
     const first = (slidesPage - 1) * slidesPerPage;
     const last = Math.min(slides.length, slidesPage * slidesPerPage);
     for (let i = first; i < last; i++) {
-        makeThumb(slides[i], folder);
+        await makeThumb(slides[i], folder);
+        slidesFolderPathProgress.style.width = `${100 * (i + 1 - first) / (last - first)}%`;
     }
+    slidesFolderPathProgress.style.width = '0';
     for (let i = 0; i < slidesPerPage - last + first; i++) {
         makeThumb();
     }
     selectSlide(selectedSlide);
+    slidesBox.style.visibility = 'visible';
+    slidesLoading = false;
 }
 
 function makeThumb(link = null, folder = null) {
-    let container = document.createElement('div');
-    container.className = "slideBox";
-    if (link) container.classList.add('real');
-    let el;
-    if (!link) {
-        el = document.createElement('span');
-    } else if (videoTypes.test(link)) {
-        el = document.createElement('video');
-        el.playsinline = true;
-        el.muted = true;
-        el.autoplay = true;
-        el.loop = true;
-        el.addEventListener('loadedmetadata', function(e) {
-            this.classList.add(this.videoWidth / this.videoHeight > 16 / 9 ? 'landscape' : 'portrait');
-        });
+    return new Promise((resolve) => {
+        let container = document.createElement('div');
+        let loadingTimer = setTimeout(() => {
+            container.classList.remove('real');
+            container.removeEventListener('mousedown', clickThumb);
+            container.classList.add('timeout');
+            container.innerHTML = '';
+            resolve();
+        }, 10000);
+        container.className = "slideBox";
+        if (link) container.classList.add('real');
+        let el;
+        if (!link) {
+            el = document.createElement('span');
+        } else if (videoTypes.test(link)) {
+            el = document.createElement('video');
+            el.playsinline = true;
+            el.muted = true;
+            el.autoplay = true;
+            el.loop = true;
+            el.addEventListener('loadedmetadata', (e) => {
+                el.classList.add(el.videoWidth / el.videoHeight > 16 / 9 ? 'landscape' : 'portrait');
+                clearTimeout(loadingTimer);
+                resolve();
+            });
+        } else {
+            el = document.createElement('img');
+            el.addEventListener('load', (e) => {
+                el.classList.add(el.naturalWidth / el.naturalHeight > 16 / 9 ? 'landscape' : 'portrait');
+                clearTimeout(loadingTimer);
+                resolve();
+            });
+        }
+        el.className = "slide";
+        if (link) {
+            let u = join(folder || slidesFolderPath.value, link);
+            el.src = u;
+            container.setAttribute('data-file',escape(u));
+            container.addEventListener('mousedown', clickThumb);
+        }
+        let check = document.createElement('div');
+        check.className = 'check';
+        container.appendChild(el);
+        container.appendChild(check);
+        slidesBrowser.appendChild(container);
+        if (!link) {
+            clearTimeout(loadingTimer);
+            resolve();
+        }
+    });
+
+}
+
+function clickThumb(e) {
+    let p = unescape(this.getAttribute('data-file'));
+    if (p === selectedSlide) p = '';
+    if (selected) {
+        let sid = selected.getAttribute('songid');
+        app.save(`slide-for-${sid}`, p);
+        if (currentPlaying && currentPlaying.getAttribute('songid') === sid)
+            ipcRenderer.send('changeBackground', p ? p : app.configs['default-slide']);
     } else {
-        el =document.createElement('img');
-        el.addEventListener('load', function(e) {
-            this.classList.add(this.naturalWidth / this.naturalHeight > 16 / 9 ? 'landscape' : 'portrait');
-        });
+        app.save('default-slide', p);
+        if (!currentPlaying
+            || !app.configs[`slide-for-${currentPlaying.getAttribute('songid')}`])
+            ipcRenderer.send('changeBackground', p);
     }
-    el.className = "slide";
-    if (link) {
-        let u = join(folder || slidesFolderPath.value, link);
-        el.src = u;
-        container.setAttribute('data-file',escape(u));
-        container.addEventListener('mousedown', function(e) {
-            let p = unescape(this.getAttribute('data-file'));
-            if (p === selectedSlide) p = '';
-            if (selected) {
-                let sid = selected.getAttribute('songid');
-                app.save(`slide-for-${sid}`, p);
-                if (currentPlaying && currentPlaying.getAttribute('songid') === sid)
-                    ipcRenderer.send('changeBackground', p ? p : app.configs['default-slide']);
-            } else {
-                app.save('default-slide', p);
-                if (!currentPlaying
-                    || !app.configs[`slide-for-${currentPlaying.getAttribute('songid')}`])
-                    ipcRenderer.send('changeBackground', p);
-            }
-            selectSlide(p);
-        });
-    }
-    let check = document.createElement('div');
-    check.className = 'check';
-    container.appendChild(el);
-    container.appendChild(check);
-    slidesBrowser.appendChild(container);
+    selectSlide(p);
 }

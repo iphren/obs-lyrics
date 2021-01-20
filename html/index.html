@@ -43,17 +43,9 @@
         </div>
         <div id="view">
           <div>
-            <div id="songEditor" class="container">
-              <div id="preview" class="control">
-                <input type="text" class="control" id="pTitle" readonly>
-                <textarea id="pLyrics" class="control" readonly></textarea>
-              </div>
-              <div id="editInfo" class="icon"></div>
-              <div id="edit" class="icon"></div>
-              <div id="cancel" class="icon none"></div>
-              <div id="save" class="icon none disabled"></div>
-            </div>
             <div id="slidesSettings" class="container none">
+              <img id="currentSlideBackImg" class="currentSlideBack">
+              <video id="currentSlideBackVideo" class="currentSlideBack" autoplay muted loop playsinline></video>
               <div id="slides" class="control">
                 <div id="slidesBox" class="shadow">
                   <div id="slidesBrowserBox">
@@ -64,7 +56,11 @@
               </div>
               <div id="slidesBar">
                 <span id="slidesFolder" class="button"><img src="img/folder-open.svg"></span>
-                <input type="text" id="slidesFolderPath" class="control inline" readonly>
+                <span id="slidesFolderPathBox">
+                  <input type="text" id="slidesFolderPathFill" class="control inline" readonly>
+                  <span id="slidesFolderPathProgress"></span>
+                  <input type="text" id="slidesFolderPath" class="control inline" readonly>
+                </span>
                 <span id="slidesPrevPage" class="button still"><img src="img/chevron-left.svg"></span>
                 <span id="currentSlidesPage">0</span>
                 <span>/</span>
@@ -72,6 +68,18 @@
                 <span id="slidesNextPage" class="button still"><img src="img/chevron-right.svg"></span>
               </div>
               <div id="slidesFooter">Default</div>
+              <img id="currentSlideViewImg" class="currentSlideView" alt="No background selected">
+              <video id="currentSlideViewVideo" class="currentSlideView" autoplay muted loop playsinline></video>
+            </div>
+            <div id="songEditor" class="container">
+              <div id="preview" class="control">
+                <input type="text" class="control" id="pTitle" readonly>
+                <textarea id="pLyrics" class="control" readonly></textarea>
+              </div>
+              <div id="editInfo" class="icon"></div>
+              <div id="edit" class="icon"></div>
+              <div id="cancel" class="icon none"></div>
+              <div id="save" class="icon none disabled"></div>
             </div>
             <div id="forLive" class="container">
               <div id="live" class="control select"></div>
