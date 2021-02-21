@@ -9,17 +9,27 @@
         div {
           position: fixed;
           width: 100vw;
-          left: 0;
+          left: 3.5vw;
           bottom: 3.5vw;
           font-size: 3.2vw;
           font-weight: 700;
-          font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+          font-family: "STZhongSong", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
           color: white;
-          text-align: center;
+          text-align: left;
           text-shadow: 0px 0px 8px black, 0px 0px 8px black;
           transition: opacity .5s ease-in-out;
           animation:opac .5s;
           opacity: 0;
+        }
+        .style-1 div {
+          left: unset;
+          right: 3.5vw;
+          text-align: right;
+        }
+        .style-2 div {
+          left: 0;
+          font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+          text-align: center;
         }
         @keyframes opac{from{opacity:0} to{opacity:1}}
         div:last-child {
@@ -49,6 +59,9 @@
       }
       $(function() {
         socket = io();
+        socket.on('lineStyle', function(lineStyle){
+          document.body.className = `style-${lineStyle}`;
+        });
         socket.on('lyrics', showLyrics);
       })
     </script>

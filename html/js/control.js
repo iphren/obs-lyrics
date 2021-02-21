@@ -27,6 +27,7 @@ if (app.configs.slidesFolder) getPictures(app.configs.slidesFolder);
 if (app.configs.send) send.classList.remove('none');
 if (app.configs.plURL) plURL.value = app.configs.plURL;
 if (app.configs.liveStats) liveStats.classList.remove('none');
+if (app.configs.lineStyle) styleBtn.innerHTML = `Style ${app.configs.lineStyle}`;
 
 liveFrame.src = app.html;
 path.value = app.html.replace(/\\/g,'/');

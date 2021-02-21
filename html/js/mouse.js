@@ -69,6 +69,14 @@ slidesNextPage.onmouseup = function(e) {
     goToPage(slidesPage + 1);
 }
 
+styleBtn.onmousedown = function(e) {
+    let n = styleBtn.innerHTML.match(/[0-9]+/);
+    if (!n) return;
+    n = (+n[0] + 1) % totalStyles;
+    styleBtn.innerHTML = `Style ${n}`;
+    ipcRenderer.send('lineStyle', n);
+}
+
 clearBtn.onmousedown = function(e) {
     if (!currentLyrics) return;
     let evt = {

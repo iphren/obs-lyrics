@@ -70,6 +70,7 @@ const currentSlidesPage = document.getElementById('currentSlidesPage');
 const slidesPrevPage = document.getElementById('slidesPrevPage');
 const slidesNextPage = document.getElementById('slidesNextPage');
 const clearBtn = document.getElementById('clearBtn');
+const styleBtn = document.getElementById('styleBtn');
 const slideBtn = document.getElementById('slideBtn');
 const slidesFooter = document.getElementById('slidesFooter');
 const sizesBtn = document.getElementById('sizesBtn');
@@ -90,6 +91,8 @@ var savedInfo = {};
 for (let node of songInfo.getElementsByTagName('input')) {
     savedInfo[node.id] = '';
 }
+
+const totalStyles = 3;
 
 const rotation = [search, songlist.parentNode, playlist.parentNode, live.parentNode];
 const keyMap = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM';

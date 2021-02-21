@@ -764,6 +764,13 @@ textarea.control {
     left: 0.5rem;
 }
 
+#styleBtn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: palevioletred;
+}
+
 #sizesBtn {
     background-color: goldenrod;
 }

@@ -141,7 +141,7 @@ function createWindow () {
     maximizable: false,
     closable: false,
     show: false,
-    fullscreen: true,
+    fullscreen: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -321,13 +321,21 @@ const io = require('socket.io')(http);
 exp.use(express.json({limit: '5mb'}));
 
 var lyrics = '';
+var lineStyle = app.configs.lineStyle || 0;
 ipcMain.on('lyrics', (event, arg) => {
   lyrics = arg;
   io.emit('lyrics', lyrics);
 });
 
+ipcMain.on('lineStyle', (event, arg) => {
+  lineStyle = arg;
+  io.emit('lineStyle', lineStyle);
+  save('lineStyle', lineStyle);
+});
+
 io.on('connection', (socket) => {
   socket.emit('lyrics', lyrics);
+  socket.emit('lineStyle', lineStyle);
 });
 
 exp.use(express.static(path.join(app.getAppPath(), 'node_modules/jquery/dist')));
