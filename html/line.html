@@ -5,31 +5,55 @@
         body {
           margin: 0;
           padding: 0;
+          font-size: 3.2vw;
         }
         div {
           position: fixed;
-          width: 100vw;
-          left: 3.5vw;
+          width: 90vw;
+          left: 5vw;
           bottom: 3.5vw;
-          font-size: 3.2vw;
-          font-weight: 700;
           font-family: "STZhongSong", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
           color: white;
-          text-align: left;
+          text-align: right;
           text-shadow: 0px 0px 8px black, 0px 0px 8px black;
           transition: opacity .5s ease-in-out;
           animation:opac .5s;
           opacity: 0;
         }
         .style-1 div {
-          left: unset;
-          right: 3.5vw;
-          text-align: right;
+          text-align: left;
         }
         .style-2 div {
-          left: 0;
           font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
           text-align: center;
+          font-weight: 700;
+        }
+        .songInfo {
+          right: unset !important;
+          left: 5vw !important;
+          text-align: left !important;
+        }
+        .songInfo span {
+          font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+          font-weight: normal;
+          margin-right: 2vw;
+          margin-bottom: 2vw;
+          font-size: 2vw;
+          text-shadow: 0px 0px 8px black;
+        }
+        .songInfo .title {
+          display: block;
+          font-size: 5vw;
+          font-weight: 300;
+        }
+        .songInfo .author::before {
+          content: '词、曲：';
+        }
+        .songInfo .lyricist::before {
+          content: '词：';
+        }
+        .songInfo .composer::before {
+          content: '曲：';
         }
         @keyframes opac{from{opacity:0} to{opacity:1}}
         div:last-child {
@@ -48,10 +72,11 @@
     <script>
       var socket, timer;
       const showLyrics = function(data) {
-        if (data === document.body.lastChild.innerHTML) return;
+        if (data.text === document.body.lastChild.innerHTML) return;
         clearTimeout(timer);
         let div = document.createElement("div");
-        div.innerHTML = data;
+        if (data.type) div.className = data.type;
+        div.innerHTML = data.text;
         document.body.appendChild(div);
         timer = setTimeout(function(){
           while (document.body.childElementCount > 2) document.body.firstChild.remove();
@@ -61,6 +86,9 @@
         socket = io();
         socket.on('lineStyle', function(lineStyle){
           document.body.className = `style-${lineStyle}`;
+        });
+        socket.on('lineSize', function(lineSize){
+          document.body.style.fontSize = `${(1 + lineSize) * 1.6}vw`;
         });
         socket.on('lyrics', showLyrics);
       })

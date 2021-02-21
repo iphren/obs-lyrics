@@ -178,10 +178,10 @@ textarea.control {
 }
 
 .button.small {
-    font-size: 0.8rem;
-    height: 1.6rem;
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
+    font-size: 0.6rem;
+    height: 1.2rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
 }
 
 .button img {
@@ -754,21 +754,41 @@ textarea.control {
 
 #liveCoverBtns {
     position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    bottom: 0.3rem;
+    right: 0.3rem;
 }
 
-#clearBtn {
+#textBtns {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 0.1rem;
+    left: 0.3rem;
+}
+
+#styleBtns {
+    position: absolute;
+    top: 0.1rem;
+    right: 0.3rem;
 }
 
 #styleBtn {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
     background-color: palevioletred;
+}
+
+#sizeBtn {
+    width: 7rem;
+    position: relative;
+    overflow: hidden;
+}
+
+#sizeBtnBg {
+    background-color: royalblue;
+    opacity: 0.5;
+    display: block;
+    height: 100%;
+    width: 75%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
 #sizesBtn {
@@ -1015,4 +1035,42 @@ textarea.control {
 .s-draggable {
     -webkit-app-region: drag;
     background-color: black !important;
+}
+
+.s-songInfo {
+    top: unset !important;
+    bottom: 3.5vw  !important;
+    right: unset !important;
+    left: 5vw !important;
+    text-align: left !important;
+    transform: none !important;
+    white-space: normal !important;
+    width: 90vw !important;
+    font-size: 3vw !important;
+}
+
+.s-songInfo span {
+    font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif !important;
+    font-weight: normal !important;
+    margin-right: 3vw !important;
+    margin-bottom: 2vw !important;
+    font-size: 3vw !important;
+}
+
+.s-songInfo .title {
+    display: block !important;
+    font-size: 7vw !important;
+    font-weight: 300 !important;
+}
+
+.s-songInfo .author::before {
+    content: '词、曲：' !important;
+}
+
+.s-songInfo .lyricist::before {
+    content: '词：' !important;
+}
+
+.s-songInfo .composer::before {
+    content: '曲：' !important;
 }

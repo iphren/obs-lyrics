@@ -320,11 +320,19 @@ const io = require('socket.io')(http);
 
 exp.use(express.json({limit: '5mb'}));
 
-var lyrics = '';
+var lyrics = {text:''};
 var lineStyle = app.configs.lineStyle || 0;
+var lineSize = 'lineSize' in app.configs ? app.configs.lineSize : 0.75;
+
 ipcMain.on('lyrics', (event, arg) => {
-  lyrics = arg;
+  lyrics = {text: arg};
   io.emit('lyrics', lyrics);
+});
+
+ipcMain.on('songInfo', (event, arg) => {
+  lyrics = {text: arg, type: 'songInfo'};
+  io.emit('lyrics', lyrics);
+  slideShow.webContents.send('songInfo', lyrics.text);
 });
 
 ipcMain.on('lineStyle', (event, arg) => {
@@ -333,9 +341,16 @@ ipcMain.on('lineStyle', (event, arg) => {
   save('lineStyle', lineStyle);
 });
 
+ipcMain.on('lineSize', (event, arg) => {
+  lineSize = arg;
+  io.emit('lineSize', lineSize);
+  save('lineSize', lineSize);
+});
+
 io.on('connection', (socket) => {
   socket.emit('lyrics', lyrics);
   socket.emit('lineStyle', lineStyle);
+  socket.emit('lineSize', lineSize);
 });
 
 exp.use(express.static(path.join(app.getAppPath(), 'node_modules/jquery/dist')));

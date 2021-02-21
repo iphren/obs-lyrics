@@ -23,6 +23,13 @@ ipcRenderer.on('changeBackground', (event, link) => {
     bgs.appendChild(createBg(link));
 });
 
+ipcRenderer.on('songInfo', (event, text) => {
+    if (currentText === text) return;
+    currentText = text;
+    lyrics.lastElementChild.classList.add('l-deleting');
+    lyrics.appendChild(createInfo(text));
+});
+
 ipcRenderer.on('changeLyrics', (event, list) => {
     let text = '';
     for (let line of list) {
@@ -63,6 +70,14 @@ function breakPoint(line) {
 
 function createLyric(text) {
     let el = document.createElement('span');
+    el.innerHTML = text;
+    loaded(el, 'l-deleting');
+    return el;
+}
+
+function createInfo(text) {
+    let el = document.createElement('span');
+    el.className = 's-songInfo';
     el.innerHTML = text;
     loaded(el, 'l-deleting');
     return el;

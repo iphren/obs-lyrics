@@ -187,7 +187,8 @@ function keyControl(e) {
             }
             break;
         case 'Backspace':
-            if (currentLyrics) changeLyrics();
+            if (currentInfo) update([]);
+            else if (currentLyrics) changeLyrics();
             else if (currentPlaying) {
                 selectSong();
                 showLyrics();

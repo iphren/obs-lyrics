@@ -28,6 +28,7 @@ if (app.configs.send) send.classList.remove('none');
 if (app.configs.plURL) plURL.value = app.configs.plURL;
 if (app.configs.liveStats) liveStats.classList.remove('none');
 if (app.configs.lineStyle) styleBtn.innerHTML = `Style ${app.configs.lineStyle}`;
+if (app.configs.lineSize) sizeBtnBg.style.width = `${app.configs.lineSize * 100}%`;
 
 liveFrame.src = app.html;
 path.value = app.html.replace(/\\/g,'/');

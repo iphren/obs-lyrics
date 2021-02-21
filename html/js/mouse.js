@@ -10,6 +10,10 @@ window.onmousedown = function () {
     changeFocus();
 }
 
+window.onmouseup = function() {
+    startSizing = false;
+}
+
 send.onmousedown = function(e) {
     e.stopPropagation();
 }
@@ -77,13 +81,36 @@ styleBtn.onmousedown = function(e) {
     ipcRenderer.send('lineStyle', n);
 }
 
+sizeBtn.onmousedown = function(e) {
+    startSizing = true;
+    lineSizing(e);
+}
+
+sizeBtn.onmousemove = lineSizing;
+
+function lineSizing(e) {
+    if (startSizing) {
+        let frac = +e.offsetX / sizeBtn.clientWidth;
+        frac = Math.min(1, frac);
+        frac = Math.max(0, frac);
+        sizeBtnBg.style.width = `${frac * 100}%`;
+        ipcRenderer.send('lineSize', frac);
+    }
+}
+
 clearBtn.onmousedown = function(e) {
-    if (!currentLyrics) return;
+    if (!currentLyrics) return update([]);
     let evt = {
         key: 'Backspace',
         preventDefault:function(){}
     };
     keyControl(evt);
+}
+
+infoBtn.onmousedown = function(e) {
+    changeLyrics();
+    currentInfo = unescape(infoBtn.getAttribute('data-html'));
+    ipcRenderer.send('songInfo', currentInfo);
 }
 
 ipcRenderer.send(sizesBtn.innerHTML === 'Fullscreen' ? 'maxShow' : 'minShow');

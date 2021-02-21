@@ -156,6 +156,8 @@ function showLyrics(item = null) {
     for (let o of playlist.childNodes)
         o.classList.remove('playing');
     if (!item) {
+        infoBtn.innerHTML = 'N/A';
+        infoBtn.setAttribute('data-html','');
         if (playlist.getElementsByClassName('result').length !== 0) changeFocus(playlist.parentNode);
         else changeFocus();
         live.innerHTML = '';
@@ -169,6 +171,16 @@ function showLyrics(item = null) {
         playlist.scrollTop = item.offsetTop + item.clientHeight - playlist.clientHeight;
     let highlight = item.classList.contains('showing');
     let data = JSON.parse(item.getAttribute('value'));
+    infoBtn.innerHTML = data.title;
+    let infoHTML = `<span class="title">${data.title}</span>`;
+    if (data.lyricist || data.composer) {
+        if (data.lyricist === data.composer) infoHTML += `<span class="author">${data.lyricist}</span>`;
+        else {
+            if (data.lyricist) infoHTML += `<span class="lyricist">${data.lyricist}</span>`;
+            if (data.composer) infoHTML += `<span class="composer">${data.composer}</span>`;
+        }
+    }
+    infoBtn.setAttribute('data-html', escape(infoHTML));
     let lyrics = data.lyrics.split('\n\n');
     item.classList.add('playing');
     let step = 2;
@@ -293,6 +305,7 @@ ipcRenderer.on('showFullScreen', (event, full) => {
 });
 
 function update(lyricsList) {
+    currentInfo = '';
     let fineList = [];
     let separator = /\s*,\s*|\s*\.\s*|(?<=[^A-Za-z])\s+(?=[^A-Za-z])/;
     separator = /\s*,\s*|\s*\.\s*|\s+/;
