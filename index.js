@@ -143,6 +143,7 @@ function createWindow () {
     closable: false,
     show: false,
     fullscreen: false,
+    fullscreenable: true,
     webPreferences: {
       nodeIntegration: true
     }
@@ -176,7 +177,9 @@ function createWindow () {
     top.setOpacity(0.5);
   });
 
-  win.show();
+  win.once('ready-to-show', () => {
+    win.show()
+  })
 
   fitShow();
   electron.screen.addListener('display-added', fitShow);
@@ -252,6 +255,9 @@ ipcMain.on('time', (event, time) => {
 });
 
 ipcMain.on('endShow', () => {
+  if (process.platform === 'darwin' && slideShow.isFullScreen()) {
+    minShow();
+  }
   slideShow.hide();
   win.webContents.send('showEnded');
   win.focus();
@@ -268,12 +274,16 @@ ipcMain.on('maxShow', () => {
   var bounds = slideShow.getBounds();
   var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
   slideShow.setBounds(display.bounds);
+  slideShow.setFullScreen(true);
   win.webContents.send('showFullScreen', true);
   slideShow.webContents.send('showFullScreen', true);
 });
 
-ipcMain.on('minShow', () => {
+ipcMain.on('minShow', minShow);
+
+function minShow() {
   maxSlide = false;
+  slideShow.setFullScreen(false);
   var electronScreen = electron.screen;
   var bounds = slideShow.getBounds();
   var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
@@ -285,7 +295,12 @@ ipcMain.on('minShow', () => {
   slideShow.setBounds(bounds);
   win.webContents.send('showFullScreen', false);
   slideShow.webContents.send('showFullScreen', false);
-});
+  if (process.platform === 'darwin' && slideShow.isVisible()) {
+    slideShow.hide();
+    slideShow.show();
+    slideShow.focus();
+  }
+}
 
 ipcMain.on('changeBackground', (event, link) => {
   slideShow.webContents.send('changeBackground', link);
