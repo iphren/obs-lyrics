@@ -1,3 +1,4 @@
+require('v8-compile-cache');
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const electron = require('electron');
 const { autoUpdater } = require("electron-updater");

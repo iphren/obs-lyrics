@@ -10,6 +10,10 @@ const lyrics = document.getElementById('s-lyrics');
 var currentLink = '';
 var currentText = '';
 
+window.addEventListener('click', function(e) {
+    document.getElementById('focus').focus();
+});
+
 window.addEventListener('resize', function(e) {
     for (let node of document.getElementsByClassName('slide')) {
         checkSize(node);
@@ -99,7 +103,7 @@ function createBg(link) {
         evt = 'load';
     }
     media.className = 'slide';
-    media.src = link;
+    if (link) media.src = link;
     media.addEventListener(evt, loaded);
     if (!link) loaded(null);
     el.appendChild(media);

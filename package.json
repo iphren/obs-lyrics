@@ -50,7 +50,8 @@
     "nzh": "^1.0.4",
     "pinyin": "^2.9.1",
     "socket.io": "^2.3.0",
-    "sortablejs": "^1.10.2"
+    "sortablejs": "^1.10.2",
+    "v8-compile-cache": "^2.2.0"
   },
   "devDependencies": {
     "electron": "^8.1.1",
