@@ -969,7 +969,8 @@ textarea.control {
 @keyframes opac{from{opacity:0} to{opacity:1}}
 
 #s-app {
-    font-family: STZhongsong, "Microsoft YaHei", "WenQuanYi Micro Hei", "Hiragino Sans GB", sans-serif;
+    font-family: "华文中宋", "STZhongSong", "华文宋体", "Microsoft YaHei", "HeiTi", "SongTi", sans-serif;
+    line-height: 1.2;
 }
 
 #s-debug {
