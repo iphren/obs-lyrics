@@ -276,6 +276,7 @@ function keyControl(e) {
 ipcRenderer.on('top', (event, key) => {
     let e = {preventDefault:function(){}};
     if (key in allowedTop || key.length === 1) {
+        changeFocus(live.parentNode);
         e.key = key;
         keyControl(e);
     }

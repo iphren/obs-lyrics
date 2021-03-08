@@ -303,7 +303,13 @@ function minShow() {
   bounds.y = bounds.y + bounds.height / 4;
   bounds.width = bounds.width / 2;
   bounds.height = bounds.height / 2;
-  slideShow.setBounds(bounds);
+  try {
+    slideShow.setBounds(bounds);
+  } catch(e) {
+    dialog.showMessageBox({
+      message: JSON.stringify(bounds)
+    });
+  }
   win.webContents.send('showFullScreen', false);
   slideShow.webContents.send('showFullScreen', false);
   if (process.platform === 'darwin' && slideShow.isVisible()) {
