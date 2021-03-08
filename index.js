@@ -255,7 +255,9 @@ ipcMain.on('toggleTop', (event, st) => {
 });
 
 ipcMain.on('time', (event, time) => {
-  top.webContents.send('time', time);
+  try {
+    top.webContents.send('time', time);
+  } catch(e) { };
 });
 
 ipcMain.on('endShow', () => {

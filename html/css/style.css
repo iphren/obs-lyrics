@@ -1036,6 +1036,7 @@ textarea.control {
 .s-draggable {
     -webkit-app-region: drag;
     background-color: black !important;
+    cursor: move !important;
 }
 
 .s-songInfo {
