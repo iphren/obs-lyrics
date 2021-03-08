@@ -1,156 +1,201 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Live Lyrics</title>
-    <link rel="stylesheet" href="css/style.css">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <script src="../node_modules/sortablejs/Sortable.min.js"></script>
-  </head>
-  <body>
-    <div id="app" class="hidden">
-      <div id="menu">
-        <input type="text" id="search" class="control" placeholder="Search">
-        <span id="clear" class="button"></span>
-        <span id="reload" class="button"><img src="img/sync-alt.svg"></span>
-        <span id="newBtn" class="button"><img src="img/plus.svg"></span>
-        <span id="hideUp" class="button"><img src="img/chevron-circle-up.svg"></span>
-        <span id='send' class="none">
-          <div id='sendBtn' class="button">
-            <img src="img/satellite-dish.svg">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Live Lyrics</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  <script src="../node_modules/sortablejs/Sortable.min.js"></script>
+  <script src="js/createjs.min.js"></script>
+  <script src="js/iphren-pulsar.js"></script>
+</head>
+
+<body>
+  <div id="pulsar" class="opaque">
+    <canvas id="pulsar-canvas" width="1000" height="1000"
+      style="position: absolute; display: block; background-color:#eee;"></canvas>
+    <div id="pulsar_dom_overlay_container"
+      style="pointer-events:none; overflow:hidden; width:1000px; height:1000px; position: absolute; left: 0px; top: 0px; display: block;">
+    </div>
+  </div>
+  <script>
+    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+    init();
+    function init() {
+      canvas = document.getElementById("pulsar-canvas");
+      anim_container = document.getElementById("pulsar");
+      dom_overlay_container = document.getElementById("pulsar_dom_overlay_container");
+      var comp = AdobeAn.getComposition("AFD0C22C104B79478A3F2BE4A9E38ADE");
+      var lib = comp.getLibrary();
+      handleComplete({}, comp);
+    }
+    function handleComplete(evt, comp) {
+      //This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+      var lib = comp.getLibrary();
+      var ss = comp.getSpriteSheet();
+      exportRoot = new lib.iphrenpulsar();
+      stage = new lib.Stage(canvas);
+      //Registers the "tick" event listener.
+      fnStartAnimation = function () {
+        stage.addChild(exportRoot);
+        createjs.Ticker.framerate = lib.properties.fps;
+        createjs.Ticker.addEventListener("tick", stage);
+      }
+      //Code to support hidpi screens and responsive scaling.
+      AdobeAn.makeResponsive(true, 'both', true, 1, [canvas, anim_container, dom_overlay_container]);
+      AdobeAn.compositionLoaded(lib.properties.id);
+      fnStartAnimation();
+    }
+  </script>
+  <div id="app">
+    <div id="menu">
+      <input type="text" id="search" class="control" placeholder="Search">
+      <span id="clear" class="button"></span>
+      <span id="reload" class="button"><img src="img/sync-alt.svg"></span>
+      <span id="newBtn" class="button"><img src="img/plus.svg"></span>
+      <span id="hideUp" class="button"><img src="img/chevron-circle-up.svg"></span>
+      <span id='send' class="none">
+        <div id='sendBtn' class="button">
+          <img src="img/satellite-dish.svg">
+        </div>
+        <input id="plURL" class="control none" type="text">
+      </span>
+      <span id="liveStats" class="button none"><img src="img/stream.svg"></span>
+      <span id="pin" class="button"><img src="img/thumbtack.svg"></span>
+      <span id="slidesBtn" class="button"><img src="img/image.svg"></span>
+      <span id="clock"></span>
+    </div>
+    <div id="main">
+      <div id="control">
+        <div id="forSonglist" class="container">
+          <div id="songlist" class="control select"></div>
+          <div id="notFound" class="control cover none">
+            <div>No results found</div>
           </div>
-          <input id="plURL" class="control none" type="text">
-        </span>
-        <span id="liveStats" class="button none"><img src="img/stream.svg"></span>
-        <span id="pin" class="button"><img src="img/thumbtack.svg"></span>
-        <span id="slidesBtn" class="button"><img src="img/image.svg"></span>
-        <span id="clock"></span>
-      </div>
-      <div id="main">
-        <div id="control">
-          <div id="forSonglist" class="container">
-            <div id="songlist" class="control select"></div>
-            <div id="notFound" class="control cover none"><div>No results found</div></div>
-            <div id="loading" class="control cover"><div>Loading songs......</div></div>
-            <div id="letter">A</div>
+          <div id="loading" class="control cover">
+            <div>Loading songs......</div>
           </div>
-          <div id="forPlaylist" class="container">
-            <div id="playlist" class="control select"></div>
-            <div id="trash" class="hidden">
-              <div id="bin"></div>
-            </div>
+          <div id="letter">A</div>
+        </div>
+        <div id="forPlaylist" class="container">
+          <div id="playlist" class="control select"></div>
+          <div id="trash" class="hidden">
+            <div id="bin"></div>
           </div>
         </div>
-        <div id="view">
-          <div>
-            <div id="slidesSettings" class="container none">
-              <img id="currentSlideBackImg" class="currentSlideBack">
-              <video id="currentSlideBackVideo" class="currentSlideBack" autoplay muted loop playsinline></video>
-              <div id="slides" class="control">
-                <div id="slidesBox" class="shadow">
-                  <div id="slidesBrowserBox">
-                    <div id="slidesBrowser">
-                    </div>
+      </div>
+      <div id="view">
+        <div>
+          <div id="slidesSettings" class="container none">
+            <img id="currentSlideBackImg" class="currentSlideBack">
+            <video id="currentSlideBackVideo" class="currentSlideBack" autoplay muted loop playsinline></video>
+            <div id="slides" class="control">
+              <div id="slidesBox" class="shadow">
+                <div id="slidesBrowserBox">
+                  <div id="slidesBrowser">
                   </div>
                 </div>
               </div>
-              <div id="slidesBar">
-                <span id="slidesFolder" class="button"><img src="img/folder-open.svg"></span>
-                <span id="slidesFolderPathBox">
-                  <input type="text" id="slidesFolderPathFill" class="control inline" readonly>
-                  <span id="slidesFolderPathProgress"></span>
-                  <input type="text" id="slidesFolderPath" class="control inline" readonly>
-                </span>
-                <span id="slidesPrevPage" class="button still"><img src="img/chevron-left.svg"></span>
-                <span id="currentSlidesPage">0</span>
-                <span>/</span>
-                <span id="slidesTotalPages">0</span>
-                <span id="slidesNextPage" class="button still"><img src="img/chevron-right.svg"></span>
-              </div>
-              <div id="slidesFooter">Default</div>
-              <img id="currentSlideViewImg" class="currentSlideView" alt="No background selected">
-              <video id="currentSlideViewVideo" class="currentSlideView" autoplay muted loop playsinline></video>
             </div>
-            <div id="songEditor" class="container">
-              <div id="preview" class="control">
-                <input type="text" class="control" id="pTitle" readonly>
-                <textarea id="pLyrics" class="control" readonly></textarea>
-              </div>
-              <div id="editInfo" class="icon"></div>
-              <div id="edit" class="icon"></div>
-              <div id="cancel" class="icon none"></div>
-              <div id="save" class="icon none disabled"></div>
+            <div id="slidesBar">
+              <span id="slidesFolder" class="button"><img src="img/folder-open.svg"></span>
+              <span id="slidesFolderPathBox">
+                <input type="text" id="slidesFolderPathFill" class="control inline" readonly>
+                <span id="slidesFolderPathProgress"></span>
+                <input type="text" id="slidesFolderPath" class="control inline" readonly>
+              </span>
+              <span id="slidesPrevPage" class="button still"><img src="img/chevron-left.svg"></span>
+              <span id="currentSlidesPage">0</span>
+              <span>/</span>
+              <span id="slidesTotalPages">0</span>
+              <span id="slidesNextPage" class="button still"><img src="img/chevron-right.svg"></span>
             </div>
-            <div id="forLive" class="container">
-              <div id="live" class="control select"></div>
-              <div id="liveBin" class="control hidden"></div>
-            </div>
+            <div id="slidesFooter">Default</div>
+            <img id="currentSlideViewImg" class="currentSlideView" alt="No background selected">
+            <video id="currentSlideViewVideo" class="currentSlideView" autoplay muted loop playsinline></video>
           </div>
-          <input type="text" id="path" class="control" readonly>
-          <div id="liveLyrics" class="control">
-            <iframe id="liveFrame"></iframe>
-            <div class="cover">
-              <div id="textBtns">
-                <div id="clearBtn" class="button small text">Clear</div>
-                <div id="infoBtn" class="button small text">N/A</div>
+          <div id="songEditor" class="container">
+            <div id="preview" class="control">
+              <input type="text" class="control" id="pTitle" readonly>
+              <textarea id="pLyrics" class="control" readonly></textarea>
+            </div>
+            <div id="editInfo" class="icon"></div>
+            <div id="edit" class="icon"></div>
+            <div id="cancel" class="icon none"></div>
+            <div id="save" class="icon none disabled"></div>
+          </div>
+          <div id="forLive" class="container">
+            <div id="live" class="control select"></div>
+            <div id="liveBin" class="control hidden"></div>
+          </div>
+        </div>
+        <input type="text" id="path" class="control" readonly>
+        <div id="liveLyrics" class="control">
+          <iframe id="liveFrame"></iframe>
+          <div class="cover">
+            <div id="textBtns">
+              <div id="clearBtn" class="button small text">Clear</div>
+              <div id="infoBtn" class="button small text">N/A</div>
+            </div>
+            <div id="styleBtns">
+              <div id="styleBtn" class="button small text">Style 0</div>
+              <div id="sizeBtn" class="button small text">
+                <div id="sizeBtnBg"></div>
+                Size
               </div>
-              <div id="styleBtns">
-                <div id="styleBtn" class="button small text">Style 0</div>
-                <div id="sizeBtn" class="button small text">
-                  <div id="sizeBtnBg"></div>
-                  Size
-                </div>
-              </div>
-              <div id="liveCoverBtns">
-                <div id="sizesBtn" class="button small text none">Window</div>
-                <div id="slideBtn" class="button small text">Slide Show</div>
-              </div>
+            </div>
+            <div id="liveCoverBtns">
+              <div id="sizesBtn" class="button small text none">Window</div>
+              <div id="slideBtn" class="button small text">Slide Show</div>
             </div>
           </div>
         </div>
-      </div>
-      <input type="text" id="hide" readonly>
-      <div id="songInfo" class="modal control none">
-        <input type="text" id="lyricist" class="control" placeholder="Lyricist" readonly>
-        <input type="text" id="composer" class="control" placeholder="Composer" readonly>
-        <input type="text" id="album" class="control" placeholder="Album" readonly>
-        <input type="text" id="series" class="control" placeholder="Series" readonly>
-        <input type="text" id="key" class="control" placeholder="Key" readonly>
-        <input type="text" id="year" class="control" placeholder="Year" readonly>
-        <input type="text" id="copyright" class="control" placeholder="Copyright" readonly>
-        <input type="text" id="ccli" class="control" placeholder="CCLI Song No." readonly>
-      </div>
-      <div id="onDelete" class="modal none">
-        <input type="text" id="askDelete" class="control" readonly>
-        <div id="controlDelete">
-          <input type="text" id="typeDelete" class="control" placeholder="delete">
-          <span id="cancelDelete" class="button text">Cancel</span>
-          <span id="confirmDelete" class="button text disabled">Delete</span>
-        </div>
-      </div>
-      <div id="login" class="modal none">
-        <input type="url" id="address" class="control" placeholder="server">
-        <input type="text" id="password" class="control" placeholder="token">
-        <input type="url" id="stats" class="control" placeholder="optional">
-        <input type="text" id="status" class="control" readonly>
-      </div>
-      <div id="blurred" class="modal none">
-        <input>
       </div>
     </div>
-    <script src="js/define.js"></script>
-    
-    <script src="js/request.js"></script>
-    <script src="js/reload.js"></script>
-    <script src="js/file.js"></script>
-    <script src="js/select.js"></script>
-    <script src="js/editor.js"></script>
+    <input type="text" id="hide" readonly>
+    <div id="songInfo" class="modal control none">
+      <input type="text" id="lyricist" class="control" placeholder="Lyricist" readonly>
+      <input type="text" id="composer" class="control" placeholder="Composer" readonly>
+      <input type="text" id="album" class="control" placeholder="Album" readonly>
+      <input type="text" id="series" class="control" placeholder="Series" readonly>
+      <input type="text" id="key" class="control" placeholder="Key" readonly>
+      <input type="text" id="year" class="control" placeholder="Year" readonly>
+      <input type="text" id="copyright" class="control" placeholder="Copyright" readonly>
+      <input type="text" id="ccli" class="control" placeholder="CCLI Song No." readonly>
+    </div>
+    <div id="onDelete" class="modal none">
+      <input type="text" id="askDelete" class="control" readonly>
+      <div id="controlDelete">
+        <input type="text" id="typeDelete" class="control" placeholder="delete">
+        <span id="cancelDelete" class="button text">Cancel</span>
+        <span id="confirmDelete" class="button text disabled">Delete</span>
+      </div>
+    </div>
+    <div id="login" class="modal none">
+      <input type="url" id="address" class="control" placeholder="server">
+      <input type="text" id="password" class="control" placeholder="token">
+      <input type="url" id="stats" class="control" placeholder="optional">
+      <input type="text" id="status" class="control" readonly>
+    </div>
+    <div id="blurred" class="modal none">
+      <input>
+    </div>
+  </div>
+  <script defer async src="js/define.js"></script>
 
-    <script src="js/mouse.js"></script>
-    <script src="js/keyboard.js"></script>
-    <script src="js/focus.js"></script>
+  <script defer async src="js/request.js"></script>
+  <script defer async src="js/reload.js"></script>
+  <script defer async src="js/file.js"></script>
+  <script defer async src="js/select.js"></script>
+  <script defer async src="js/editor.js"></script>
 
-    <script src="js/control.js"></script>
-    <script src="js/plugin.js"></script>
-  </body>
+  <script defer async src="js/mouse.js"></script>
+  <script defer async src="js/keyboard.js"></script>
+  <script defer async src="js/focus.js"></script>
+
+  <script defer async src="js/control.js"></script>
+  <script defer async src="js/plugin.js"></script>
+</body>
+
 </html>

@@ -11,6 +11,7 @@ const myPinyin = function(text) {
 const Sortable = require("sortablejs");
 const getSystemFonts = require('get-system-fonts');
 
+const pulsar = document.getElementById('pulsar');
 const webApp = document.getElementById('app');
 const menu = document.getElementById('menu');
 const search = document.getElementById('search');

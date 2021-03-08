@@ -20,7 +20,10 @@ ipcRenderer.on('update', function(event, text) {
 });
 
 remote.getCurrentWebContents().on('did-finish-load', function(){
-    webApp.classList.remove('hidden');
+    pulsar.classList.remove('opaque');
+    setTimeout(() => {
+        webApp.classList.add('opaque');
+    }, 1000);
     showLyrics();
 });
 

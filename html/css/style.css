@@ -8,6 +8,18 @@ body {
     background-color: #eee;
 }
 
+#pulsar {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+    transition: opacity 1.25s ease-out;
+    opacity: 0;
+}
+
 #app * {
     font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
@@ -20,6 +32,8 @@ body {
     width: 100%;
     box-sizing: border-box;
     margin: 0;
+    transition: opacity 0.25s ease-out;
+    opacity: 0;
 }
 
 ::-webkit-scrollbar {
