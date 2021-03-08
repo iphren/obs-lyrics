@@ -55,6 +55,7 @@ function createWindow () {
     minHeight: 600,
     show: false,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true
     }
   });
@@ -97,6 +98,7 @@ function createWindow () {
     show: false,
     skipTaskbar: true,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true
     }
   });
@@ -123,6 +125,7 @@ function createWindow () {
     show: false,
     skipTaskbar: true,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true
     }
   });
@@ -145,6 +148,7 @@ function createWindow () {
     fullscreen: false,
     fullscreenable: true,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true
     }
   });
@@ -286,6 +290,7 @@ function minShow() {
   slideShow.setFullScreen(false);
   var electronScreen = electron.screen;
   var bounds = slideShow.getBounds();
+  if (!bounds || !bounds.width) bounds = win.getBounds();
   var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
   bounds = display.bounds;
   bounds.x = bounds.x + bounds.width / 4;

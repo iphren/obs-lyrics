@@ -288,6 +288,7 @@ ipcRenderer.on('showStarted', () => {
     slideBtn.classList.add('active');
     slideBtn.innerHTML = 'End Show';
     sizesBtn.classList.remove('none');
+    changeFocus(live.parentNode);
 });
 
 ipcRenderer.on('showEnded', () => {

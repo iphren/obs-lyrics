@@ -1,6 +1,5 @@
-const remote = require('electron').remote;
-const ipcRenderer = require('electron').ipcRenderer;
-const { dialog } = require('electron').remote;
+const { ipcRenderer, remote } = require('electron');
+const { app, dialog } = remote;
 const moment = require('moment');
 const fs = require('fs');
 const join = require('path').join;
@@ -12,7 +11,7 @@ const myPinyin = function(text) {
 const Sortable = require("sortablejs");
 const getSystemFonts = require('get-system-fonts');
 
-const app = remote.app;
+console.log(app, dialog);
 
 const webApp = document.getElementById('app');
 const menu = document.getElementById('menu');
