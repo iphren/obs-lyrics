@@ -32,6 +32,7 @@ if (app.configs.lineSize) sizeBtnBg.style.width = `${app.configs.lineSize * 100}
 
 liveFrame.src = app.html;
 path.value = app.html.replace(/\\/g,'/');
+showLyrics();
 
 setInterval(function () {
     let t = new Date();
