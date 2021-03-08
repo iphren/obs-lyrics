@@ -56,6 +56,7 @@ function createWindow () {
     show: false,
     webPreferences: {
       enableRemoteModule: true,
+      contextIsolation: false, 
       nodeIntegration: true
     }
   });
@@ -99,6 +100,7 @@ function createWindow () {
     skipTaskbar: true,
     webPreferences: {
       enableRemoteModule: true,
+      contextIsolation: false, 
       nodeIntegration: true
     }
   });
@@ -126,6 +128,7 @@ function createWindow () {
     skipTaskbar: true,
     webPreferences: {
       enableRemoteModule: true,
+      contextIsolation: false, 
       nodeIntegration: true
     }
   });
@@ -149,6 +152,7 @@ function createWindow () {
     fullscreenable: true,
     webPreferences: {
       enableRemoteModule: true,
+      contextIsolation: false, 
       nodeIntegration: true
     }
   });
