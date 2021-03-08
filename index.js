@@ -296,13 +296,12 @@ function minShow() {
   slideShow.setFullScreen(false);
   var electronScreen = electron.screen;
   var bounds = slideShow.getBounds();
-  if (!bounds || !bounds.width) bounds = win.getBounds();
   var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
   bounds = display.bounds;
-  bounds.x = bounds.x + bounds.width / 4;
-  bounds.y = bounds.y + bounds.height / 4;
-  bounds.width = bounds.width / 2;
-  bounds.height = bounds.height / 2;
+  bounds.x = Math.round(bounds.x + bounds.width / 4);
+  bounds.y = Math.round(bounds.y + bounds.height / 4);
+  bounds.width = Math.round(bounds.width / 2);
+  bounds.height = Math.round(bounds.height / 2);
   try {
     slideShow.setBounds(bounds);
   } catch(e) {
