@@ -13,10 +13,12 @@
 
 <body>
   <div id="pulsar" class="opaque">
-    <canvas id="pulsar-canvas" width="1000" height="1000"
-      style="position: absolute; display: block; background-color:#eee;"></canvas>
-    <div id="pulsar_dom_overlay_container"
-      style="pointer-events:none; overflow:hidden; width:1000px; height:1000px; position: absolute; left: 0px; top: 0px; display: block;">
+    <div id="pulsar-animation">
+      <canvas id="pulsar-canvas" width="1000" height="1000"
+        style="position: absolute; display: block; background-color:#eee;"></canvas>
+      <div id="pulsar_dom_overlay_container"
+        style="pointer-events:none; overflow:hidden; width:1000px; height:1000px; position: absolute; left: 0px; top: 0px; display: block;">
+      </div>
     </div>
   </div>
   <script>
@@ -24,7 +26,7 @@
     init();
     function init() {
       canvas = document.getElementById("pulsar-canvas");
-      anim_container = document.getElementById("pulsar");
+      anim_container = document.getElementById("pulsar-animation");
       dom_overlay_container = document.getElementById("pulsar_dom_overlay_container");
       var comp = AdobeAn.getComposition("AFD0C22C104B79478A3F2BE4A9E38ADE");
       var lib = comp.getLibrary();
