@@ -75,6 +75,7 @@ const sizeBtnBg = document.getElementById('sizeBtnBg');
 const slideBtn = document.getElementById('slideBtn');
 const slidesFooter = document.getElementById('slidesFooter');
 const sizesBtn = document.getElementById('sizesBtn');
+const liveCoverCover = document.getElementById('liveCoverCover');
 const slidesFolderPathProgress = document.getElementById('slidesFolderPathProgress');
 const currentSlideViewImg = document.getElementById('currentSlideViewImg');
 const currentSlideBackImg = document.getElementById('currentSlideBackImg');

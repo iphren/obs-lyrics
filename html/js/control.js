@@ -23,6 +23,9 @@ remote.getCurrentWebContents().on('did-finish-load', function(){
     pulsar.classList.remove('opaque');
     setTimeout(() => {
         webApp.classList.add('opaque');
+        setTimeout(() => {
+            pulsar.style.display = 'none';
+        }, 1000);
     }, 1000);
     showLyrics();
 });

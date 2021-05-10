@@ -1,5 +1,5 @@
 require('v8-compile-cache');
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, screen } = require('electron');
 const electron = require('electron');
 const { autoUpdater } = require("electron-updater");
 const path = require('path');
@@ -14,14 +14,14 @@ app.songs = path.join(appData, 'songs.json');
 app.basejs = path.join(app.getAppPath(), 'html/js/custom.js');
 app.customjs = path.join(appData, 'custom.txt');
 fs.mkdirSync(appData, { recursive: true });
-if (!fs.existsSync(app.songs)) fs.writeFileSync(app.songs,'[]');
+if (!fs.existsSync(app.songs)) fs.writeFileSync(app.songs, '[]');
 
 app.html = 'http://127.0.0.1:56733';
 
 try {
   app.configs = JSON.parse(fs.readFileSync(app.settings));
 } catch (e) {
-  app.configs = {rec: {width: 800, height: 600}}
+  app.configs = { rec: { width: 800, height: 600 } }
 }
 
 let win, top, stats, slideShow;
@@ -47,7 +47,7 @@ autoUpdater.on('update-downloaded', (info) => {
   win.webContents.send('update', 'install update on exit');
 });
 
-function createWindow () {
+function createWindow() {
   win = new BrowserWindow({
     width: app.configs.rec.width,
     height: app.configs.rec.height,
@@ -56,7 +56,7 @@ function createWindow () {
     show: false,
     webPreferences: {
       enableRemoteModule: true,
-      contextIsolation: false, 
+      contextIsolation: false,
       nodeIntegration: true
     }
   });
@@ -64,13 +64,13 @@ function createWindow () {
   win.setMenu(null);
   if (!app.isPackaged) {
     win.webContents.openDevTools();
-    win.setBounds({width: 1500, height: 1000, x: 300, y: 25});
+    win.setBounds({ width: 1500, height: 1000, x: 300, y: 25 });
   } else {
     win.setBounds(app.configs.rec);
   }
   win.webContents.focus();
 
-  win.webContents.on('did-finish-load', function(){
+  win.webContents.on('did-finish-load', function () {
     autoUpdater.checkForUpdatesAndNotify();
   });
 
@@ -100,7 +100,7 @@ function createWindow () {
     skipTaskbar: true,
     webPreferences: {
       enableRemoteModule: true,
-      contextIsolation: false, 
+      contextIsolation: false,
       nodeIntegration: true
     }
   });
@@ -128,7 +128,7 @@ function createWindow () {
     skipTaskbar: true,
     webPreferences: {
       enableRemoteModule: true,
-      contextIsolation: false, 
+      contextIsolation: false,
       nodeIntegration: true
     }
   });
@@ -150,9 +150,10 @@ function createWindow () {
     show: false,
     fullscreen: false,
     fullscreenable: true,
+    skipTaskbar: true,
     webPreferences: {
       enableRemoteModule: true,
-      contextIsolation: false, 
+      contextIsolation: false,
       nodeIntegration: true
     }
   });
@@ -163,11 +164,13 @@ function createWindow () {
   }
 
   win.on('focus', () => {
-    win.webContents.send('focused',true);
-    top.hide();
+    win.webContents.send('focused', true);
+    try {
+      top.hide();
+    } catch (e) { }
   });
   win.on('blur', () => {
-    win.webContents.send('focused',false);
+    win.webContents.send('focused', false);
     if (showTop && !stats.isVisible()) {
       top.show();
       top.focus();
@@ -212,7 +215,7 @@ ipcMain.on('stats', (event) => {
 });
 
 function reloadStats() {
-  fs.readFile(app.token, {encoding: 'utf-8'}, (err, data) => {
+  fs.readFile(app.token, { encoding: 'utf-8' }, (err, data) => {
     if (!err) {
       let json = JSON.parse(data);
       if (!json.stats) {
@@ -229,7 +232,7 @@ function reloadStats() {
   });
 }
 
-function save(key, value)  {
+function save(key, value) {
   app.configs[key] = value;
   try {
     var content = JSON.stringify(app.configs);
@@ -261,7 +264,7 @@ ipcMain.on('toggleTop', (event, st) => {
 ipcMain.on('time', (event, time) => {
   try {
     top.webContents.send('time', time);
-  } catch(e) { };
+  } catch (e) { };
 });
 
 ipcMain.on('endShow', () => {
@@ -273,8 +276,31 @@ ipcMain.on('endShow', () => {
   win.focus();
 });
 
+var firstShow = true;
 ipcMain.on('startShow', () => {
+  let b;
+  if ((firstShow && process.platform === 'win32') || maxSlide) {
+    firstShow = false;
+    const displays = screen.getAllDisplays();
+    const externalDisplay = displays.find((display) => {
+      return display.bounds.x !== 0 || display.bounds.y !== 0
+    });
+    if (externalDisplay) {
+      maxSlide = true;
+      b = externalDisplay.bounds;
+    }
+  }
   slideShow.show();
+  if (maxSlide) {
+    setTimeout(() => {
+      if (b) {
+        slideShow.setBounds(b);
+      }
+      slideShow.setFullScreen(true);
+      win.webContents.send('showFullScreen', true);
+      slideShow.webContents.send('showFullScreen', true);
+    }, 10);
+  }
   win.webContents.send('showStarted');
 });
 
@@ -282,7 +308,7 @@ ipcMain.on('maxShow', () => {
   maxSlide = true;
   var electronScreen = electron.screen;
   var bounds = slideShow.getBounds();
-  var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
+  var display = electronScreen.getDisplayNearestPoint({ x: bounds.x, y: bounds.y });
   slideShow.setBounds(display.bounds);
   slideShow.setFullScreen(true);
   win.webContents.send('showFullScreen', true);
@@ -296,19 +322,13 @@ function minShow() {
   slideShow.setFullScreen(false);
   var electronScreen = electron.screen;
   var bounds = slideShow.getBounds();
-  var display = electronScreen.getDisplayNearestPoint({x: bounds.x, y: bounds.y});
+  var display = electronScreen.getDisplayNearestPoint({ x: bounds.x, y: bounds.y });
   bounds = display.bounds;
   bounds.x = Math.round(bounds.x + bounds.width / 4);
   bounds.y = Math.round(bounds.y + bounds.height / 4);
   bounds.width = Math.round(bounds.width / 2);
   bounds.height = Math.round(bounds.height / 2);
-  try {
-    slideShow.setBounds(bounds);
-  } catch(e) {
-    dialog.showMessageBox({
-      message: JSON.stringify(bounds)
-    });
-  }
+  slideShow.setBounds(bounds);
   win.webContents.send('showFullScreen', false);
   slideShow.webContents.send('showFullScreen', false);
   if (process.platform === 'darwin' && slideShow.isVisible()) {
@@ -350,19 +370,19 @@ const exp = express();
 const http = require('http').createServer(exp);
 const io = require('socket.io')(http);
 
-exp.use(express.json({limit: '5mb'}));
+exp.use(express.json({ limit: '5mb' }));
 
-var lyrics = {text:''};
+var lyrics = { text: '' };
 var lineStyle = app.configs.lineStyle || 0;
 var lineSize = 'lineSize' in app.configs ? app.configs.lineSize : 0.75;
 
 ipcMain.on('lyrics', (event, arg) => {
-  lyrics = {text: arg};
+  lyrics = { text: arg };
   io.emit('lyrics', lyrics);
 });
 
 ipcMain.on('songInfo', (event, arg) => {
-  lyrics = {text: arg, type: 'songInfo'};
+  lyrics = { text: arg, type: 'songInfo' };
   io.emit('lyrics', lyrics);
   slideShow.webContents.send('songInfo', lyrics.text);
 });
@@ -387,16 +407,16 @@ io.on('connection', (socket) => {
 
 exp.use(express.static(path.join(app.getAppPath(), 'node_modules/jquery/dist')));
 
-exp.get('/',(req, res) => {
+exp.get('/', (req, res) => {
   res.sendFile(path.join(app.getAppPath(), 'html', 'line.html'));
 });
 
 
-exp.get('/custom.js',(req, res) => {
+exp.get('/custom.js', (req, res) => {
   res.sendFile(app.customjs);
 });
 
-exp.post('/custom.js',(req, res) => {
+exp.post('/custom.js', (req, res) => {
   fs.writeFile(app.customjs + '.tmp', req.body.code, () => {
     res.end();
   });
@@ -408,11 +428,11 @@ http.on('error', error => {
   }
   switch (error.code) {
     case 'EADDRINUSE':
-      dialog.showErrorBox('Error','port 56733 in use');
+      dialog.showErrorBox('Error', 'port 56733 in use');
       process.exit(1);
       break;
     default:
       throw error;
   }
 });
-http.listen(56733,'localhost');
+http.listen(56733, 'localhost');

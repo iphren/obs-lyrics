@@ -45,13 +45,13 @@ body {
     outline: none;
     box-sizing: border-box;
     background-color: white;
-    border-radius: .6rem;
+    border-radius: 0.6rem;
 }
 
 input.control {
     outline-offset: 0;
     height: 2rem;
-    padding: .3rem 1rem;
+    padding: 0.3rem 1rem;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -66,19 +66,19 @@ input.inline:read-only {
 
 textarea.control {
     outline-offset: 0;
-    padding: .3rem 1rem;
+    padding: 0.3rem 1rem;
     overflow: auto;
     resize: none;
 }
 
 .container {
-    height: calc(49.999% - .15rem);
+    height: calc(49.999% - 0.15rem);
     width: 100%;
     position: relative;
     transition: height ease-in-out 0.3s, margin-bottom ease-in-out 0.3s;
     overflow: hidden;
-    border-radius: .6rem;
-    margin-bottom: .3rem;
+    border-radius: 0.6rem;
+    margin-bottom: 0.3rem;
 }
 
 .container:last-child {
@@ -112,7 +112,7 @@ textarea.control {
 }
 
 .focused {
-    box-shadow: 0 0 .3rem .1rem rgba(120,120,120,0.5);
+    box-shadow: 0 0 0.3rem 0.1rem rgba(120, 120, 120, 0.5);
 }
 
 .reloading .focused {
@@ -126,7 +126,7 @@ textarea.control {
 .option {
     user-select: none;
     width: 100%;
-    padding: .3rem 1rem;
+    padding: 0.3rem 1rem;
     box-sizing: border-box;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -186,7 +186,7 @@ textarea.control {
 
 .button.text {
     width: unset;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     padding-left: 1rem;
     padding-right: 1rem;
 }
@@ -244,9 +244,9 @@ textarea.control {
 }
 
 #menu {
-    margin-top: .3rem;
+    margin-top: 0.3rem;
     position: relative;
-    padding: 0 .3rem;
+    padding: 0 0.3rem;
     white-space: nowrap;
     display: flex;
     align-items: center;
@@ -254,14 +254,14 @@ textarea.control {
 }
 
 #menu .button {
-    margin-left: .3rem;
+    margin-left: 0.3rem;
 }
 
 #search {
     width: 20rem;
     min-width: 10rem;
     padding-right: 2rem;
-    margin-right: .15rem;
+    margin-right: 0.15rem;
     transition: opacity 0.3s ease-in-out;
 }
 
@@ -275,11 +275,11 @@ textarea.control {
     height: 1rem;
     padding: 0;
     margin-left: -1.65rem !important;
-    background-image: url('../img/times-circle.svg');
+    background-image: url("../img/times-circle.svg");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 100%;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 #search:placeholder-shown + #clear {
@@ -287,7 +287,7 @@ textarea.control {
 }
 
 #reload {
-    margin-left: .8rem !important;
+    margin-left: 0.8rem !important;
 }
 
 #newBtn:hover img {
@@ -312,7 +312,7 @@ textarea.control {
 }
 
 #sendBtn.success {
-    background-color: #4CAF50;
+    background-color: #4caf50;
 }
 
 #plURL {
@@ -320,7 +320,7 @@ textarea.control {
     z-index: 100;
     top: 2.3rem;
     left: 0;
-    box-shadow: 0 0 .3rem .1rem rgba(120,120,120,0.5);
+    box-shadow: 0 0 0.3rem 0.1rem rgba(120, 120, 120, 0.5);
 }
 
 #customjs {
@@ -333,7 +333,7 @@ textarea.control {
 
 #clock {
     position: absolute;
-    right: .6rem;
+    right: 0.6rem;
     user-select: none;
     font-size: xx-large;
     color: #777;
@@ -347,7 +347,7 @@ textarea.control {
 }
 
 #main > * {
-    margin: .3rem;
+    margin: 0.3rem;
 }
 
 #control {
@@ -356,14 +356,16 @@ textarea.control {
     transition: opacity 0.3s ease-in-out;
 }
 
-#control, #view {
+#control,
+#view {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     box-sizing: border-box;
-} 
+}
 
-#loading, #notFound {
+#loading,
+#notFound {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -380,8 +382,8 @@ textarea.control {
     font-size: 300%;
     left: unset;
     top: unset;
-    bottom: .25em;
-    right: .5em;
+    bottom: 0.25em;
+    right: 0.5em;
     user-select: none;
     height: unset;
     width: unset;
@@ -389,10 +391,16 @@ textarea.control {
 }
 
 #letter.scrolling {
-    opacity: .1;
+    opacity: 0.1;
 }
 
-#songlist, #playlist, #live {
+#playlist, #live {
+    border: 2px solid gold;
+}
+
+#songlist,
+#playlist,
+#live {
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -402,14 +410,14 @@ textarea.control {
 }
 
 #playlist .playing {
-    background-image: url('../img/play-circle.svg');
+    background-image: url("../img/play-circle.svg");
     background-position: 105% 50%;
     background-size: auto 150%;
     background-repeat: no-repeat;
 }
 
 #playlist .showing .lyrics {
-    color: #4CAF50;
+    color: #4caf50;
 }
 
 .focused #playlist .selected.showing .lyrics {
@@ -428,14 +436,14 @@ textarea.control {
     left: 8.5rem;
     width: 3rem;
     height: 3rem;
-    bottom: .6rem;
+    bottom: 0.6rem;
     opacity: 0.5;
-    background-image: url('../img/trash-alt.svg');
+    background-image: url("../img/trash-alt.svg");
     background-size: auto 80%;
     background-position: center center;
     background-repeat: no-repeat;
-    background-color: rgba(0,0,0,0.1);
-    border-radius: .3rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 0.3rem;
     transition: all 0.3s ease-in-out;
     filter: grayscale(100%);
 }
@@ -468,50 +476,50 @@ textarea.control {
     font-weight: 700;
     font-size: 120%;
     height: 2.4rem;
-    border-radius: .6rem .6rem 0 0;
+    border-radius: 0.6rem 0.6rem 0 0;
     border-bottom: 1px solid #eee;
 }
 
 #pLyrics {
     flex-grow: 1;
     font-size: inherit;
-    border-radius: 0 0 .6rem .6rem;
+    border-radius: 0 0 0.6rem 0.6rem;
 }
 
 #editInfo {
-    background-image: url('../img/clipboard-list.svg');
-    top: .35rem;
-    right: .25rem;
+    background-image: url("../img/clipboard-list.svg");
+    top: 0.35rem;
+    right: 0.25rem;
     height: 1.5rem;
     width: 1.5rem;
 }
 
 #edit {
-    background-image: url('../img/edit.svg');
-    top: .35rem;
+    background-image: url("../img/edit.svg");
+    top: 0.35rem;
     right: 1.65rem;
     height: 1.5rem;
     width: 2rem;
 }
 
 #cancel {
-    background-image: url('../img/times.svg');
+    background-image: url("../img/times.svg");
     right: 3rem;
-    bottom: .05em;
+    bottom: 0.05em;
     width: 1.5rem;
     height: 2.1rem;
 }
 
 #save {
-    background-image: url('../img/check.svg');
-    right: .5rem;
-    bottom: .2rem;
+    background-image: url("../img/check.svg");
+    right: 0.5rem;
+    bottom: 0.2rem;
     width: 2rem;
     height: 2rem;
 }
 
 .focused #live .selected {
-    background-color: #4CAF50;
+    background-color: #4caf50;
 }
 
 .reloading .focused #live .selected {
@@ -540,7 +548,7 @@ textarea.control {
     flex-grow: 1;
     margin: 0 0.5rem;
     position: relative;
-    border-radius: .6rem;
+    border-radius: 0.6rem;
     background-color: #eee;
     overflow: hidden;
 }
@@ -588,7 +596,7 @@ textarea.control {
 #slidesBox {
     overflow: auto;
     max-height: 100%;
-    background-image: url('../img/transparent.svg');
+    background-image: url("../img/transparent.svg");
     background-repeat: repeat;
 }
 
@@ -621,7 +629,7 @@ textarea.control {
 }
 
 .slideBox.timeout {
-    background: url('../img/eye-slash.svg') center no-repeat darkgray;
+    background: url("../img/eye-slash.svg") center no-repeat darkgray;
 }
 
 .slideBox.real:hover {
@@ -638,7 +646,7 @@ textarea.control {
     transform: translate(-50%, -50%);
     height: 2rem;
     width: 2rem;
-    background-image: url('../img/check-circle.svg');
+    background-image: url("../img/check-circle.svg");
     background-position: center;
     background-size: 100%;
     background-repeat: no-repeat;
@@ -690,12 +698,12 @@ textarea.control {
 }
 
 #slidesFooter::before {
-    content: 'Choosing background for ';
+    content: "Choosing background for ";
     color: burlywood;
 }
 
 #slidesFooter.live::after {
-    content: ' (Live)';
+    content: " (Live)";
     color: forestgreen;
 }
 
@@ -708,14 +716,14 @@ textarea.control {
 #live .key {
     font-size: small;
     position: absolute;
-    left: .35rem;
+    left: 0.35rem;
     top: 50%;
     transform: translateY(-50%);
-    padding: .1em .5em .2em .5em;
-    border-radius: .5em;
+    padding: 0.1em 0.5em 0.2em 0.5em;
+    border-radius: 0.5em;
     background-color: black;
     color: white;
-    opacity: .3;
+    opacity: 0.3;
     -webkit-text-stroke: 1px white;
 }
 
@@ -730,15 +738,16 @@ textarea.control {
 }
 
 #path {
-    border-radius: .6rem .6rem 0 0;
+    border-radius: 0.6rem 0.6rem 0 0;
     background-color: #999;
     color: white;
-    margin-top: .3rem;
+    margin-top: 0.3rem;
     opacity: 0.5;
     transition: opacity 0.3s ease-in-out;
 }
 
-#path:hover, #path:focus {
+#path:hover,
+#path:focus {
     opacity: 1;
 }
 
@@ -750,7 +759,7 @@ textarea.control {
     padding-top: 15.5%;
     position: relative;
     user-select: none;
-    border-radius: 0 0 .6rem .6rem;
+    border-radius: 0 0 0.6rem 0.6rem;
     overflow: hidden;
 }
 
@@ -817,6 +826,14 @@ textarea.control {
     background-color: tomato;
 }
 
+#liveCoverCover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 #hide {
     position: fixed;
     z-index: -100;
@@ -840,7 +857,7 @@ textarea.control {
 }
 
 #songInfo input::placeholder {
-    opacity: .3;
+    opacity: 0.3;
 }
 
 #controlDelete {
@@ -852,7 +869,7 @@ textarea.control {
 }
 
 #cancelDelete {
-    margin: 0 .3rem;
+    margin: 0 0.3rem;
 }
 
 #confirmDelete {
@@ -860,7 +877,7 @@ textarea.control {
 }
 
 .close {
-    background-image: url('../img/times-circle.svg');
+    background-image: url("../img/times-circle.svg");
     bottom: 1rem;
     right: calc(50vw - 1rem);
     width: 2rem;
@@ -873,7 +890,7 @@ textarea.control {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(200,200,200,0.8);
+    background-color: rgba(200, 200, 200, 0.8);
     align-items: stretch;
     justify-content: center;
     display: flex;
@@ -885,7 +902,7 @@ textarea.control {
 }
 
 .blurred {
-    filter: blur(2px) grayscale(0.5);
+    filter: contrast(0.9) grayscale(0.75);
     transition: filter 0.5s ease-in;
 }
 
@@ -898,7 +915,7 @@ textarea.control {
 }
 
 .modal > * {
-    margin-bottom: .3rem;
+    margin-bottom: 0.3rem;
 }
 
 .modal > *:last-child {
@@ -911,13 +928,13 @@ textarea.control {
 }
 
 .modal > iframe {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100vw;
-    height:100vh;
-    border:2px solid tomato;
-    outline:none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    border: 2px solid tomato;
+    outline: none;
     box-sizing: border-box;
 }
 
@@ -937,34 +954,35 @@ textarea.control {
     filter: none !important;
 }
 
-.disabled, .disabled:hover {
+.disabled,
+.disabled:hover {
     cursor: initial !important;
     filter: grayscale(100%) !important;
     opacity: 0.1 !important;
 }
 
 .highlight {
-    color: #4CAF50;
+    color: #4caf50;
 }
 
 .topKey {
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     background-color: white;
-    padding: .08rem .34rem;
-    margin-right: .25rem;
+    padding: 0.08rem 0.34rem;
+    margin-right: 0.25rem;
     color: black;
 }
 
 .topKey:first-child {
-    margin-left: .25rem;
+    margin-left: 0.25rem;
 }
 
 .topKey.alt {
-    border-radius: .25rem;
+    border-radius: 0.25rem;
 }
 
 .topKey.highlight {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
 }
 
@@ -975,12 +993,19 @@ textarea.control {
 }
 
 .shadow {
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Slide Show CSS */
 
-@keyframes opac{from{opacity:0} to{opacity:1}}
+@keyframes opac {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
 #s-app {
     font-family: "华文中宋", "STZhongSong", "华文宋体", "Microsoft YaHei", "HeiTi", "SongTi", sans-serif;
@@ -1019,7 +1044,8 @@ textarea.control {
     overflow: hidden;
 }
 
-#s-lyrics > *, #s-ruler {
+#s-lyrics > *,
+#s-ruler {
     font-size: 6vw;
     text-align: center;
     position: fixed;
@@ -1037,7 +1063,8 @@ textarea.control {
     visibility: hidden;
 }
 
-#s-backgrounds > *, #s-lyrics > * {
+#s-backgrounds > *,
+#s-lyrics > * {
     transition: all 0.5s ease-in;
     opacity: 0;
 }
@@ -1049,13 +1076,12 @@ textarea.control {
 
 .s-draggable {
     -webkit-app-region: drag;
-    background-color: black !important;
     cursor: default !important;
 }
 
 .s-songInfo {
     top: unset !important;
-    bottom: 3.5vw  !important;
+    bottom: 3.5vw !important;
     right: unset !important;
     left: 5vw !important;
     text-align: left !important;
@@ -1080,13 +1106,13 @@ textarea.control {
 }
 
 .s-songInfo .author::before {
-    content: '词、曲：' !important;
+    content: "词、曲：" !important;
 }
 
 .s-songInfo .lyricist::before {
-    content: '词：' !important;
+    content: "词：" !important;
 }
 
 .s-songInfo .composer::before {
-    content: '曲：' !important;
+    content: "曲：" !important;
 }
